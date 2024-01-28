@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing custom crawling strategy &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using the Frontier with Scrapy" href="scrapy-integration.html" />
+    <link rel="prev" title="Message bus" href="message_bus.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-modes.html">Run modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_bus.html">Message bus</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Writing custom crawling strategy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#crawler-workflow">Crawler workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#crawling-strategy-class">Crawling strategy class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.from_worker"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.from_worker()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.read_seeds"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.read_seeds()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.page_crawled"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.page_crawled()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.filter_extracted_links"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.filter_extracted_links()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.links_extracted"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.links_extracted()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.request_error"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.request_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.finished"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.finished()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.close"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.schedule"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.schedule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.create_request"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.create_request()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.refresh_states"><code class="docutils literal notranslate"><span class="pre">BaseCrawlingStrategy.refresh_states()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#workflow">Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#seeds-addition">Seeds addition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#main">Main</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling-and-creating-requests">Scheduling and creating requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#state-operations">State operations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#components">Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#domainmetadata">DomainMetadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#publicsuffix">PublicSuffix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#useful-details">Useful details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-crawling-strategy">Debugging crawling strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#meta-fields">Meta fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Writing custom crawling strategy</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/custom_crawling_strategy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="writing-custom-crawling-strategy">
+<h1>Writing custom crawling strategy<a class="headerlink" href="#writing-custom-crawling-strategy" title="Permalink to this heading">¶</a></h1>
+<p>Crawling strategy is an essential part of new_frontera-based crawler and it’s guiding the crawler by instructing it which pages to crawl, when and with what priority.</p>
+<section id="crawler-workflow">
+<h2>Crawler workflow<a class="headerlink" href="#crawler-workflow" title="Permalink to this heading">¶</a></h2>
+<p>new_frontera-based crawler consist of multiple processes, which are running indefinitely. The state in these processes are
+persisted to a permanent storage. When processes are stopped the state is flushed and will be loaded next time when
+access to certain data item is needed. Therefore it’s easy to pause the crawl by stopping the processes, do the
+maintenance or modify the code and start again without restarting the crawl from the beginning.</p>
+<blockquote>
+<div><p>IMPORTANT DETAIL
+Spider log (see <a class="reference external" href="http://new_frontera.readthedocs.io/en/latest/topics/glossary.html">http://new_frontera.readthedocs.io/en/latest/topics/glossary.html</a>) is using hostname-based partitioning.
+The content generated from particular host will always land to the same partition (and therefore strategy worker
+instance). That guarantees the crawling strategy you design will be always dealing with same subset of hostnames
+on every SW instance. It also means the same domain cannot be operated from multiple strategy worker instances.
+To get the hostname the 2-nd level domain name is used with public suffix resolved.</p>
+</div></blockquote>
+<p>To restart the crawl the</p>
+<ul class="simple">
+<li><p>queue contents</p></li>
+<li><p>link states</p></li>
+<li><p>domain metadata</p></li>
+</ul>
+<p>needs to be cleaned up. This is usually done by means of truncation of tables.</p>
+</section>
+<section id="crawling-strategy-class">
+<h2>Crawling strategy class<a class="headerlink" href="#crawling-strategy-class" title="Permalink to this heading">¶</a></h2>
+<p>It has to be inherited from BaseCrawlingStrategy and implement it’s API.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.strategy.</span></span><span class="sig-name descname"><span class="pre">BaseCrawlingStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduled_stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">states_context</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface definition for a crawling strategy.</p>
+<p>Before calling these methods strategy worker is adding ‘state’ key to meta field in every
+<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> with state of the URL. Pleases refer for the states to HBaseBackend
+implementation.</p>
+<p>After exiting from all of these methods states from meta field are passed back and stored in the backend.</p>
+<p>Constructor of the crawling strategy.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>manager: is an instance of :class: <cite>Backend &lt;new_frontera.core.manager.FrontierManager&gt;</cite> instance
+args: is a dict with command line arguments from <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a>
+scheduled_stream: is a helper class for sending scheduled requests
+states_context: a helper to operate with states for requests created in crawling strategy class</p>
+</dd>
+</dl>
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.from_worker">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduled_stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">states_context</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.from_worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called on instantiation in strategy worker.</p>
+<p>see params for constructor
+:return: new instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.read_seeds">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_seeds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.read_seeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a> is run using add-seeds mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stream</strong> (<em>file</em>) – A file-like object containing seed content</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.page_crawled">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">page_crawled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.page_crawled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called every time document was successfully crawled, and receiving page_crawled event from spider log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response</strong> (<em>object</em>) – The <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> object for the crawled page.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.filter_extracted_links">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter_extracted_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">links</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.filter_extracted_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called every time on receiving links_extracted event by strategy worker. This call is preceding the call
+to links_extracted handler and is aiming to filter unused links and return only those where states
+information is needed.</p>
+<p>The motivation for having the filtration separated before the actual handler is to save on HBase state
+retrieval. Every non-cached link is requested from HBase and it may slow down the cluster significantly
+on discovery-intensive crawls. Please make sure you use this class to filter out all the links you’re not
+going ot use in :method:<a href="#id1"><span class="problematic" id="id2">`</span></a>links_extracted &lt;new_frontera.worker.strategies.BaseCrawlingStrategy.links_extracted&gt;
+handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>object</em>) – The <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object for the crawled page.</p></li>
+<li><p><strong>links</strong> (<em>list</em>) – A list of <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> objects generated from         the links extracted for the crawled page.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A subset of <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> input objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.links_extracted">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">links_extracted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">links</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.links_extracted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called every time document was successfully crawled, and receiving links_extracted event from spider log,
+after the link states are fetched from backend. Should be used to schedule links according to some rules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>object</em>) – The <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object for the crawled page.</p></li>
+<li><p><strong>links</strong> (<em>list</em>) – A list of <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> objects generated from         the links extracted for the crawled page.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.request_error">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">request_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.request_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called every time there was error during page downloading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>object</em>) – The fetched with error <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object.</p></li>
+<li><p><strong>error</strong> (<em>str</em>) – A string identifier for the error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.finished">
+<span class="sig-name descname"><span class="pre">finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.finished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by Strategy worker, after finishing processing each cycle of spider log. If this method returns true,
+then Strategy worker reports that crawling goal is achieved, stops and exits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when strategy worker is about to close crawling strategy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.schedule">
+<span class="sig-name descname"><span class="pre">schedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dont_queue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedule document for crawling with specified score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – A <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object.</p></li>
+<li><p><strong>score</strong> – float from 0.0 to 1.0</p></li>
+<li><p><strong>dont_queue</strong> – bool, True - if no need to schedule, only update the score</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.create_request">
+<span class="sig-name descname"><span class="pre">create_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b'GET'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.create_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates request with specified fields. This method only creates request, but isn’t getting it’s state
+from storage. Use self.refresh_states on a batch of requests to get their states from storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – str</p></li>
+<li><p><strong>method</strong> – str</p></li>
+<li><p><strong>headers</strong> – dict</p></li>
+<li><p><strong>cookies</strong> – dict</p></li>
+<li><p><strong>meta</strong> – dict</p></li>
+<li><p><strong>body</strong> – str</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.strategy.BaseCrawlingStrategy.refresh_states">
+<span class="sig-name descname"><span class="pre">refresh_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.strategy.BaseCrawlingStrategy.refresh_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves states for all requests from storage.
+if requests is not a list of <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> objects.
+:param requests: list(<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>) or a single <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The class can be put in any module and passed to <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a> or local Scrapy process using command line
+option or <a href="#id3"><span class="problematic" id="id4">:setting:`CRAWLING_STRATEGY`</span></a> setting on startup.</p>
+<p>The strategy class can use its own storage or any other kind of resources. All items from <a class="reference internal" href="glossary.html#term-spider-log"><span class="xref std std-term">spider log</span></a> will be
+passed through these methods. Scores returned doesn’t have to be the same as in method arguments.
+Periodically <code class="docutils literal notranslate"><span class="pre">finished()</span></code> method is called to check if crawling goal is achieved.</p>
+<section id="workflow">
+<h3>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading">¶</a></h3>
+<p>There essentially two workflows: seeds addition (or injection) and main workflow. When crawl starts from scratch it
+has to run the seed injection first and then proceed with main workflow. When paused/resumed crawler is running
+main workflow.</p>
+<section id="seeds-addition">
+<h4>Seeds addition<a class="headerlink" href="#seeds-addition" title="Permalink to this heading">¶</a></h4>
+<p>The purpose of this step is to inject the seeds into the crawler pipeline. The framework allows to process the seeds
+stream (which is read from file placed locally or in S3), create requests needed, get their link states, and schedule
+them. Once requests are scheduled they will get to the queue and propagate to spiders.</p>
+<p>To enter this workflow user is running strategy worker in add seeds mode providing arguments to crawling strategy
+from command line. In particular –seeds-url is used with s3 or local file URL containing seeds to inject.</p>
+<p>1. from_worker() → init()
+1. read_seeds(stream from file, None if file isn’t present)
+1. exit</p>
+<p>It’s very convenient to run seeds addition using helper app in new_frontera:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m new_frontera.utils.add_seeds --config ... --seeds-file ...
+</pre></div>
+</div>
+</section>
+<section id="main">
+<h4>Main<a class="headerlink" href="#main" title="Permalink to this heading">¶</a></h4>
+<p>This is the main cycle used when crawl is in progress. In a nutshell on every spider event the specific handler is
+called, depending on the type of event. When strategy worker is getting the SIGTERM signal it’s trying to stop politely
+by calling close(). In its normal state it listens for a spider log and executes the event handlers.</p>
+<ol class="arabic simple">
+<li><p><cite>from_worker()</cite> → init()</p></li>
+<li><p><cite>page_crawled(response)</cite> OR <cite>page_error(request, error)</cite> OR <cite>filter_extracted_links(request, links)</cite> and subsequent
+<cite>links_extracted(request, links)</cite></p></li>
+<li><p><cite>close()</cite></p></li>
+<li><p>exit</p></li>
+</ol>
+</section>
+<section id="scheduling-and-creating-requests">
+<h4>Scheduling and creating requests<a class="headerlink" href="#scheduling-and-creating-requests" title="Permalink to this heading">¶</a></h4>
+<p>The ultimate goal of crawling strategy is scheduling of requests. To schedule request there is a method
+schedule(request, score). The request is an instance of <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> class and is
+often available from arguments of event handlers: _page_crawled_, _page_error_ and _links_extracted_, or can be created
+on-demand using <a class="reference internal" href="#new_frontera.strategy.BaseCrawlingStrategy.create_request" title="new_frontera.strategy.BaseCrawlingStrategy.create_request"><code class="xref py py-attr docutils literal notranslate"><span class="pre">create_request</span></code></a> method.</p>
+<blockquote>
+<div><p>IMPORTANT NOTICE</p>
+<p>The request created with create_request() has no state (meta[b’state’]) after creation. To get the states strategy
+worker needs to access the backend, and this is not happenning when you call create_request(). Instead it is
+expected you will create a batch of requests and call refresh_states(iterable) on the whole batch of requests.
+After refresh_states is done, you will have a states available for your newly created requests.</p>
+<p>The Request objects created by strategy worker for event handlers are always having the states assigned.</p>
+</div></blockquote>
+</section>
+<section id="state-operations">
+<h4>State operations<a class="headerlink" href="#state-operations" title="Permalink to this heading">¶</a></h4>
+<p>Every link has a state. The purpose of this states is to allow the developer to persist the state of the link in the
+system (allow restart of SW components without data loss) and use it for decision making. The states are cached in
+strategy worker, flushed to backend and will be loaded when needed. States are defined in
+<a class="reference internal" href="frontier-backends.html#new_frontera.core.components.States" title="new_frontera.core.components.States"><code class="xref py py-class docutils literal notranslate"><span class="pre">new_frontera.core.components.States</span></code></a> and can have following values:</p>
+<ul class="simple">
+<li><p>NOT_CRAWLED,</p></li>
+<li><p>QUEUED,</p></li>
+<li><p>CRAWLED,</p></li>
+<li><p>ERROR</p></li>
+</ul>
+<p>NOT_CRAWLED is assigned when link is new, and wasn’t seen previously, the rest of the state values must be assigned
+in the crawling strategy code.</p>
+<p>States allow to check that link was visited or discovered, and perform analysis of the states database to collect the
+state statistics using MapReduce style jobs.</p>
+</section>
+</section>
+</section>
+<section id="components">
+<h2>Components<a class="headerlink" href="#components" title="Permalink to this heading">¶</a></h2>
+<p>There are certain building blocks and successful solutions exist for the common problems.</p>
+<section id="domainmetadata">
+<h3>DomainMetadata<a class="headerlink" href="#domainmetadata" title="Permalink to this heading">¶</a></h3>
+<p>It’s often needed to persist per-host metadata in the permanent storage. To solve this there is a
+<a class="reference internal" href="frontier-backends.html#new_frontera.core.components.DomainMetadata" title="new_frontera.core.components.DomainMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">new_frontera.core.components.DomainMetadata</span></code></a> instance in backend. It’s has an interface of Python mapping types
+(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html?highlight=mapping#mapping-types-dict">https://docs.python.org/3/library/stdtypes.html?highlight=mapping#mapping-types-dict</a> ). It’s expected that one will
+be using domain names as keys and dicts as values. It’s convenient to store there per-domin statistics, ban states,
+the count of links found, etc.</p>
+</section>
+<section id="publicsuffix">
+<h3>PublicSuffix<a class="headerlink" href="#publicsuffix" title="Permalink to this heading">¶</a></h3>
+<p>When crawling multiple domains (especially unknown ones) it’s important to resolve the 2-nd level domain name properly
+using publicsuffix.</p>
+<p>Is a library from publicsuffix module provided by <a class="reference external" href="https://publicsuffix.org/">https://publicsuffix.org/</a>. The purpose is to maintain a publicsuffix
+of ccTLDs and name resolution routines for them in a single library. For us it’s convenient to use these library
+everywhere where domain name resolution is needed. Here are few examples:</p>
+<ul>
+<li><p>www.london.co.uk → london.co.uk</p></li>
+<li><p>images.yandex.ru → yandex.ru</p></li>
+<li><p>t.co → t.co</p>
+<blockquote>
+<div><p>As you may see the number of dots of reverted domain name cannot be used for domain name resolution.</p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+<section id="useful-details">
+<h2>Useful details<a class="headerlink" href="#useful-details" title="Permalink to this heading">¶</a></h2>
+<section id="debugging-crawling-strategy">
+<h3>Debugging crawling strategy<a class="headerlink" href="#debugging-crawling-strategy" title="Permalink to this heading">¶</a></h3>
+<p>The best approach I found is to log all the events and outcomes using Python native logging. I.e. to setup the logger
+for crawling strategy class and use it. When debug output is needed you will be able to set the logger to output to
+a file, with a specific format and log level. After you have logging output set up you should start the crawl of
+problematic website locally, collect and analyse the log output.</p>
+<p>Other approaches include analysis of links database, inspecting of domain metadata and states tables, collecting the
+log output of link states changes (experimental SW feature).</p>
+</section>
+<section id="meta-fields">
+<h3>Meta fields<a class="headerlink" href="#meta-fields" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>name</p></th>
+<th class="head"><p>description</p></th>
+<th class="head"><p>presence</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>b”slot”</p></td>
+<td><p>Queue partitioning key in bytes, highest priority. Use it if your app requires partitioning other than default 2-nd level domain-based partitioning</p></td>
+<td><p>Optional</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>b”domain”</p></td>
+<td><p>Dict generated by new_frontera DomainMiddleware, and containing parsed domain name</p></td>
+<td><p>Always</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>b”state”</p></td>
+<td><p>Integer representing the link state, set by strategy worker. Link states are defined in new_frontera.core.components.States</p></td>
+<td><p>Always</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>b”encoding”</p></td>
+<td><p>In response, for HTML, encoding detected by Scrapy</p></td>
+<td><p>Optional</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>b”scrapy_meta”</p></td>
+<td><p>When scheduling can be used to set meta field for Scrapy</p></td>
+<td><p>Optional</p></td>
+</tr>
+</tbody>
+</table>
+<p>Keys and string types in nested structures are always bytes.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="message_bus.html" class="btn btn-neutral float-left" title="Message bus" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scrapy-integration.html" class="btn btn-neutral float-right" title="Using the Frontier with Scrapy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick start single process &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quick start distributed mode" href="quick-start-distributed.html" />
+    <link rel="prev" title="Run modes" href="run-modes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-modes.html">Run modes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick start single process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-your-scrapy-spider">1. Create your Scrapy spider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-new-frontera">2. Install new_frontera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integrate-your-spider-with-the-new-frontera">3. Integrate your spider with the new_frontera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choose-your-crawling-strategy">4. Choose your crawling strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choose-your-backend">5. Choose your backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inject-the-seed-urls">6. Inject the seed URLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-the-spider">7. Run the spider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-else">What else?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_bus.html">Message bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quick start single process</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/quick-start-single.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quick-start-single-process">
+<h1>Quick start single process<a class="headerlink" href="#quick-start-single-process" title="Permalink to this heading">¶</a></h1>
+<p>The idea is that you develop and debug crawling strategy in single process mode locally and use distributed one when
+deploying crawling strategy for crawling in production at scale. Single process is also good as a first step to get
+something running quickly.</p>
+<blockquote>
+<div><p>Note, that this tutorial doesn’t work for <a class="reference internal" href="frontier-backends.html#new_frontera.contrib.backends.memory.MemoryDistributedBackend" title="new_frontera.contrib.backends.memory.MemoryDistributedBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">new_frontera.contrib.backends.memory.MemoryDistributedBackend</span></code></a>.</p>
+</div></blockquote>
+<section id="create-your-scrapy-spider">
+<h2>1. Create your Scrapy spider<a class="headerlink" href="#create-your-scrapy-spider" title="Permalink to this heading">¶</a></h2>
+<p>Create your Scrapy project as you usually do. Enter a directory where you’d like to store your code and then run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">startproject</span> <span class="n">tutorial</span>
+</pre></div>
+</div>
+<p>This will create a tutorial directory with the following contents:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tutorial</span><span class="o">/</span>
+    <span class="n">scrapy</span><span class="o">.</span><span class="n">cfg</span>
+    <span class="n">tutorial</span><span class="o">/</span>
+        <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">pipelines</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">spiders</span><span class="o">/</span>
+            <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+            <span class="o">...</span>
+</pre></div>
+</div>
+<p>These are basically:</p>
+<ul class="simple">
+<li><p><strong>scrapy.cfg</strong>: the project configuration file</p></li>
+<li><p><strong>tutorial/</strong>: the project’s python module, you’ll later import your code from here.</p></li>
+<li><p><strong>tutorial/items.py</strong>: the project’s items file.</p></li>
+<li><p><strong>tutorial/pipelines.py</strong>: the project’s pipelines file.</p></li>
+<li><p><strong>tutorial/settings.py</strong>: the project’s settings file.</p></li>
+<li><p><strong>tutorial/spiders/</strong>: a directory where you’ll later put your spiders.</p></li>
+</ul>
+</section>
+<section id="install-new-frontera">
+<h2>2. Install new_frontera<a class="headerlink" href="#install-new-frontera" title="Permalink to this heading">¶</a></h2>
+<p>See <a class="reference internal" href="installation.html"><span class="doc">Installation Guide</span></a>.</p>
+</section>
+<section id="integrate-your-spider-with-the-new-frontera">
+<h2>3. Integrate your spider with the new_frontera<a class="headerlink" href="#integrate-your-spider-with-the-new-frontera" title="Permalink to this heading">¶</a></h2>
+<p>This article about <a class="reference internal" href="scrapy-integration.html"><span class="doc">integration with Scrapy</span></a> explains this step in detail.</p>
+</section>
+<section id="choose-your-crawling-strategy">
+<h2>4. Choose your crawling strategy<a class="headerlink" href="#choose-your-crawling-strategy" title="Permalink to this heading">¶</a></h2>
+<p>Here are the options you would need to redefine when running in single process mode the crawler configured for
+distributed mode:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># these two parameters are pointing new_frontera that it will run locally</span>
+
+<span class="n">SPIDER_FEED_PARTITIONS</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">SPIDER_LOG_PARTITIONS</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="choose-your-backend">
+<h2>5. Choose your backend<a class="headerlink" href="#choose-your-backend" title="Permalink to this heading">¶</a></h2>
+<p>Configure frontier settings to use a built-in backend like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BACKEND</span> <span class="o">=</span> <span class="s1">&#39;new_frontera.contrib.backends.sqlalchemy.Distributed&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="inject-the-seed-urls">
+<h2>6. Inject the seed URLs<a class="headerlink" href="#inject-the-seed-urls" title="Permalink to this heading">¶</a></h2>
+<p>This step is required only if your crawling strategy requires seeds injection from external source.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m new_frontera.utils.add_seeds --config [your_new_frontera_config] --seeds-file [path to your seeds file]
+</pre></div>
+</div>
+<p>After script is finished succesfully your seeds should be stored in backend’s queue and scheduled for crawling.</p>
+</section>
+<section id="run-the-spider">
+<h2>7. Run the spider<a class="headerlink" href="#run-the-spider" title="Permalink to this heading">¶</a></h2>
+<p>Run your Scrapy spider as usual from the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">crawl</span> <span class="n">myspider</span>
+</pre></div>
+</div>
+<p>And that’s it! You got your crawler running integrated with new_frontera.</p>
+</section>
+<section id="what-else">
+<h2>What else?<a class="headerlink" href="#what-else" title="Permalink to this heading">¶</a></h2>
+<p>You’ve seen a simple example of how to use new_frontera with Scrapy, but this is just the surface.
+new_frontera provides many powerful features for making frontier management easy and efficient, such as:</p>
+<ul class="simple">
+<li><p>Built-in support for <a class="reference internal" href="frontier-backends.html#frontier-backends-sqlalchemy"><span class="std std-ref">database storage</span></a> for crawled pages.</p></li>
+<li><p>Easy <a class="reference internal" href="scrapy-integration.html"><span class="doc">built-in integration with Scrapy</span></a> and <a class="reference internal" href="frontier-api.html"><span class="doc">any other crawler</span></a>
+through its API.</p></li>
+<li><p><a class="reference internal" href="overview.html#use-cases"><span class="std std-ref">Two distributed crawling modes</span></a> with use of ZeroMQ or Kafka and distributed backends.</p></li>
+<li><p>Creating different crawling logic/policies <a class="reference internal" href="frontier-backends.html"><span class="doc">defining your own backend</span></a>.</p></li>
+<li><p>Plugging your own request/response altering logic using <a class="reference internal" href="frontier-middlewares.html"><span class="doc">middlewares</span></a>.</p></li>
+<li><p>Create fake sitemaps and reproduce crawling without crawler with the <a class="reference internal" href="graph-manager.html"><span class="doc">Graph Manager</span></a>.</p></li>
+<li><p><a class="reference internal" href="scrapy-recorder.html"><span class="doc">Record your Scrapy crawls</span></a> and use it later for frontier testing.</p></li>
+<li><p>Logging facility that you can hook on to for catching errors and debug your frontiers.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="run-modes.html" class="btn btn-neutral float-left" title="Run modes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quick-start-distributed.html" class="btn btn-neutral float-right" title="Quick start distributed mode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

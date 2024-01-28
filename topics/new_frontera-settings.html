@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="What is a Crawl Frontier?" href="what-is-cf.html" />
+    <link rel="prev" title="Using the Frontier with Scrapy" href="scrapy-integration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-modes.html">Run modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_bus.html">Message bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Settings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#designating-the-settings">Designating the settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-access-settings">How to access settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#settings-class">Settings class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new_frontera.settings.Settings"><code class="docutils literal notranslate"><span class="pre">Settings</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-frontier-settings">Built-in frontier settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#auto-start">AUTO_START</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#backend">BACKEND</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bc-min-requests">BC_MIN_REQUESTS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bc-min-hosts">BC_MIN_HOSTS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bc-max-requests-per-host">BC_MAX_REQUESTS_PER_HOST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#canonical-solver">CANONICAL_SOLVER</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delay-on-empty">DELAY_ON_EMPTY</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#discovery-max-pages">DISCOVERY_MAX_PAGES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#domain-stats-log-interval">DOMAIN_STATS_LOG_INTERVAL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kafka-get-timeout">KAFKA_GET_TIMEOUT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#local-mode">LOCAL_MODE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logging-config">LOGGING_CONFIG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#max-next-requests">MAX_NEXT_REQUESTS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#max-requests">MAX_REQUESTS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#message-bus">MESSAGE_BUS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#message-bus-codec">MESSAGE_BUS_CODEC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#middlewares">MIDDLEWARES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-batch-delay">NEW_BATCH_DELAY</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overused-keep-per-key">OVERUSED_KEEP_PER_KEY</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overused-keep-keys">OVERUSED_KEEP_KEYS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overused-max-keys">OVERUSED_MAX_KEYS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overused-max-per-key">OVERUSED_MAX_PER_KEY</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overused-slot-factor">OVERUSED_SLOT_FACTOR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#request-model">REQUEST_MODEL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#response-model">RESPONSE_MODEL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spider-log-consumer-batch-size">SPIDER_LOG_CONSUMER_BATCH_SIZE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-log-consumer-batch-size">SCORING_LOG_CONSUMER_BATCH_SIZE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-partition-id">SCORING_PARTITION_ID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spider-log-partitions">SPIDER_LOG_PARTITIONS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spider-feed-partitions">SPIDER_FEED_PARTITIONS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spider-partition-id">SPIDER_PARTITION_ID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#state-cache-size">STATE_CACHE_SIZE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#store-content">STORE_CONTENT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#strategy">STRATEGY</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#strategy-args">STRATEGY_ARGS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sw-flush-interval">SW_FLUSH_INTERVAL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-mode">TEST_MODE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-agent">USER_AGENT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-fingerprint-middleware-settings">Built-in fingerprint middleware settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#url-fingerprint-function">URL_FINGERPRINT_FUNCTION</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#domain-fingerprint-function">DOMAIN_FINGERPRINT_FUNCTION</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tldextract-domain-info">TLDEXTRACT_DOMAIN_INFO</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-backends-settings">Built-in backends settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sqlalchemy">SQLAlchemy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sqlalchemybackend-cache-size">SQLALCHEMYBACKEND_CACHE_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqlalchemybackend-clear-content">SQLALCHEMYBACKEND_CLEAR_CONTENT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqlalchemybackend-drop-all-tables">SQLALCHEMYBACKEND_DROP_ALL_TABLES</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqlalchemybackend-engine">SQLALCHEMYBACKEND_ENGINE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqlalchemybackend-engine-echo">SQLALCHEMYBACKEND_ENGINE_ECHO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqlalchemybackend-models">SQLALCHEMYBACKEND_MODELS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#revisiting-backend">Revisiting backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sqlalchemybackend-revisit-interval">SQLALCHEMYBACKEND_REVISIT_INTERVAL</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hbase-backend">HBase backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-batch-size">HBASE_BATCH_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-drop-all-tables">HBASE_DROP_ALL_TABLES</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-domain-metadata-table">HBASE_DOMAIN_METADATA_TABLE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-domain-metadata-cache-size">HBASE_DOMAIN_METADATA_CACHE_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-domain-metadata-batch-size">HBASE_DOMAIN_METADATA_BATCH_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-metadata-table">HBASE_METADATA_TABLE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-namespace">HBASE_NAMESPACE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-queue-table">HBASE_QUEUE_TABLE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-state-write-log-size">HBASE_STATE_WRITE_LOG_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-state-cache-size-limit">HBASE_STATE_CACHE_SIZE_LIMIT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-states-table">HBASE_STATES_TABLE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-thrift-host">HBASE_THRIFT_HOST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-thrift-port">HBASE_THRIFT_PORT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-use-framed-compact">HBASE_USE_FRAMED_COMPACT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hbase-use-snappy">HBASE_USE_SNAPPY</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#zeromq-message-bus-settings">ZeroMQ message bus settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#zmq-address">ZMQ_ADDRESS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zmq-base-port">ZMQ_BASE_PORT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#kafka-message-bus-settings">Kafka message bus settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kafka-location">KAFKA_LOCATION</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kafka-codec">KAFKA_CODEC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kafka-cert-path">KAFKA_CERT_PATH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kafka-enable-ssl">KAFKA_ENABLE_SSL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spider-log-dbw-group">SPIDER_LOG_DBW_GROUP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spider-log-sw-group">SPIDER_LOG_SW_GROUP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-log-dbw-group">SCORING_LOG_DBW_GROUP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spider-feed-group">SPIDER_FEED_GROUP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spider-log-topic">SPIDER_LOG_TOPIC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spider-feed-topic">SPIDER_FEED_TOPIC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-log-topic">SCORING_LOG_TOPIC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#default-settings">Default settings</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Settings</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/new_frontera-settings.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="settings">
+<h1>Settings<a class="headerlink" href="#settings" title="Permalink to this heading">¶</a></h1>
+<p>The new_frontera settings allows you to customize the behaviour of all components, including the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code>,
+<a class="reference internal" href="frontier-middlewares.html#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a> and
+<a class="reference internal" href="frontier-backends.html#new_frontera.core.components.Backend" title="new_frontera.core.components.Backend"><code class="xref py py-class docutils literal notranslate"><span class="pre">Backend</span></code></a> themselves.</p>
+<p>The infrastructure of the settings provides a global namespace of key-value mappings that can be used to pull
+configuration values from. The settings can be populated through different mechanisms, which are described below.</p>
+<p>For a list of available built-in settings see: <a class="reference internal" href="#frontier-built-in-frontier-settings"><span class="std std-ref">Built-in settings reference</span></a>.</p>
+<section id="designating-the-settings">
+<h2>Designating the settings<a class="headerlink" href="#designating-the-settings" title="Permalink to this heading">¶</a></h2>
+<p>When you use new_frontera, you have to tell it which settings you’re using. As
+<code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code> is the main entry point to Frontier usage,
+you can do this by using the method described in the <a class="reference internal" href="frontier-api.html#frontier-loading-from-settings"><span class="std std-ref">Loading from settings</span></a>
+section.</p>
+<p>When using a string path pointing to a settings file for the frontier we propose the following directory structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my_project</span><span class="o">/</span>
+    <span class="n">frontier</span><span class="o">/</span>
+        <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">middlewares</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">backends</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>These are basically:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">frontier/settings.py</span></code>: the frontier settings file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frontier/middlewares.py</span></code>: the middlewares used by the frontier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frontier/backends.py</span></code>: the backend(s) used by the frontier.</p></li>
+</ul>
+</section>
+<section id="how-to-access-settings">
+<h2>How to access settings<a class="headerlink" href="#how-to-access-settings" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference internal" href="#new_frontera.settings.Settings" title="new_frontera.settings.Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Settings</span></code></a> can be accessed through the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">FrontierManager.settings</span></code> attribute, that is passed to
+<a class="reference internal" href="frontier-middlewares.html#new_frontera.core.components.Middleware.from_manager" title="new_frontera.core.components.Middleware.from_manager"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Middleware.from_manager</span></code></a> and
+<a class="reference internal" href="frontier-backends.html#new_frontera.core.components.Backend.from_manager" title="new_frontera.core.components.Backend.from_manager"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Backend.from_manager</span></code></a> class methods:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyMiddleware</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_manager</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">manager</span><span class="p">):</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">crawler</span><span class="o">.</span><span class="n">settings</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">TEST_MODE</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="s2">&quot;test mode is enabled!&quot;</span>
+</pre></div>
+</div>
+<p>In other words, settings can be accessed as attributes of the
+<a class="reference internal" href="#new_frontera.settings.Settings" title="new_frontera.settings.Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Settings</span></code></a> object.</p>
+</section>
+<section id="settings-class">
+<h2>Settings class<a class="headerlink" href="#settings-class" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.settings.Settings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.settings.</span></span><span class="sig-name descname"><span class="pre">Settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.settings.Settings" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>module</strong> (<em>object/string</em>) – A <a class="reference internal" href="#new_frontera.settings.Settings" title="new_frontera.settings.Settings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Settings</span></code></a> object or a path string.</p></li>
+<li><p><strong>attributes</strong> (<em>dict</em>) – A dict object containing the settings values.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="built-in-frontier-settings">
+<span id="frontier-built-in-frontier-settings"></span><h2>Built-in frontier settings<a class="headerlink" href="#built-in-frontier-settings" title="Permalink to this heading">¶</a></h2>
+<p>Here’s a list of all available new_frontera settings, in alphabetical order, along with their default values and the
+scope where they apply.</p>
+<section id="auto-start">
+<h3>AUTO_START<a class="headerlink" href="#auto-start" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p>Whether to enable frontier automatic start. See <a class="reference internal" href="frontier-api.html#frontier-start-stop"><span class="std std-ref">Starting/Stopping the frontier</span></a></p>
+</section>
+<section id="backend">
+<h3>BACKEND<a class="headerlink" href="#backend" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'new_frontera.contrib.backends.memory.FIFO'</span></code></p>
+<p>The <a class="reference internal" href="frontier-backends.html#new_frontera.core.components.Backend" title="new_frontera.core.components.Backend"><code class="xref py py-class docutils literal notranslate"><span class="pre">Backend</span></code></a> to be used by the frontier. For more info see
+<a class="reference internal" href="frontier-backends.html#frontier-activating-backend"><span class="std std-ref">Activating a backend</span></a>.</p>
+</section>
+<section id="bc-min-requests">
+<h3>BC_MIN_REQUESTS<a class="headerlink" href="#bc-min-requests" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">64</span></code></p>
+<p>Broad crawling queue get operation will keep retrying until specified number of requests is collected. Maximum number
+of retries is hard-coded to 3.</p>
+</section>
+<section id="bc-min-hosts">
+<h3>BC_MIN_HOSTS<a class="headerlink" href="#bc-min-hosts" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">24</span></code></p>
+<p>Keep retyring when getting requests from queue, until there are requests for specified minimum number of hosts
+collected. Maximum number of retries is hard-coded and equals 3.</p>
+</section>
+<section id="bc-max-requests-per-host">
+<h3>BC_MAX_REQUESTS_PER_HOST<a class="headerlink" href="#bc-max-requests-per-host" title="Permalink to this heading">¶</a></h3>
+<p>Default:: <code class="docutils literal notranslate"><span class="pre">128</span></code></p>
+<p>Don’t include (if possible) batches of requests containing requests for specific host if there are already more then
+specified count of maximum requests per host. This is a suggestion for broad crawling queue get algorithm.</p>
+</section>
+<section id="canonical-solver">
+<h3>CANONICAL_SOLVER<a class="headerlink" href="#canonical-solver" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">new_frontera.contrib.canonicalsolvers.Basic</span></code></p>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">CanonicalSolver</span></code> to be used by the frontier for resolving
+canonical URLs. For more info see <a class="reference internal" href="frontier-canonicalsolvers.html#canonical-url-solver"><span class="std std-ref">Canonical URL Solver</span></a>.</p>
+</section>
+<section id="delay-on-empty">
+<h3>DELAY_ON_EMPTY<a class="headerlink" href="#delay-on-empty" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+<p>Delay between calls to backend for new batches in Scrapy scheduler, when queue size is getting below
+<code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS</span></code>. When backend has no requests to fetch, this delay helps to exhaust the rest of the buffer
+without hitting backend on every request. Increase it if calls to your backend is taking too long, and decrease
+if you need a fast spider bootstrap from seeds.</p>
+</section>
+<section id="discovery-max-pages">
+<h3>DISCOVERY_MAX_PAGES<a class="headerlink" href="#discovery-max-pages" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">100</span></code></p>
+<p>The maximum number of pages to schedule by Discovery crawling strategy.</p>
+</section>
+<section id="domain-stats-log-interval">
+<h3>DOMAIN_STATS_LOG_INTERVAL<a class="headerlink" href="#domain-stats-log-interval" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">300</span></code></p>
+<p>Time interval in seconds to rotate the domain statistics in <a class="reference internal" href="glossary.html#term-db-worker"><span class="xref std std-term">db worker</span></a> batch generator. Enabled only when
+logging set to DEBUG.</p>
+</section>
+<section id="kafka-get-timeout">
+<h3>KAFKA_GET_TIMEOUT<a class="headerlink" href="#kafka-get-timeout" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+<p>Time process should block until requested amount of data will be received from message bus. This is a general
+message bus setting with obsolete Kafka-related name.</p>
+</section>
+<section id="local-mode">
+<h3>LOCAL_MODE<a class="headerlink" href="#local-mode" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p>Sets single process run mode. Crawling strategy together with backend are used from the same spider process.</p>
+</section>
+<section id="logging-config">
+<h3>LOGGING_CONFIG<a class="headerlink" href="#logging-config" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">logging.conf</span></code></p>
+<p>The path to a file with logging module configuration. See
+<a class="reference external" href="https://docs.python.org/2/library/logging.config.html#logging-config-fileformat">https://docs.python.org/2/library/logging.config.html#logging-config-fileformat</a> If file is absent, the logging system
+will be initialized with <code class="docutils literal notranslate"><span class="pre">logging.basicConfig()</span></code> and CONSOLE handler will be used. This option is used only in
+<a class="reference internal" href="glossary.html#term-db-worker"><span class="xref std std-term">db worker</span></a> and <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a>.</p>
+</section>
+<section id="max-next-requests">
+<h3>MAX_NEXT_REQUESTS<a class="headerlink" href="#max-next-requests" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">64</span></code></p>
+<p>The maximum number of requests returned by
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">get_next_requests</span></code> API method. In distributed context
+it could be amount of requests produced per spider by <a class="reference internal" href="glossary.html#term-db-worker"><span class="xref std std-term">db worker</span></a> or count of requests read from message bus per
+attempt to fill the spider queue. In single process it’s the count of requests to get from backend per one call to
+<code class="docutils literal notranslate"><span class="pre">get_next_requests</span></code> method.</p>
+</section>
+<section id="max-requests">
+<h3>MAX_REQUESTS<a class="headerlink" href="#max-requests" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+<p>Maximum number of returned requests after which new_frontera is finished.
+If value is 0 (default), the frontier will continue indefinitely. See <a class="reference internal" href="frontier-api.html#frontier-finish"><span class="std std-ref">Finishing the frontier</span></a>.</p>
+</section>
+<section id="message-bus">
+<h3>MESSAGE_BUS<a class="headerlink" href="#message-bus" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">new_frontera.contrib.messagebus.zeromq.MessageBus</span></code></p>
+<p>Points new_frontera to <a class="reference internal" href="glossary.html#term-message-bus"><span class="xref std std-term">message bus</span></a> implementation. Defaults to ZeroMQ.</p>
+</section>
+<section id="message-bus-codec">
+<h3>MESSAGE_BUS_CODEC<a class="headerlink" href="#message-bus-codec" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">new_frontera.contrib.backends.remote.codecs.msgpack</span></code></p>
+<p>Points new_frontera to <a class="reference internal" href="glossary.html#term-message-bus"><span class="xref std std-term">message bus</span></a> codec implementation. Here is the <a class="reference internal" href="message_bus.html#message-bus-protocol"><span class="std std-ref">codec interface description</span></a>.
+Defaults to MsgPack.</p>
+</section>
+<section id="middlewares">
+<h3>MIDDLEWARES<a class="headerlink" href="#middlewares" title="Permalink to this heading">¶</a></h3>
+<p>A list containing the middlewares enabled in the frontier. For more info see
+<a class="reference internal" href="frontier-middlewares.html#frontier-activating-middleware"><span class="std std-ref">Activating a middleware</span></a>.</p>
+<p>Default:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="s1">&#39;new_frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="new-batch-delay">
+<h3>NEW_BATCH_DELAY<a class="headerlink" href="#new-batch-delay" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">30.0</span></code></p>
+<p>Used in DB worker, and it’s a time interval between production of new batches for all partitions. If partition is busy,
+it will be skipped.</p>
+</section>
+<section id="overused-keep-per-key">
+<h3>OVERUSED_KEEP_PER_KEY<a class="headerlink" href="#overused-keep-per-key" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">1000</span></code></p>
+<p>After the purging this number of requests will be left in the queue.</p>
+</section>
+<section id="overused-keep-keys">
+<h3>OVERUSED_KEEP_KEYS<a class="headerlink" href="#overused-keep-keys" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">100</span></code></p>
+<p>The number of keys for purging to leave.</p>
+</section>
+<section id="overused-max-keys">
+<h3>OVERUSED_MAX_KEYS<a class="headerlink" href="#overused-max-keys" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+<p>A threshold triggering the keys purging in OverusedBuffer. The purging will end up leaving <span class="xref std std-ref">OVERUSED_KEEP_KEYS</span>.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> disables purging.</p>
+</section>
+<section id="overused-max-per-key">
+<h3>OVERUSED_MAX_PER_KEY<a class="headerlink" href="#overused-max-per-key" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+<p>Purging will start when reaching this number of requests per key and leave <span class="xref std std-ref">OVERUSED_KEEP_PER_KEY</span> requests.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> disables purging.</p>
+</section>
+<section id="overused-slot-factor">
+<h3>OVERUSED_SLOT_FACTOR<a class="headerlink" href="#overused-slot-factor" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+<p>(in progress + queued requests in that slot) / max allowed concurrent downloads per slot before slot is considered
+overused. This affects only Scrapy scheduler.”</p>
+</section>
+<section id="request-model">
+<h3>REQUEST_MODEL<a class="headerlink" href="#request-model" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'new_frontera.core.models.Request'</span></code></p>
+<p>The <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> model to be used by the frontier.</p>
+</section>
+<section id="response-model">
+<h3>RESPONSE_MODEL<a class="headerlink" href="#response-model" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'new_frontera.core.models.Response'</span></code></p>
+<p>The <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> model to be used by the frontier.</p>
+</section>
+<section id="spider-log-consumer-batch-size">
+<h3>SPIDER_LOG_CONSUMER_BATCH_SIZE<a class="headerlink" href="#spider-log-consumer-batch-size" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">512</span></code></p>
+<p>This is a batch size used by strategy and db workers for consuming of spider log stream. Increasing it
+will cause worker to spend more time on every task, but processing more items per task, therefore leaving less time for
+other tasks during some fixed time interval. Reducing it will result to running several tasks within the same time
+interval, but with less overall efficiency. Use it when your consumers too slow, or too fast.</p>
+</section>
+<section id="scoring-log-consumer-batch-size">
+<h3>SCORING_LOG_CONSUMER_BATCH_SIZE<a class="headerlink" href="#scoring-log-consumer-batch-size" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">512</span></code></p>
+<p>This is a batch size used by db worker for consuming of scoring log stream. Use it when you need to adjust scoring log
+consumption speed.</p>
+</section>
+<section id="scoring-partition-id">
+<h3>SCORING_PARTITION_ID<a class="headerlink" href="#scoring-partition-id" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+<p>Used by strategy worker, and represents partition startegy worker assigned to.</p>
+</section>
+<section id="spider-log-partitions">
+<h3>SPIDER_LOG_PARTITIONS<a class="headerlink" href="#spider-log-partitions" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+<p>Number of <a class="reference internal" href="glossary.html#term-spider-log"><span class="xref std std-term">spider log</span></a> stream partitions. This affects number of required <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a> (s),
+each strategy worker assigned to it’s own partition.</p>
+</section>
+<section id="spider-feed-partitions">
+<h3>SPIDER_FEED_PARTITIONS<a class="headerlink" href="#spider-feed-partitions" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+<p>Number of <a class="reference internal" href="glossary.html#term-spider-feed"><span class="xref std std-term">spider feed</span></a> partitions. This directly affects number of spider processes running. Every spider is
+assigned to it’s own partition.</p>
+</section>
+<section id="spider-partition-id">
+<h3>SPIDER_PARTITION_ID<a class="headerlink" href="#spider-partition-id" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+<p>Per-spider setting, pointing spider to it’s assigned partition.</p>
+</section>
+<section id="state-cache-size">
+<h3>STATE_CACHE_SIZE<a class="headerlink" href="#state-cache-size" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">1000000</span></code></p>
+<p>Maximum count of elements in state cache before it gets clear.</p>
+</section>
+<section id="store-content">
+<h3>STORE_CONTENT<a class="headerlink" href="#store-content" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Determines if content should be sent over the message bus and stored in the backend: a serious performance killer.</p>
+</section>
+<section id="strategy">
+<h3>STRATEGY<a class="headerlink" href="#strategy" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">new_frontera.worker.strategies.basic.BasicCrawlingStrategy</span></code></p>
+<p>The path to crawling strategy class.</p>
+</section>
+<section id="strategy-args">
+<h3>STRATEGY_ARGS<a class="headerlink" href="#strategy-args" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></p>
+<p>Dict with default arguments for crawling strategy. Can be overridien with command line option in
+<a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a>.</p>
+</section>
+<section id="sw-flush-interval">
+<h3>SW_FLUSH_INTERVAL<a class="headerlink" href="#sw-flush-interval" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">300</span></code></p>
+<p>Interval between flushing of states in <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a>. Also used to set initial random delay to flush states
+periodically, using formula <code class="docutils literal notranslate"><span class="pre">RANDINT(SW_FLUSH_INTERVAL)</span></code>.</p>
+</section>
+<section id="test-mode">
+<h3>TEST_MODE<a class="headerlink" href="#test-mode" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Whether to enable frontier test mode. See <a class="reference internal" href="frontier-api.html#frontier-test-mode"><span class="std std-ref">Frontier test mode</span></a></p>
+</section>
+<section id="user-agent">
+<h3>USER_AGENT<a class="headerlink" href="#user-agent" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">new_fronteraDiscoveryBot</span></code></p>
+<p>User agent string in use by Discovery crawling strategy.</p>
+</section>
+</section>
+<section id="built-in-fingerprint-middleware-settings">
+<h2>Built-in fingerprint middleware settings<a class="headerlink" href="#built-in-fingerprint-middleware-settings" title="Permalink to this heading">¶</a></h2>
+<p>Settings used by the <a class="reference internal" href="frontier-middlewares.html#frontier-url-fingerprint-middleware"><span class="std std-ref">UrlFingerprintMiddleware</span></a> and
+<a class="reference internal" href="frontier-middlewares.html#frontier-domain-fingerprint-middleware"><span class="std std-ref">DomainFingerprintMiddleware</span></a>.</p>
+<section id="url-fingerprint-function">
+<span id="frontier-default-settings"></span><h3>URL_FINGERPRINT_FUNCTION<a class="headerlink" href="#url-fingerprint-function" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">new_frontera.utils.fingerprint.sha1</span></code></p>
+<p>The function used to calculate the <code class="docutils literal notranslate"><span class="pre">url</span></code> fingerprint.</p>
+</section>
+<section id="domain-fingerprint-function">
+<h3>DOMAIN_FINGERPRINT_FUNCTION<a class="headerlink" href="#domain-fingerprint-function" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">new_frontera.utils.fingerprint.sha1</span></code></p>
+<p>The function used to calculate the <code class="docutils literal notranslate"><span class="pre">domain</span></code> fingerprint.</p>
+</section>
+<section id="tldextract-domain-info">
+<h3>TLDEXTRACT_DOMAIN_INFO<a class="headerlink" href="#tldextract-domain-info" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, will use <a class="reference external" href="https://pypi.python.org/pypi/tldextract">tldextract</a> to attach extra domain information
+(second-level, top-level and subdomain) to meta field (see <a class="reference internal" href="frontier-objects.html#frontier-objects-additional-data"><span class="std std-ref">Adding additional data to objects</span></a>).</p>
+</section>
+</section>
+<section id="built-in-backends-settings">
+<h2>Built-in backends settings<a class="headerlink" href="#built-in-backends-settings" title="Permalink to this heading">¶</a></h2>
+<section id="sqlalchemy">
+<h3>SQLAlchemy<a class="headerlink" href="#sqlalchemy" title="Permalink to this heading">¶</a></h3>
+<section id="sqlalchemybackend-cache-size">
+<h4>SQLALCHEMYBACKEND_CACHE_SIZE<a class="headerlink" href="#sqlalchemybackend-cache-size" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">10000</span></code></p>
+<p>SQLAlchemy Metadata LRU Cache size. It’s used for caching objects, which are requested from DB every time already known,
+documents are crawled. This is mainly saves DB throughput, increase it if you’re experiencing problems with too high
+volume of SELECT’s to Metadata table, or decrease if you need to save memory.</p>
+</section>
+<section id="sqlalchemybackend-clear-content">
+<h4>SQLALCHEMYBACKEND_CLEAR_CONTENT<a class="headerlink" href="#sqlalchemybackend-clear-content" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p>Set to <code class="docutils literal notranslate"><span class="pre">False</span></code> if you need to disable table content clean up on backend instantiation (e.g. every Scrapy spider run).</p>
+</section>
+<section id="sqlalchemybackend-drop-all-tables">
+<h4>SQLALCHEMYBACKEND_DROP_ALL_TABLES<a class="headerlink" href="#sqlalchemybackend-drop-all-tables" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p>Set to <code class="docutils literal notranslate"><span class="pre">False</span></code> if you need to disable dropping of DB tables on backend instantiation (e.g. every Scrapy spider run).</p>
+</section>
+<section id="sqlalchemybackend-engine">
+<h4>SQLALCHEMYBACKEND_ENGINE<a class="headerlink" href="#sqlalchemybackend-engine" title="Permalink to this heading">¶</a></h4>
+<p>Default:: <code class="docutils literal notranslate"><span class="pre">sqlite:///:memory:</span></code></p>
+<p>SQLAlchemy database URL. Default is set to memory.</p>
+</section>
+<section id="sqlalchemybackend-engine-echo">
+<h4>SQLALCHEMYBACKEND_ENGINE_ECHO<a class="headerlink" href="#sqlalchemybackend-engine-echo" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Turn on/off SQLAlchemy verbose output. Useful for debugging SQL queries.</p>
+</section>
+<section id="sqlalchemybackend-models">
+<h4>SQLALCHEMYBACKEND_MODELS<a class="headerlink" href="#sqlalchemybackend-models" title="Permalink to this heading">¶</a></h4>
+<p>Default:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;MetadataModel&#39;</span><span class="p">:</span> <span class="s1">&#39;new_frontera.contrib.backends.sqlalchemy.models.MetadataModel&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;StateModel&#39;</span><span class="p">:</span> <span class="s1">&#39;new_frontera.contrib.backends.sqlalchemy.models.StateModel&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;QueueModel&#39;</span><span class="p">:</span> <span class="s1">&#39;new_frontera.contrib.backends.sqlalchemy.models.QueueModel&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is mapping with SQLAlchemy models used by backends. It is mainly used for customization. This setting uses a
+dictionary where <code class="docutils literal notranslate"><span class="pre">key</span></code> represents the name of the model to define and <code class="docutils literal notranslate"><span class="pre">value</span></code> the model to use.</p>
+</section>
+</section>
+<section id="revisiting-backend">
+<h3>Revisiting backend<a class="headerlink" href="#revisiting-backend" title="Permalink to this heading">¶</a></h3>
+<section id="sqlalchemybackend-revisit-interval">
+<h4>SQLALCHEMYBACKEND_REVISIT_INTERVAL<a class="headerlink" href="#sqlalchemybackend-revisit-interval" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">timedelta(days=1)</span></code></p>
+<p>Time between document visits, expressed in <code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code> objects. Changing of this setting will only affect
+documents scheduled after the change. All previously queued documents will be crawled with old periodicity.</p>
+</section>
+</section>
+<section id="hbase-backend">
+<span id="hbase-settings"></span><h3>HBase backend<a class="headerlink" href="#hbase-backend" title="Permalink to this heading">¶</a></h3>
+<section id="hbase-batch-size">
+<h4>HBASE_BATCH_SIZE<a class="headerlink" href="#hbase-batch-size" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">9216</span></code></p>
+<p>Count of accumulated PUT operations before they sent to HBase.</p>
+</section>
+<section id="hbase-drop-all-tables">
+<h4>HBASE_DROP_ALL_TABLES<a class="headerlink" href="#hbase-drop-all-tables" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Enables dropping and creation of new HBase tables on worker start.</p>
+</section>
+<section id="hbase-domain-metadata-table">
+<h4>HBASE_DOMAIN_METADATA_TABLE<a class="headerlink" href="#hbase-domain-metadata-table" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">domain_metadata</span></code></p>
+<p>Name of the domain metadata table in HBase.</p>
+</section>
+<section id="hbase-domain-metadata-cache-size">
+<h4>HBASE_DOMAIN_METADATA_CACHE_SIZE<a class="headerlink" href="#hbase-domain-metadata-cache-size" title="Permalink to this heading">¶</a></h4>
+<p>Default: 1000</p>
+<p>The count of domain-value pairs cached in memory in <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a>. Pairs are evicted from cache using LRU
+policy.</p>
+</section>
+<section id="hbase-domain-metadata-batch-size">
+<h4>HBASE_DOMAIN_METADATA_BATCH_SIZE<a class="headerlink" href="#hbase-domain-metadata-batch-size" title="Permalink to this heading">¶</a></h4>
+<p>Default: 100</p>
+<p>Maximum count of domain-value pairs kept in write buffer before actual write happens.</p>
+</section>
+<section id="hbase-metadata-table">
+<h4>HBASE_METADATA_TABLE<a class="headerlink" href="#hbase-metadata-table" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">metadata</span></code></p>
+<p>Name of the documents metadata table.</p>
+</section>
+<section id="hbase-namespace">
+<h4>HBASE_NAMESPACE<a class="headerlink" href="#hbase-namespace" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">crawler</span></code></p>
+<p>Name of HBase namespace where all crawler related tables will reside.</p>
+</section>
+<section id="hbase-queue-table">
+<h4>HBASE_QUEUE_TABLE<a class="headerlink" href="#hbase-queue-table" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">queue</span></code></p>
+<p>Name of HBase priority queue table.</p>
+</section>
+<section id="hbase-state-write-log-size">
+<h4>HBASE_STATE_WRITE_LOG_SIZE<a class="headerlink" href="#hbase-state-write-log-size" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">15000</span></code></p>
+<p>Number of state changes in the <a class="reference internal" href="glossary.html#term-state-cache"><span class="xref std std-term">state cache</span></a> of <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a>, before it get’s flushed to HBase and cleared.</p>
+</section>
+<section id="hbase-state-cache-size-limit">
+<h4>HBASE_STATE_CACHE_SIZE_LIMIT<a class="headerlink" href="#hbase-state-cache-size-limit" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">3000000</span></code></p>
+<p>Number of cached state changes in the <a class="reference internal" href="glossary.html#term-state-cache"><span class="xref std std-term">state cache</span></a> of <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a>. Internally there is <code class="docutils literal notranslate"><span class="pre">cachetools.LRUCache</span></code>
+storing all the recent state changes, discarding least recently used when the cache gets over its capacity.</p>
+</section>
+<section id="hbase-states-table">
+<h4>HBASE_STATES_TABLE<a class="headerlink" href="#hbase-states-table" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">states</span></code></p>
+<p>Name of the table used by <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a> to store link states.</p>
+</section>
+<section id="hbase-thrift-host">
+<h4>HBASE_THRIFT_HOST<a class="headerlink" href="#hbase-thrift-host" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">localhost</span></code></p>
+<p>HBase Thrift server host.</p>
+</section>
+<section id="hbase-thrift-port">
+<h4>HBASE_THRIFT_PORT<a class="headerlink" href="#hbase-thrift-port" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">9090</span></code></p>
+<p>HBase Thrift server port</p>
+</section>
+<section id="hbase-use-framed-compact">
+<h4>HBASE_USE_FRAMED_COMPACT<a class="headerlink" href="#hbase-use-framed-compact" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Enabling this option dramatically reduces transmission overhead, but the server needs to be properly configured to use
+Thrifts framed transport and compact protocol.</p>
+</section>
+<section id="hbase-use-snappy">
+<h4>HBASE_USE_SNAPPY<a class="headerlink" href="#hbase-use-snappy" title="Permalink to this heading">¶</a></h4>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Whatever to compress content and metadata in HBase using Snappy. Decreases amount of disk and network IO within HBase,
+lowering response times. HBase have to be properly configured to support Snappy compression.</p>
+</section>
+</section>
+</section>
+<section id="zeromq-message-bus-settings">
+<span id="zeromq-settings"></span><h2>ZeroMQ message bus settings<a class="headerlink" href="#zeromq-message-bus-settings" title="Permalink to this heading">¶</a></h2>
+<p>The message bus class is <code class="docutils literal notranslate"><span class="pre">distributed_new_frontera.messagebus.zeromq.MessageBus</span></code></p>
+<section id="zmq-address">
+<h3>ZMQ_ADDRESS<a class="headerlink" href="#zmq-address" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code></p>
+<p>Defines where the ZeroMQ socket should bind or connect. Can be a hostname or an IP
+address. Right now ZMQ has only been properly tested with IPv4. Proper IPv6
+support will be added in the near future.</p>
+</section>
+<section id="zmq-base-port">
+<h3>ZMQ_BASE_PORT<a class="headerlink" href="#zmq-base-port" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">5550</span></code></p>
+<p>The base port for all ZeroMQ sockets. It uses 6 sockets overall and port starting from base with step 1. Be sure that
+interval [base:base+5] is available.</p>
+</section>
+</section>
+<section id="kafka-message-bus-settings">
+<span id="kafka-settings"></span><h2>Kafka message bus settings<a class="headerlink" href="#kafka-message-bus-settings" title="Permalink to this heading">¶</a></h2>
+<p>The message bus class is <code class="docutils literal notranslate"><span class="pre">new_frontera.contrib.messagebus.kafkabus.MessageBus</span></code></p>
+<section id="kafka-location">
+<h3>KAFKA_LOCATION<a class="headerlink" href="#kafka-location" title="Permalink to this heading">¶</a></h3>
+<p>Hostname and port of kafka broker, separated with :. Can be a string with hostname:port pair separated with commas(,).</p>
+</section>
+<section id="kafka-codec">
+<h3>KAFKA_CODEC<a class="headerlink" href="#kafka-codec" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">KAFKA_CODEC</span></code></p>
+<p>Kafka-python 1.0.x version compression codec to use, is a string and could be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">snappy</span></code>, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or
+<code class="docutils literal notranslate"><span class="pre">lz4</span></code>.</p>
+</section>
+<section id="kafka-cert-path">
+<h3>KAFKA_CERT_PATH<a class="headerlink" href="#kafka-cert-path" title="Permalink to this heading">¶</a></h3>
+<p>OS path to the folder with three certificate files: ca-cert.pem, client-cert.pem, client-key.pem.</p>
+</section>
+<section id="kafka-enable-ssl">
+<h3>KAFKA_ENABLE_SSL<a class="headerlink" href="#kafka-enable-ssl" title="Permalink to this heading">¶</a></h3>
+<p>Boolean. Set to True to enable SSL connection in Kafka client.</p>
+</section>
+<section id="spider-log-dbw-group">
+<h3>SPIDER_LOG_DBW_GROUP<a class="headerlink" href="#spider-log-dbw-group" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">dbw-spider-log</span></code></p>
+<p>Kafka consumer group name, used for <a class="reference internal" href="glossary.html#term-spider-log"><span class="xref std std-term">spider log</span></a> by <a class="reference internal" href="glossary.html#term-db-worker"><span class="xref std std-term">db worker</span></a> s.</p>
+</section>
+<section id="spider-log-sw-group">
+<h3>SPIDER_LOG_SW_GROUP<a class="headerlink" href="#spider-log-sw-group" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">sw-spider-log</span></code></p>
+<p>Kafka consumer group name, used for <a class="reference internal" href="glossary.html#term-spider-log"><span class="xref std std-term">spider log</span></a> by <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a> (s).</p>
+</section>
+<section id="scoring-log-dbw-group">
+<h3>SCORING_LOG_DBW_GROUP<a class="headerlink" href="#scoring-log-dbw-group" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">dbw-scoring-log</span></code></p>
+<p>Kafka consumer group name, used for <a class="reference internal" href="glossary.html#term-scoring-log"><span class="xref std std-term">scoring log</span></a> by <a class="reference internal" href="glossary.html#term-db-worker"><span class="xref std std-term">db worker</span></a> (s).</p>
+</section>
+<section id="spider-feed-group">
+<h3>SPIDER_FEED_GROUP<a class="headerlink" href="#spider-feed-group" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">fetchers-spider-feed</span></code></p>
+<p>Kafka consumer group name, used for <a class="reference internal" href="glossary.html#term-spider-feed"><span class="xref std std-term">spider feed</span></a> by <a class="reference internal" href="glossary.html#term-spider"><span class="xref std std-term">spider</span></a> (s).</p>
+</section>
+<section id="spider-log-topic">
+<h3>SPIDER_LOG_TOPIC<a class="headerlink" href="#spider-log-topic" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">frontier-done</span></code></p>
+<p><a class="reference internal" href="glossary.html#term-spider-log"><span class="xref std std-term">spider log</span></a> stream topic name.</p>
+</section>
+<section id="spider-feed-topic">
+<h3>SPIDER_FEED_TOPIC<a class="headerlink" href="#spider-feed-topic" title="Permalink to this heading">¶</a></h3>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">frontier-todo</span></code></p>
+<p><a class="reference internal" href="glossary.html#term-spider-feed"><span class="xref std std-term">spider feed</span></a> stream topic name.</p>
+</section>
+<section id="scoring-log-topic">
+<h3>SCORING_LOG_TOPIC<a class="headerlink" href="#scoring-log-topic" title="Permalink to this heading">¶</a></h3>
+<p>Kafka topic used for <a class="reference internal" href="glossary.html#term-scoring-log"><span class="xref std std-term">scoring log</span></a> stream.</p>
+</section>
+</section>
+<section id="default-settings">
+<h2>Default settings<a class="headerlink" href="#default-settings" title="Permalink to this heading">¶</a></h2>
+<p>If no settings are specified, frontier will use the built-in default ones. For a complete list of default values see:
+<a class="reference internal" href="#frontier-built-in-frontier-settings"><span class="std std-ref">Built-in settings reference</span></a>. All default settings can be overridden.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="scrapy-integration.html" class="btn btn-neutral float-left" title="Using the Frontier with Scrapy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="what-is-cf.html" class="btn btn-neutral float-right" title="What is a Crawl Frontier?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frontier objects &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Middlewares" href="frontier-middlewares.html" />
+    <link rel="prev" title="Crawling strategies" href="strategies.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-modes.html">Run modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Frontier objects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#request-objects">Request objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new_frontera.core.models.Request"><code class="docutils literal notranslate"><span class="pre">Request</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Request.body"><code class="docutils literal notranslate"><span class="pre">Request.body</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Request.cookies"><code class="docutils literal notranslate"><span class="pre">Request.cookies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Request.headers"><code class="docutils literal notranslate"><span class="pre">Request.headers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Request.meta"><code class="docutils literal notranslate"><span class="pre">Request.meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Request.method"><code class="docutils literal notranslate"><span class="pre">Request.method</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Request.url"><code class="docutils literal notranslate"><span class="pre">Request.url</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#response-objects">Response objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new_frontera.core.models.Response"><code class="docutils literal notranslate"><span class="pre">Response</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Response.body"><code class="docutils literal notranslate"><span class="pre">Response.body</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Response.headers"><code class="docutils literal notranslate"><span class="pre">Response.headers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Response.meta"><code class="docutils literal notranslate"><span class="pre">Response.meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Response.request"><code class="docutils literal notranslate"><span class="pre">Response.request</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Response.status_code"><code class="docutils literal notranslate"><span class="pre">Response.status_code</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.models.Response.url"><code class="docutils literal notranslate"><span class="pre">Response.url</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#identifying-unique-objects">Identifying unique objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-additional-data-to-objects">Adding additional data to objects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_bus.html">Message bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Frontier objects</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/frontier-objects.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="frontier-objects">
+<h1>Frontier objects<a class="headerlink" href="#frontier-objects" title="Permalink to this heading">¶</a></h1>
+<p>Frontier uses 2 object types: <a class="reference internal" href="#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>
+and <a class="reference internal" href="#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>. They are used to represent crawling HTTP requests and
+responses respectively.</p>
+<p>These classes are used by most Frontier API methods either as a parameter or as a return value depending on the method
+used.</p>
+<p>Frontier also uses these objects to internally communicate between different components (middlewares and backend).</p>
+<section id="request-objects">
+<h2>Request objects<a class="headerlink" href="#request-objects" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.models.Request">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.models.</span></span><span class="sig-name descname"><span class="pre">Request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b'GET'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.models.Request" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object represents an HTTP request, which is generated for
+seeds, extracted page links and next pages to crawl. Each one should be associated to a
+<a class="reference internal" href="#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> object when crawled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>string</em>) – URL to send.</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – HTTP method to use.</p></li>
+<li><p><strong>headers</strong> (<em>dict</em>) – dictionary of headers to send.</p></li>
+<li><p><strong>cookies</strong> (<em>dict</em>) – dictionary of cookies to attach to this request.</p></li>
+<li><p><strong>meta</strong> (<em>dict</em>) – dictionary that contains arbitrary metadata for this request, the keys must be bytes and         the values must be either bytes or serializable objects such as lists, tuples, dictionaries with byte type items.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Request.body">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">body</span></span><a class="headerlink" href="#new_frontera.core.models.Request.body" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string representing the request body.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Request.cookies">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cookies</span></span><a class="headerlink" href="#new_frontera.core.models.Request.cookies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of cookies to attach to this request.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Request.headers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headers</span></span><a class="headerlink" href="#new_frontera.core.models.Request.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary which contains the request headers.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Request.meta">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">meta</span></span><a class="headerlink" href="#new_frontera.core.models.Request.meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict that contains arbitrary metadata for this request. This dict is empty for new Requests, and is usually
+populated by different new_frontera components (middlewares, etc). So the data contained in this dict depends
+on the components you have enabled. The keys are bytes and the values are either bytes or serializable objects         such as lists, tuples, dictionaries with byte type items.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Request.method">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">method</span></span><a class="headerlink" href="#new_frontera.core.models.Request.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string representing the HTTP method in the request. This is guaranteed to be uppercase.
+Example: <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">POST</span></code>, <code class="docutils literal notranslate"><span class="pre">PUT</span></code>, etc</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Request.url">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#new_frontera.core.models.Request.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string containing the URL of this request.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="response-objects">
+<h2>Response objects<a class="headerlink" href="#response-objects" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.models.Response">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.models.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.models.Response" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> object represents an HTTP response, which is usually
+downloaded (by the crawler) and sent back to the frontier for processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>string</em>) – URL of this response.</p></li>
+<li><p><strong>status_code</strong> (<em>int</em>) – the HTTP status of the response. Defaults to 200.</p></li>
+<li><p><strong>headers</strong> (<em>dict</em>) – dictionary of headers to send.</p></li>
+<li><p><strong>body</strong> (<em>str</em>) – the response body.</p></li>
+<li><p><strong>request</strong> (<a class="reference internal" href="#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><em>Request</em></a>) – The Request object that generated this response.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Response.body">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">body</span></span><a class="headerlink" href="#new_frontera.core.models.Response.body" title="Permalink to this definition">¶</a></dt>
+<dd><p>A str containing the body of this Response.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Response.headers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headers</span></span><a class="headerlink" href="#new_frontera.core.models.Response.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary object which contains the response headers.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Response.meta">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">meta</span></span><a class="headerlink" href="#new_frontera.core.models.Response.meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>A shortcut to the <a class="reference internal" href="#new_frontera.core.models.Request.meta" title="new_frontera.core.models.Request.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Request.meta</span></code></a> attribute of the
+<a class="reference internal" href="#new_frontera.core.models.Response.request" title="new_frontera.core.models.Response.request"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Response.request</span></code></a> object (ie. self.request.meta).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Response.request">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">request</span></span><a class="headerlink" href="#new_frontera.core.models.Response.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object that generated this response.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Response.status_code">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status_code</span></span><a class="headerlink" href="#new_frontera.core.models.Response.status_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer representing the HTTP status of the response. Example: <code class="docutils literal notranslate"><span class="pre">200</span></code>, <code class="docutils literal notranslate"><span class="pre">404</span></code>, <code class="docutils literal notranslate"><span class="pre">500</span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="new_frontera.core.models.Response.url">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#new_frontera.core.models.Response.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string containing the URL of the response.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>Fields <code class="docutils literal notranslate"><span class="pre">domain</span></code> and <code class="docutils literal notranslate"><span class="pre">fingerprint</span></code> are added by <a class="reference internal" href="frontier-middlewares.html#frontier-built-in-middleware"><span class="std std-ref">built-in middlewares</span></a></p>
+</section>
+<section id="identifying-unique-objects">
+<h2>Identifying unique objects<a class="headerlink" href="#identifying-unique-objects" title="Permalink to this heading">¶</a></h2>
+<p>As frontier objects are shared between the crawler and the frontier, some mechanism to uniquely identify objects is
+needed. This method may vary depending on the frontier logic (in most cases due to the backend used).</p>
+<p>By default, new_frontera activates the <a class="reference internal" href="frontier-middlewares.html#frontier-url-fingerprint-middleware"><span class="std std-ref">fingerprint middleware</span></a> to
+generate a unique fingerprint calculated from the <a class="reference internal" href="#new_frontera.core.models.Request.url" title="new_frontera.core.models.Request.url"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Request.url</span></code></a>
+and <a class="reference internal" href="#new_frontera.core.models.Response.url" title="new_frontera.core.models.Response.url"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Response.url</span></code></a> fields, which is added to the
+<a class="reference internal" href="#new_frontera.core.models.Request.meta" title="new_frontera.core.models.Request.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Request.meta</span></code></a> and
+<a class="reference internal" href="#new_frontera.core.models.Response.meta" title="new_frontera.core.models.Response.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Response.meta</span></code></a> fields respectively. You can use
+this middleware or implement your own method to manage frontier objects identification.</p>
+<p>An example of a generated fingerprint for a <a class="reference internal" href="#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+<span class="go">&#39;http://thehackernews.com&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">]</span>
+<span class="go">&#39;198d99a8b2284701d6c147174cd69a37a7dea90f&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-additional-data-to-objects">
+<span id="frontier-objects-additional-data"></span><h2>Adding additional data to objects<a class="headerlink" href="#adding-additional-data-to-objects" title="Permalink to this heading">¶</a></h2>
+<p>In most cases frontier objects can be used to represent the information needed to manage the frontier logic/policy.</p>
+<p>Also, additional data can be stored by components using the
+<a class="reference internal" href="#new_frontera.core.models.Request.meta" title="new_frontera.core.models.Request.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Request.meta</span></code></a> and
+<a class="reference internal" href="#new_frontera.core.models.Response.meta" title="new_frontera.core.models.Response.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Response.meta</span></code></a> fields.</p>
+<p>For instance the frontier <a class="reference internal" href="frontier-middlewares.html#frontier-domain-middleware"><span class="std std-ref">domain middleware</span></a> adds a <code class="docutils literal notranslate"><span class="pre">domain</span></code> info field for every
+<a class="reference internal" href="#new_frontera.core.models.Request.meta" title="new_frontera.core.models.Request.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Request.meta</span></code></a> and
+<a class="reference internal" href="#new_frontera.core.models.Response.meta" title="new_frontera.core.models.Response.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Response.meta</span></code></a> if is activated:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+<span class="go">&#39;http://www.scrapinghub.com&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;domain&#39;</span><span class="p">]</span>
+<span class="go">{</span>
+<span class="go">    &quot;name&quot;: &quot;scrapinghub.com&quot;,</span>
+<span class="go">    &quot;netloc&quot;: &quot;www.scrapinghub.com&quot;,</span>
+<span class="go">    &quot;scheme&quot;: &quot;http&quot;,</span>
+<span class="go">    &quot;sld&quot;: &quot;scrapinghub&quot;,</span>
+<span class="go">    &quot;subdomain&quot;: &quot;www&quot;,</span>
+<span class="go">    &quot;tld&quot;: &quot;com&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="strategies.html" class="btn btn-neutral float-left" title="Crawling strategies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="frontier-middlewares.html" class="btn btn-neutral float-right" title="Middlewares" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

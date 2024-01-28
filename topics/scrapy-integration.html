@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using the Frontier with Scrapy &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Settings" href="new_frontera-settings.html" />
+    <link rel="prev" title="Writing custom crawling strategy" href="custom_crawling_strategy.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-modes.html">Run modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_bus.html">Message bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Frontier with Scrapy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-purpose">The purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#activating-the-frontier">Activating the frontier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#organizing-files">Organizing files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-rawl">Running the сrawl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#frontier-scrapy-settings">Frontier Scrapy settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defining-frontier-settings-via-scrapy-settings">Defining frontier settings via Scrapy settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-scrapy-spider">Writing Scrapy spider</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spider-logic">Spider logic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-guidelines">Configuration guidelines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using the Frontier with Scrapy</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/scrapy-integration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-the-frontier-with-scrapy">
+<h1>Using the Frontier with Scrapy<a class="headerlink" href="#using-the-frontier-with-scrapy" title="Permalink to this heading">¶</a></h1>
+<p>To use new_frontera with Scrapy, you will need to add <a class="reference external" href="http://doc.scrapy.org/en/latest/topics/downloader-middleware.html">Scrapy middlewares</a> and redefine the default Scrapy scheduler with
+custom new_frontera scheduler. Both can be done by modifying <a class="reference external" href="http://doc.scrapy.org/en/latest/topics/settings.html">Scrapy settings</a>.</p>
+<section id="the-purpose">
+<h2>The purpose<a class="headerlink" href="#the-purpose" title="Permalink to this heading">¶</a></h2>
+<dl class="simple">
+<dt>Scrapy is expected to be used as a fetching, HTML parsing and links extracting component. Your spider code have</dt><dd><p>to produce responses and requests from extracted links. That’s all. new_frontera’s business is to keep the links, queue</p>
+</dd>
+</dl>
+<p>and schedule links when needed.</p>
+<p>Please make sure all the middlewares affecting the crawling, like DepthMiddleware, OffsiteMiddleware or
+RobotsTxtMiddleware are disabled.</p>
+<p>All other use cases when Scrapy is busy items generation, scraping from HTML, scheduling links directly trying to bypass
+new_frontera, are doomed to cause countless hours of maintenance. Please don’t use new_frontera integrated with Scrapy that way.</p>
+</section>
+<section id="activating-the-frontier">
+<h2>Activating the frontier<a class="headerlink" href="#activating-the-frontier" title="Permalink to this heading">¶</a></h2>
+<p>The new_frontera uses 2 different middlewares: <code class="docutils literal notranslate"><span class="pre">SchedulerSpiderMiddleware</span></code> and <code class="docutils literal notranslate"><span class="pre">SchedulerDownloaderMiddleware</span></code>, and it’s
+own scheduler <code class="docutils literal notranslate"><span class="pre">new_fronteraScheduler</span></code>.</p>
+<p>To activate the new_frontera in your Scrapy project, just add them to the <a class="reference external" href="http://doc.scrapy.org/en/latest/topics/settings.html#std:setting-SPIDER_MIDDLEWARES">SPIDER_MIDDLEWARES</a>,
+<a class="reference external" href="http://doc.scrapy.org/en/latest/topics/settings.html#std:setting-DOWNLOADER_MIDDLEWARES">DOWNLOADER_MIDDLEWARES</a> and <a class="reference external" href="http://doc.scrapy.org/en/latest/topics/settings.html#std:setting-SCHEDULER">SCHEDULER</a> settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SPIDER_MIDDLEWARES</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;new_frontera.contrib.scrapy.middlewares.schedulers.SchedulerSpiderMiddleware&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="n">DOWNLOADER_MIDDLEWARES</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;new_frontera.contrib.scrapy.middlewares.schedulers.SchedulerDownloaderMiddleware&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="n">SCHEDULER</span> <span class="o">=</span> <span class="s1">&#39;new_frontera.contrib.scrapy.schedulers.frontier.new_fronteraScheduler&#39;</span>
+</pre></div>
+</div>
+<p>Create a new_frontera <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> file and add it to your Scrapy settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new_frontera_SETTINGS</span> <span class="o">=</span> <span class="s1">&#39;tutorial.new_frontera.settings&#39;</span>
+</pre></div>
+</div>
+<p>Another option is to put these settings right into Scrapy settings module.</p>
+</section>
+<section id="organizing-files">
+<h2>Organizing files<a class="headerlink" href="#organizing-files" title="Permalink to this heading">¶</a></h2>
+<p>When using frontier with a Scrapy project, we propose the following directory structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my_scrapy_project</span><span class="o">/</span>
+    <span class="n">my_scrapy_project</span><span class="o">/</span>
+        <span class="n">new_frontera</span><span class="o">/</span>
+            <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">spiders</span><span class="o">/</span>
+            <span class="o">...</span>
+        <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">py</span>
+     <span class="n">scrapy</span><span class="o">.</span><span class="n">cfg</span>
+</pre></div>
+</div>
+<p>These are basically:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">my_scrapy_project/new_frontera/settings.py</span></code>: the new_frontera settings file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_scrapy_project/spiders</span></code>: the Scrapy spiders folder</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_scrapy_project/settings.py</span></code>: the Scrapy settings file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scrapy.cfg</span></code>: the Scrapy config file</p></li>
+</ul>
+</section>
+<section id="running-the-rawl">
+<h2>Running the сrawl<a class="headerlink" href="#running-the-rawl" title="Permalink to this heading">¶</a></h2>
+<p>Just run your Scrapy spider as usual from the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">crawl</span> <span class="n">myspider</span>
+</pre></div>
+</div>
+</section>
+<section id="frontier-scrapy-settings">
+<h2>Frontier Scrapy settings<a class="headerlink" href="#frontier-scrapy-settings" title="Permalink to this heading">¶</a></h2>
+<p>You can configure your frontier two ways:</p>
+<ul class="simple">
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">new_frontera_SETTINGS</span></code> parameter, which is a module path pointing to new_frontera settings in Scrapy settings file.
+Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p>Define frontier settings right into Scrapy settings file.</p></li>
+</ul>
+<section id="defining-frontier-settings-via-scrapy-settings">
+<h3>Defining frontier settings via Scrapy settings<a class="headerlink" href="#defining-frontier-settings-via-scrapy-settings" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference internal" href="new_frontera-settings.html#frontier-built-in-frontier-settings"><span class="std std-ref">Frontier settings</span></a> can also be defined via Scrapy settings.
+In this case, the order of precedence will be the following:</p>
+<ol class="arabic simple">
+<li><p>Settings defined in the file pointed by <a href="#id1"><span class="problematic" id="id2">:setting:`new_frontera_SETTINGS`</span></a> (higher precedence)</p></li>
+<li><p>Settings defined in the Scrapy settings</p></li>
+<li><p>Default frontier settings</p></li>
+</ol>
+</section>
+</section>
+<section id="writing-scrapy-spider">
+<h2>Writing Scrapy spider<a class="headerlink" href="#writing-scrapy-spider" title="Permalink to this heading">¶</a></h2>
+<section id="spider-logic">
+<h3>Spider logic<a class="headerlink" href="#spider-logic" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
+<dt>Creation of new Scrapy project is described at <a class="reference external" href="http://new_frontera.readthedocs.org/en/latest/topics/quick-start-single.html">Quick start single process</a> page. Again, your spider code have</dt><dd><p>to produce responses and requests from extracted links. Also, make sure exceptions caused by request processing are</p>
+</dd>
+</dl>
+<p>not intercepted by any of the middlewares. Otherwise errors delivery to <a class="reference internal" href="glossary.html#term-crawling-strategy"><span class="xref std std-term">crawling strategy</span></a> will be broken.</p>
+<p>Here is an example code to start:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scrapy</span> <span class="kn">import</span> <span class="n">Spider</span>
+<span class="kn">from</span> <span class="nn">scrapy.linkextractors</span> <span class="kn">import</span> <span class="n">LinkExtractor</span>
+<span class="kn">from</span> <span class="nn">scrapy.http</span> <span class="kn">import</span> <span class="n">Request</span>
+<span class="kn">from</span> <span class="nn">scrapy.http.response.html</span> <span class="kn">import</span> <span class="n">HtmlResponse</span>
+
+<span class="k">class</span> <span class="nc">CommonPageSpider</span><span class="p">(</span><span class="n">Spider</span><span class="p">):</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;commonpage&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CommonPageSpider</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le</span> <span class="o">=</span> <span class="n">LinkExtractor</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">HtmlResponse</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">le</span><span class="o">.</span><span class="n">extract_links</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">link</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">link_text</span><span class="o">=</span><span class="n">link</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">r</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-guidelines">
+<h3>Configuration guidelines<a class="headerlink" href="#configuration-guidelines" title="Permalink to this heading">¶</a></h3>
+<p>Please specify a correct user agent string to disclose yourself to webmasters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">USER_AGENT</span> <span class="o">=</span> <span class="s1">&#39;Some-Bot (+http://url/to-the-page-describing-the-purpose-of-crawling)&#39;</span>
+</pre></div>
+</div>
+<p>When using new_frontera robots.txt obeying have to be implemented in <a class="reference internal" href="glossary.html#term-crawling-strategy"><span class="xref std std-term">crawling strategy</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ROBOTSTXT_OBEY</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Disable some of the spider and downloader middlewares which may affect the crawling:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SPIDER_MIDDLEWARES</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;scrapy.spidermiddlewares.offsite.OffsiteMiddleware&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s1">&#39;scrapy.spidermiddlewares.referer.RefererMiddleware&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s1">&#39;scrapy.spidermiddlewares.urllength.UrlLengthMiddleware&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s1">&#39;scrapy.spidermiddlewares.depth.DepthMiddleware&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s1">&#39;scrapy.spidermiddlewares.httperror.HttpErrorMiddleware&#39;</span><span class="p">:</span> <span class="kc">None</span>
+<span class="p">})</span>
+
+<span class="n">DOWNLOADER_MIDDLEWARES</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="k">del</span> <span class="n">DOWNLOADER_MIDDLEWARES_BASE</span><span class="p">[</span><span class="s1">&#39;scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>There several tunings you can make for efficient broad crawling.</p>
+<p>Various settings suitable for broad crawling:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTPCACHE_ENABLED</span> <span class="o">=</span> <span class="kc">False</span>   <span class="c1"># Turns off disk cache, which has low hit ratio during broad crawls</span>
+<span class="n">REDIRECT_ENABLED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">COOKIES_ENABLED</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">DOWNLOAD_TIMEOUT</span> <span class="o">=</span> <span class="mi">120</span>
+<span class="n">RETRY_ENABLED</span> <span class="o">=</span> <span class="kc">False</span>   <span class="c1"># Retries can be handled by new_frontera itself, depending on crawling strategy</span>
+<span class="n">DOWNLOAD_MAXSIZE</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># Maximum document size, causes OOM kills if not set</span>
+<span class="n">LOGSTATS_INTERVAL</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Print stats every 10 secs to console</span>
+</pre></div>
+</div>
+<p>Auto throttling and concurrency settings for polite and responsible crawling::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># auto throttling</span>
+<span class="n">AUTOTHROTTLE_ENABLED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">AUTOTHROTTLE_DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">AUTOTHROTTLE_MAX_DELAY</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">AUTOTHROTTLE_START_DELAY</span> <span class="o">=</span> <span class="mf">0.25</span>     <span class="c1"># Any small enough value, it will be adjusted during operation by averaging</span>
+                                    <span class="c1"># with response latencies.</span>
+<span class="n">RANDOMIZE_DOWNLOAD_DELAY</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># concurrency</span>
+<span class="n">CONCURRENT_REQUESTS</span> <span class="o">=</span> <span class="mi">256</span>           <span class="c1"># Depends on many factors, and should be determined experimentally</span>
+<span class="n">CONCURRENT_REQUESTS_PER_DOMAIN</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">DOWNLOAD_DELAY</span> <span class="o">=</span> <span class="mf">0.0</span>
+</pre></div>
+</div>
+<p>Check also <a class="reference external" href="http://doc.scrapy.org/en/master/topics/broad-crawls.html">Scrapy broad crawling</a> recommendations.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="custom_crawling_strategy.html" class="btn btn-neutral float-left" title="Writing custom crawling strategy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="new_frontera-settings.html" class="btn btn-neutral float-right" title="Settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

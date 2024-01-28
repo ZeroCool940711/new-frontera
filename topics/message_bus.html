@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Message bus &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Writing custom crawling strategy" href="custom_crawling_strategy.html" />
+    <link rel="prev" title="Backends" href="frontier-backends.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-modes.html">Run modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-backends.html">Backends</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Message bus</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#new_frontera.contrib.backends.remote.messagebus.MessageBusBackend"><code class="docutils literal notranslate"><span class="pre">MessageBusBackend</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-message-bus-reference">Built-in message bus reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#zeromq">ZeroMQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kafka">Kafka</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#protocol">Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new_frontera.core.codec.BaseEncoder"><code class="docutils literal notranslate"><span class="pre">BaseEncoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.codec.BaseEncoder.encode_page_crawled"><code class="docutils literal notranslate"><span class="pre">BaseEncoder.encode_page_crawled()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.codec.BaseEncoder.encode_request_error"><code class="docutils literal notranslate"><span class="pre">BaseEncoder.encode_request_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.codec.BaseEncoder.encode_request"><code class="docutils literal notranslate"><span class="pre">BaseEncoder.encode_request()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.codec.BaseEncoder.encode_update_score"><code class="docutils literal notranslate"><span class="pre">BaseEncoder.encode_update_score()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.codec.BaseEncoder.encode_new_job_id"><code class="docutils literal notranslate"><span class="pre">BaseEncoder.encode_new_job_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.codec.BaseEncoder.encode_offset"><code class="docutils literal notranslate"><span class="pre">BaseEncoder.encode_offset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#new_frontera.core.codec.BaseDecoder"><code class="docutils literal notranslate"><span class="pre">BaseDecoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.codec.BaseDecoder.decode"><code class="docutils literal notranslate"><span class="pre">BaseDecoder.decode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.codec.BaseDecoder.decode_request"><code class="docutils literal notranslate"><span class="pre">BaseDecoder.decode_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#available-codecs">Available codecs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#msgpack">MsgPack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-new_frontera.contrib.backends.remote.codecs.json">JSON</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Message bus</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/message_bus.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="message-bus">
+<h1>Message bus<a class="headerlink" href="#message-bus" title="Permalink to this heading">¶</a></h1>
+<p>Message bus is the transport layer abstraction mechanism. new_frontera provides interface and several implementations.
+Only one message bus can be used in crawler at the time, and it’s selected with <a href="#id1"><span class="problematic" id="id2">:setting:`MESSAGE_BUS`</span></a> setting.</p>
+<p>Spiders process can use</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.contrib.backends.remote.messagebus.MessageBusBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.contrib.backends.remote.messagebus.</span></span><span class="sig-name descname"><span class="pre">MessageBusBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.contrib.backends.remote.messagebus.MessageBusBackend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>to communicate using message bus.</p>
+<section id="built-in-message-bus-reference">
+<h2>Built-in message bus reference<a class="headerlink" href="#built-in-message-bus-reference" title="Permalink to this heading">¶</a></h2>
+<section id="zeromq">
+<h3>ZeroMQ<a class="headerlink" href="#zeromq" title="Permalink to this heading">¶</a></h3>
+<p>It’s the default option, implemented using lightweight <a class="reference external" href="http://zeromq.org/">ZeroMQ</a> library in</p>
+<p>and can be configured using <a class="reference internal" href="new_frontera-settings.html#zeromq-settings"><span class="std std-ref">ZeroMQ message bus settings</span></a>.</p>
+<p>ZeroMQ message bus requires installed ZeroMQ library and running broker process, see <a class="reference internal" href="quick-start-distributed.html#running-zeromq-broker"><span class="std std-ref">Start cluster</span></a>.</p>
+<p>Overall ZeroMQ message bus is designed to get a working PoC quickly and smaller deployments. Mainly because it’s prone
+to message loss when data flow of components isn’t properly adjusted or during startup. Here’s the recommended order of
+components startup to avoid message loss:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="glossary.html#term-db-worker"><span class="xref std std-term">db worker</span></a></p></li>
+<li><p><a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a></p></li>
+<li><p>:term:<a href="#id3"><span class="problematic" id="id4">`</span></a>spider`s</p></li>
+</ol>
+<dl class="simple">
+<dt>Unfortunately, it’s not possible to avoid message loss when stopping running crawler with unfinished crawl. We recommend</dt><dd><p>to use Kafka message bus if your crawler application is sensitive to small message loss.</p>
+</dd>
+</dl>
+<blockquote class="pull-quote">
+<div><p>WARNING! ZeroMQ message bus doesn’t support yet multiple SW and DB workers, only one instance of each worker
+type is allowed.</p>
+</div></blockquote>
+</section>
+<section id="kafka">
+<h3>Kafka<a class="headerlink" href="#kafka" title="Permalink to this heading">¶</a></h3>
+<p>Can be selected with</p>
+<p>and configured using <a class="reference internal" href="new_frontera-settings.html#kafka-settings"><span class="std std-ref">Kafka message bus settings</span></a>.</p>
+<p>Requires running <a class="reference external" href="http://kafka.apache.org/">Kafka</a> service and more suitable for large-scale web crawling.</p>
+</section>
+</section>
+<section id="protocol">
+<span id="message-bus-protocol"></span><h2>Protocol<a class="headerlink" href="#protocol" title="Permalink to this heading">¶</a></h2>
+<p>Depending on stream new_frontera is using several message types to code it’s messages. Every message is a python native
+object serialized using <a class="reference external" href="http://msgpack.org/index.html">msgpack</a> or JSON. The codec module can be selected using <a href="#id7"><span class="problematic" id="id8">:setting:`MESSAGE_BUS_CODEC`</span></a>, and
+it’s required to export <code class="docutils literal notranslate"><span class="pre">Encoder</span></code> and <code class="docutils literal notranslate"><span class="pre">Decoder</span></code> classes.</p>
+<p>Here are the classes needed to subclass to implement own codec:</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.codec.</span></span><span class="sig-name descname"><span class="pre">BaseEncoder</span></span><a class="headerlink" href="#new_frontera.core.codec.BaseEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseEncoder.encode_page_crawled">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode_page_crawled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.codec.BaseEncoder.encode_page_crawled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a page_crawled message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response</strong> (<em>object</em>) – A frontier Response object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes encoded message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseEncoder.encode_request_error">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode_request_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.codec.BaseEncoder.encode_request_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a request_error message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>object</em>) – A frontier Request object</p></li>
+<li><p><strong>error</strong> (<em>string</em>) – Error description</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes encoded message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseEncoder.encode_request">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.codec.BaseEncoder.encode_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes requests for spider feed stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>object</em>) – new_frontera Request object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes encoded message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseEncoder.encode_update_score">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode_update_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schedule</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.codec.BaseEncoder.encode_update_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes update_score messages for scoring log stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>object</em>) – new_frontera Request object</p></li>
+<li><p><strong>score</strong> (<em>float</em>) – score</p></li>
+<li><p><strong>schedule</strong> (<em>bool</em>) – True if document needs to be scheduled for download</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes encoded message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseEncoder.encode_new_job_id">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode_new_job_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.codec.BaseEncoder.encode_new_job_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes changing of job_id parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>job_id</strong> (<em>int</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes encoded message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseEncoder.encode_offset">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partition_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.codec.BaseEncoder.encode_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes current spider offset in spider feed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>partition_id</strong> (<em>int</em>) – </p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes encoded message</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseDecoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.codec.</span></span><span class="sig-name descname"><span class="pre">BaseDecoder</span></span><a class="headerlink" href="#new_frontera.core.codec.BaseDecoder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseDecoder.decode">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.codec.BaseDecoder.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes the message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>buffer</strong> (<em>bytes</em>) – encoded message</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple of message type and related objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.codec.BaseDecoder.decode_request">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">decode_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.codec.BaseDecoder.decode_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes Request objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>buffer</strong> (<em>bytes</em>) – serialized string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>object Request</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="available-codecs">
+<h2>Available codecs<a class="headerlink" href="#available-codecs" title="Permalink to this heading">¶</a></h2>
+<section id="msgpack">
+<h3>MsgPack<a class="headerlink" href="#msgpack" title="Permalink to this heading">¶</a></h3>
+<p>Module: new_frontera.contrib.backends.remote.codecs.msgpack</p>
+</section>
+<section id="module-new_frontera.contrib.backends.remote.codecs.json">
+<span id="json"></span><h3>JSON<a class="headerlink" href="#module-new_frontera.contrib.backends.remote.codecs.json" title="Permalink to this heading">¶</a></h3>
+<p>A JSON codec for new_frontera. Implemented using native json library.</p>
+<p>Module: new_frontera.contrib.backends.remote.codecs.json</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="frontier-backends.html" class="btn btn-neutral float-left" title="Backends" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="custom_crawling_strategy.html" class="btn btn-neutral float-right" title="Writing custom crawling strategy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

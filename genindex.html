@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="topics/overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/run-modes.html">Run modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="topics/installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/frontier-backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/message_bus.html">Message bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="topics/what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="topics/architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Index</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.DomainMetadata.__contains__">__contains__() (new_frontera.core.components.DomainMetadata method)</a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.DomainMetadata.__delitem__">__delitem__() (new_frontera.core.components.DomainMetadata method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.DomainMetadata.__getitem__">__getitem__() (new_frontera.core.components.DomainMetadata method)</a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.DomainMetadata.__setitem__">__setitem__() (new_frontera.core.components.DomainMetadata method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend">Backend (class in new_frontera.core.components)</a>
+</li>
+      <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy">BaseCrawlingStrategy (class in new_frontera.strategy)</a>
+</li>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseDecoder">BaseDecoder (class in new_frontera.core.codec)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseEncoder">BaseEncoder (class in new_frontera.core.codec)</a>
+</li>
+      <li><a href="topics/frontier-canonicalsolvers.html#new_frontera.contrib.canonicalsolvers.basic.BasicCanonicalSolver">BasicCanonicalSolver (class in new_frontera.contrib.canonicalsolvers.basic)</a>
+</li>
+      <li><a href="topics/frontier-objects.html#new_frontera.core.models.Request.body">body (new_frontera.core.models.Request property)</a>
+
+      <ul>
+        <li><a href="topics/frontier-objects.html#new_frontera.core.models.Response.body">(new_frontera.core.models.Response property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.close">close() (new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+      <li><a href="topics/frontier-api.html#new_frontera.core.components.Component">Component (class in new_frontera.core.components)</a>
+</li>
+      <li><a href="topics/frontier-objects.html#new_frontera.core.models.Request.cookies">cookies (new_frontera.core.models.Request property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Queue.count">count() (new_frontera.core.components.Queue method)</a>
+</li>
+      <li><a href="topics/glossary.html#term-crawling-strategy"><strong>crawling strategy</strong></a>
+</li>
+      <li><a href="topics/graph-manager.html#CrawlPage">CrawlPage (built-in class)</a>
+</li>
+      <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.create_request">create_request() (new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/glossary.html#term-db-worker"><strong>db worker</strong></a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.DistributedBackend.db_worker">db_worker() (new_frontera.core.components.DistributedBackend class method)</a>
+</li>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseDecoder.decode">decode() (new_frontera.core.codec.BaseDecoder method)</a>
+</li>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseDecoder.decode_request">decode_request() (new_frontera.core.codec.BaseDecoder method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.DistributedBackend">DistributedBackend (class in new_frontera.core.components)</a>
+</li>
+      <li><a href="topics/frontier-middlewares.html#new_frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware">DomainFingerprintMiddleware (class in new_frontera.contrib.middlewares.fingerprint)</a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.DomainMetadata">DomainMetadata (class in new_frontera.core.components)</a>
+</li>
+      <li><a href="topics/frontier-middlewares.html#new_frontera.contrib.middlewares.domain.DomainMiddleware">DomainMiddleware (class in new_frontera.contrib.middlewares.domain)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseEncoder.encode_new_job_id">encode_new_job_id() (new_frontera.core.codec.BaseEncoder method)</a>
+</li>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseEncoder.encode_offset">encode_offset() (new_frontera.core.codec.BaseEncoder method)</a>
+</li>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseEncoder.encode_page_crawled">encode_page_crawled() (new_frontera.core.codec.BaseEncoder method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseEncoder.encode_request">encode_request() (new_frontera.core.codec.BaseEncoder method)</a>
+</li>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseEncoder.encode_request_error">encode_request_error() (new_frontera.core.codec.BaseEncoder method)</a>
+</li>
+      <li><a href="topics/message_bus.html#new_frontera.core.codec.BaseEncoder.encode_update_score">encode_update_score() (new_frontera.core.codec.BaseEncoder method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.States.fetch">fetch() (new_frontera.core.components.States method)</a>
+</li>
+      <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.filter_extracted_links">filter_extracted_links() (new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.finished">finished() (new_frontera.core.components.Backend method)</a>
+
+      <ul>
+        <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.finished">(new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+      </ul></li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.States.flush">flush() (new_frontera.core.components.States method)</a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.from_manager">from_manager() (new_frontera.core.components.Backend class method)</a>
+
+      <ul>
+        <li><a href="topics/frontier-api.html#new_frontera.core.components.Component.from_manager">(new_frontera.core.components.Component class method)</a>
+</li>
+        <li><a href="topics/frontier-middlewares.html#new_frontera.core.components.Middleware.from_manager">(new_frontera.core.components.Middleware class method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.from_worker">from_worker() (new_frontera.strategy.BaseCrawlingStrategy class method)</a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.frontier_start">frontier_start() (new_frontera.core.components.Backend method)</a>
+
+      <ul>
+        <li><a href="topics/frontier-api.html#new_frontera.core.components.Component.frontier_start">(new_frontera.core.components.Component method)</a>
+</li>
+        <li><a href="topics/frontier-middlewares.html#new_frontera.core.components.Middleware.frontier_start">(new_frontera.core.components.Middleware method)</a>
+</li>
+      </ul></li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.frontier_stop">frontier_stop() (new_frontera.core.components.Backend method)</a>
+
+      <ul>
+        <li><a href="topics/frontier-api.html#new_frontera.core.components.Component.frontier_stop">(new_frontera.core.components.Component method)</a>
+</li>
+        <li><a href="topics/frontier-middlewares.html#new_frontera.core.components.Middleware.frontier_stop">(new_frontera.core.components.Middleware method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.get_next_requests">get_next_requests() (new_frontera.core.components.Backend method)</a>
+
+      <ul>
+        <li><a href="topics/frontier-backends.html#new_frontera.core.components.Queue.get_next_requests">(new_frontera.core.components.Queue method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-objects.html#new_frontera.core.models.Request.headers">headers (new_frontera.core.models.Request property)</a>
+
+      <ul>
+        <li><a href="topics/frontier-objects.html#new_frontera.core.models.Response.headers">(new_frontera.core.models.Response property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-middlewares.html#new_frontera.utils.fingerprint.hostname_local_fingerprint">hostname_local_fingerprint() (in module new_frontera.utils.fingerprint)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/graph-manager.html#CrawlPage.id">id (CrawlPage attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/graph-manager.html#CrawlPage.is_seed">is_seed (CrawlPage attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/graph-manager.html#CrawlPage.links">links (CrawlPage attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.links_extracted">links_extracted() (new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.contrib.backends.memory.MemoryDistributedBackend">MemoryDistributedBackend (class in new_frontera.contrib.backends.memory)</a>
+</li>
+      <li><a href="topics/glossary.html#term-message-bus"><strong>message bus</strong></a>
+</li>
+      <li><a href="topics/message_bus.html#new_frontera.contrib.backends.remote.messagebus.MessageBusBackend">MessageBusBackend (class in new_frontera.contrib.backends.remote.messagebus)</a>
+</li>
+      <li><a href="topics/frontier-objects.html#new_frontera.core.models.Request.meta">meta (new_frontera.core.models.Request property)</a>
+
+      <ul>
+        <li><a href="topics/frontier-objects.html#new_frontera.core.models.Response.meta">(new_frontera.core.models.Response property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Metadata">Metadata (class in new_frontera.core.components)</a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.metadata">metadata (new_frontera.core.components.Backend attribute)</a>
+</li>
+      <li><a href="topics/frontier-objects.html#new_frontera.core.models.Request.method">method (new_frontera.core.models.Request property)</a>
+</li>
+      <li><a href="topics/frontier-middlewares.html#new_frontera.core.components.Middleware">Middleware (class in new_frontera.core.components)</a>
+</li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="topics/message_bus.html#module-new_frontera.contrib.backends.remote.codecs.json">new_frontera.contrib.backends.remote.codecs.json</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-api.html#new_frontera.core.components.Component.name">name (new_frontera.core.components.Component attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    new_frontera.contrib.backends.remote.codecs.json
+
+      <ul>
+        <li><a href="topics/message_bus.html#module-new_frontera.contrib.backends.remote.codecs.json">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.page_crawled">page_crawled() (new_frontera.core.components.Backend method)</a>
+
+      <ul>
+        <li><a href="topics/frontier-api.html#new_frontera.core.components.Component.page_crawled">(new_frontera.core.components.Component method)</a>
+</li>
+        <li><a href="topics/frontier-backends.html#new_frontera.core.components.Metadata.page_crawled">(new_frontera.core.components.Metadata method)</a>
+</li>
+        <li><a href="topics/frontier-middlewares.html#new_frontera.core.components.Middleware.page_crawled">(new_frontera.core.components.Middleware method)</a>
+</li>
+        <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.page_crawled">(new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Queue">Queue (class in new_frontera.core.components)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.queue">queue (new_frontera.core.components.Backend attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.read_seeds">read_seeds() (new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+      <li><a href="topics/graph-manager.html#CrawlPage.referers">referers (CrawlPage attribute)</a>
+</li>
+      <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.refresh_states">refresh_states() (new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+      <li><a href="topics/frontier-objects.html#new_frontera.core.models.Request">Request (class in new_frontera.core.models)</a>
+</li>
+      <li><a href="topics/frontier-objects.html#new_frontera.core.models.Response.request">request (new_frontera.core.models.Response property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.request_error">request_error() (new_frontera.core.components.Backend method)</a>
+
+      <ul>
+        <li><a href="topics/frontier-api.html#new_frontera.core.components.Component.request_error">(new_frontera.core.components.Component method)</a>
+</li>
+        <li><a href="topics/frontier-backends.html#new_frontera.core.components.Metadata.request_error">(new_frontera.core.components.Metadata method)</a>
+</li>
+        <li><a href="topics/frontier-middlewares.html#new_frontera.core.components.Middleware.request_error">(new_frontera.core.components.Middleware method)</a>
+</li>
+        <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.request_error">(new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+      </ul></li>
+      <li><a href="topics/frontier-objects.html#new_frontera.core.models.Response">Response (class in new_frontera.core.models)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Queue.schedule">schedule() (new_frontera.core.components.Queue method)</a>
+
+      <ul>
+        <li><a href="topics/custom_crawling_strategy.html#new_frontera.strategy.BaseCrawlingStrategy.schedule">(new_frontera.strategy.BaseCrawlingStrategy method)</a>
+</li>
+      </ul></li>
+      <li><a href="topics/glossary.html#term-scoring-log"><strong>scoring log</strong></a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.States.set_states">set_states() (new_frontera.core.components.States method)</a>
+</li>
+      <li><a href="topics/new_frontera-settings.html#new_frontera.settings.Settings">Settings (class in new_frontera.settings)</a>
+</li>
+      <li><a href="topics/glossary.html#term-spider"><strong>spider</strong></a>
+</li>
+      <li><a href="topics/glossary.html#term-spider-feed"><strong>spider feed</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/glossary.html#term-spider-log"><strong>spider log</strong></a>
+</li>
+      <li><a href="topics/glossary.html#term-state-cache"><strong>state cache</strong></a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.States">States (class in new_frontera.core.components)</a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.Backend.states">states (new_frontera.core.components.Backend attribute)</a>
+</li>
+      <li><a href="topics/graph-manager.html#CrawlPage.status">status (CrawlPage attribute)</a>
+</li>
+      <li><a href="topics/frontier-objects.html#new_frontera.core.models.Response.status_code">status_code (new_frontera.core.models.Response property)</a>
+</li>
+      <li><a href="topics/glossary.html#term-strategy-worker"><strong>strategy worker</strong></a>
+</li>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.DistributedBackend.strategy_worker">strategy_worker() (new_frontera.core.components.DistributedBackend class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-backends.html#new_frontera.core.components.States.update_cache">update_cache() (new_frontera.core.components.States method)</a>
+</li>
+      <li><a href="topics/graph-manager.html#CrawlPage.url">url (CrawlPage attribute)</a>
+
+      <ul>
+        <li><a href="topics/frontier-objects.html#new_frontera.core.models.Request.url">(new_frontera.core.models.Request property)</a>
+</li>
+        <li><a href="topics/frontier-objects.html#new_frontera.core.models.Response.url">(new_frontera.core.models.Response property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="topics/frontier-middlewares.html#new_frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware">UrlFingerprintMiddleware (class in new_frontera.contrib.middlewares.fingerprint)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

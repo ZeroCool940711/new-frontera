@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick start distributed mode &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cluster setup guide" href="cluster-setup.html" />
+    <link rel="prev" title="Quick start single process" href="quick-start-single.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-modes.html">Run modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick start distributed mode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-frontera-installation">new_frontera installation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#get-a-spider-example-code">Get a spider example code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#start-cluster">Start cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_bus.html">Message bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quick start distributed mode</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/quick-start-distributed.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quick-start-distributed-mode">
+<h1>Quick start distributed mode<a class="headerlink" href="#quick-start-distributed-mode" title="Permalink to this heading">¶</a></h1>
+<p>Here is a guide how to quickly setup new_frontera for single-machine, multiple process, local hacking. We’re going to deploy
+the simpliest possible setup with SQLite and ZeroMQ. Please proceed to <a class="reference internal" href="cluster-setup.html"><span class="doc">Cluster setup guide</span></a> article for a
+production setup details.</p>
+<p>Our crawler will have absolute minimum of components needed to work 1 <a class="reference internal" href="glossary.html#term-spider"><span class="xref std std-term">spider</span></a>, 1 <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a> and
+1 batch-gen, scoring worker.</p>
+<section id="prerequisites">
+<span id="basic-requirements"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
+<p>Here is what needs to be installed and configured before running new_frontera:</p>
+<ul class="simple">
+<li><p>Python 2.7+ or 3.4+</p></li>
+<li><p>Scrapy</p></li>
+</ul>
+<section id="new-frontera-installation">
+<h3>new_frontera installation<a class="headerlink" href="#new-frontera-installation" title="Permalink to this heading">¶</a></h3>
+<p>For Ubuntu, type in command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install new_frontera[distributed,zeromq,sql]
+</pre></div>
+</div>
+</section>
+</section>
+<section id="get-a-spider-example-code">
+<h2>Get a spider example code<a class="headerlink" href="#get-a-spider-example-code" title="Permalink to this heading">¶</a></h2>
+<p>First checkout a GitHub new_frontera repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/scrapinghub/new_frontera.git
+</pre></div>
+</div>
+<p>There is a general spider example in <code class="docutils literal notranslate"><span class="pre">examples/general-spider</span></code> folder.</p>
+<p>This is a general spider, it does almost nothing except extracting links from downloaded content. It also contains some
+settings files, please consult <a class="reference internal" href="new_frontera-settings.html"><span class="doc">settings reference</span></a> to get more information.</p>
+</section>
+<section id="start-cluster">
+<span id="running-zeromq-broker"></span><h2>Start cluster<a class="headerlink" href="#start-cluster" title="Permalink to this heading">¶</a></h2>
+<blockquote>
+<div><p>IMPORTANT! Because we’re using ZeroMQ, and queue is stored in memory the order of the components starting is
+important, please follow as described.</p>
+</div></blockquote>
+<p>First, let’s start ZeroMQ broker.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m new_frontera.contrib.messagebus.zeromq.broker
+</pre></div>
+</div>
+<p>You should see a log output of broker with statistics on messages transmitted.</p>
+<p>All further commands have to be made from <code class="docutils literal notranslate"><span class="pre">general-spider</span></code> root directory.</p>
+<p>Second, there are Spanish (.es zone) internet URLs from DMOZ directory in general spider repository, let’s use them as
+seeds to bootstrap crawling:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m new_frontera.utils.add_seeds --config config.dbw --seeds-file seeds_es_smp.txt
+</pre></div>
+</div>
+<p>You should notice the log output and message saying that seeds addition is finished.</p>
+<p>Third, starting the <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m new_frontera.worker.strategy --config config.sw
+</pre></div>
+</div>
+<p>Fourth, starting the Scrapy spider:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m scrapy crawl general
+</pre></div>
+</div>
+<p>Finally, the DB worker:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m new_frontera.worker.db --no-incoming --config config.dbw --partitions 0
+</pre></div>
+</div>
+<p>You should notice in logs that DB worker is trying to generate batches and after a short period the Scrapy is crawling
+pages, also check the stats change in ZMQ broker and strategy worker. That’s it, crawler is running with default
+<a class="reference internal" href="glossary.html#term-crawling-strategy"><span class="xref std std-term">crawling strategy</span></a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quick-start-single.html" class="btn btn-neutral float-left" title="Quick start single process" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cluster-setup.html" class="btn btn-neutral float-right" title="Cluster setup guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

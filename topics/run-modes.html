@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Run modes &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quick start single process" href="quick-start-single.html" />
+    <link rel="prev" title="new_frontera at a glance" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Run modes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#single-process">Single process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#distributed">Distributed</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_bus.html">Message bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Run modes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/run-modes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="run-modes">
+<h1>Run modes<a class="headerlink" href="#run-modes" title="Permalink to this heading">¶</a></h1>
+<p>A diagram showing architecture of running modes:</p>
+<img alt="../_images/high-level-arc.png" src="../_images/high-level-arc.png" />
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Components needed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Single process</p></td>
+<td><p>single process running the crawler</p></td>
+</tr>
+<tr class="row-odd"><td><p>Distributed</p></td>
+<td><p>spiders, <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a> (s) and db worker(s).</p></td>
+</tr>
+</tbody>
+</table>
+<section id="single-process">
+<h2>Single process<a class="headerlink" href="#single-process" title="Permalink to this heading">¶</a></h2>
+<p>new_frontera is instantiated in the same process as fetcher (for example in Scrapy). Read more on how to use that mode
+<a class="reference internal" href="quick-start-single.html"><span class="doc">here</span></a>.</p>
+<p>This mode is suitable for developing the crawling strategy locally and applications where its critical to fetch
+small number of documents fast.</p>
+</section>
+<section id="distributed">
+<h2>Distributed<a class="headerlink" href="#distributed" title="Permalink to this heading">¶</a></h2>
+<p>Spiders and backend are distributed. Backend is divided on two parts: <a class="reference internal" href="glossary.html#term-strategy-worker"><span class="xref std std-term">strategy worker</span></a> and <a class="reference internal" href="glossary.html#term-db-worker"><span class="xref std std-term">db worker</span></a>.
+Strategy worker instances are assigned to their own part of <a class="reference internal" href="glossary.html#term-spider-log"><span class="xref std std-term">spider log</span></a>.</p>
+<ol class="arabic simple">
+<li><p>Use <a href="#id1"><span class="problematic" id="id2">:setting:`BACKEND`</span></a> in spider processes set to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">MessageBusBackend</span></code></p></li>
+<li><p>In DB and SW workers <a href="#id3"><span class="problematic" id="id4">:setting:`BACKEND`</span></a> should point to <a class="reference internal" href="frontier-backends.html#new_frontera.core.components.DistributedBackend" title="new_frontera.core.components.DistributedBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistributedBackend</span></code></a> subclasses.
+And selected backend have to be configured.</p></li>
+<li><p>Every spider process should have it’s own <a href="#id5"><span class="problematic" id="id6">:setting:`SPIDER_PARTITION_ID`</span></a>, starting from 0 to
+<a href="#id7"><span class="problematic" id="id8">:setting:`SPIDER_FEED_PARTITIONS`</span></a>. Last must be accessible also to all DB worker instances.</p></li>
+<li><p>Every SW worker process should have it’s own <a href="#id9"><span class="problematic" id="id10">:setting:`SCORING_PARTITION_ID`</span></a>, starting from 0 to
+<a href="#id11"><span class="problematic" id="id12">:setting:`SPIDER_LOG_PARTITIONS`</span></a>. Last must be accessible to all SW worker instances.</p></li>
+<li><p>Both spiders and workers should have it’s <a href="#id13"><span class="problematic" id="id14">:setting:`MESSAGE_BUS`</span></a> setting set to the message bus class of your choice
+and selected message bus have to be configured.</p></li>
+</ol>
+<p>Only Kafka message bus can be used in this mode out of the box.</p>
+<p>This mode is designed for crawling of web-scale large amount of domains and pages.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="new_frontera at a glance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quick-start-single.html" class="btn btn-neutral float-right" title="Quick start single process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

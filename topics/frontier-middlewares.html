@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Middlewares &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Canonical URL Solver" href="frontier-canonicalsolvers.html" />
+    <link rel="prev" title="Frontier objects" href="frontier-objects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-modes.html">Run modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Middlewares</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#activating-a-middleware">Activating a middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-your-own-middleware">Writing your own middleware</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new_frontera.core.components.Middleware"><code class="docutils literal notranslate"><span class="pre">Middleware</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Middleware.frontier_start"><code class="docutils literal notranslate"><span class="pre">Middleware.frontier_start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Middleware.frontier_stop"><code class="docutils literal notranslate"><span class="pre">Middleware.frontier_stop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Middleware.page_crawled"><code class="docutils literal notranslate"><span class="pre">Middleware.page_crawled()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Middleware.request_error"><code class="docutils literal notranslate"><span class="pre">Middleware.request_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Middleware.from_manager"><code class="docutils literal notranslate"><span class="pre">Middleware.from_manager()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-middleware-reference">Built-in middleware reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#domainmiddleware">DomainMiddleware</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.contrib.middlewares.domain.DomainMiddleware"><code class="docutils literal notranslate"><span class="pre">DomainMiddleware</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#urlfingerprintmiddleware">UrlFingerprintMiddleware</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware"><code class="docutils literal notranslate"><span class="pre">UrlFingerprintMiddleware</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.utils.fingerprint.hostname_local_fingerprint"><code class="docutils literal notranslate"><span class="pre">hostname_local_fingerprint()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#domainfingerprintmiddleware">DomainFingerprintMiddleware</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware"><code class="docutils literal notranslate"><span class="pre">DomainFingerprintMiddleware</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-backends.html">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_bus.html">Message bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Middlewares</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/frontier-middlewares.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="middlewares">
+<span id="frontier-middlewares"></span><h1>Middlewares<a class="headerlink" href="#middlewares" title="Permalink to this heading">¶</a></h1>
+<p>Frontier <a class="reference internal" href="#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a> sits between
+<code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code> and
+<a class="reference internal" href="frontier-backends.html#new_frontera.core.components.Backend" title="new_frontera.core.components.Backend"><code class="xref py py-class docutils literal notranslate"><span class="pre">Backend</span></code></a> objects, using hooks for
+<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>
+and <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> processing according to
+<a class="reference internal" href="architecture.html#frontier-data-flow"><span class="std std-ref">frontier data flow</span></a>.</p>
+<p>It’s a light, low-level system for filtering and altering Frontier’s requests and responses.</p>
+<section id="activating-a-middleware">
+<span id="frontier-activating-middleware"></span><h2>Activating a middleware<a class="headerlink" href="#activating-a-middleware" title="Permalink to this heading">¶</a></h2>
+<p>To activate a <a class="reference internal" href="#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a> component, add it to the
+<a href="#id1"><span class="problematic" id="id2">:setting:`MIDDLEWARES`</span></a> setting, which is a list whose values can be class paths or instances of
+<a class="reference internal" href="#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a> objects.</p>
+<p>Here’s an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MIDDLEWARES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;new_frontera.contrib.middlewares.domain.DomainMiddleware&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Middlewares are called in the same order they’ve been defined in the list, to decide which order to assign to your
+middleware pick a value according to where you want to insert it. The order does matter because each middleware
+performs a different action and your middleware could depend on some previous (or subsequent) middleware being applied.</p>
+<p>Finally, keep in mind that some middlewares may need to be enabled through a particular setting. See
+<a class="reference internal" href="#frontier-built-in-middleware"><span class="std std-ref">each middleware documentation</span></a> for more info.</p>
+</section>
+<section id="writing-your-own-middleware">
+<span id="frontier-writing-middleware"></span><h2>Writing your own middleware<a class="headerlink" href="#writing-your-own-middleware" title="Permalink to this heading">¶</a></h2>
+<p>Writing your own frontier middleware is easy. Each <a class="reference internal" href="#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a>
+component is a single Python class inherited from <a class="reference internal" href="frontier-api.html#new_frontera.core.components.Component" title="new_frontera.core.components.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code></a>.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code> will communicate with all active middlewares
+through the methods described below.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.components.Middleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.components.</span></span><span class="sig-name descname"><span class="pre">Middleware</span></span><a class="headerlink" href="#new_frontera.core.components.Middleware" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface definition for a Frontier Middlewares</p>
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Middleware.frontier_start">
+<span class="sig-name descname"><span class="pre">frontier_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Middleware.frontier_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the frontier starts, see <a class="reference internal" href="frontier-api.html#frontier-start-stop"><span class="std std-ref">starting/stopping the frontier</span></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Middleware.frontier_stop">
+<span class="sig-name descname"><span class="pre">frontier_stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Middleware.frontier_stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the frontier stops, see <a class="reference internal" href="frontier-api.html#frontier-start-stop"><span class="std std-ref">starting/stopping the frontier</span></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Middleware.page_crawled">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">page_crawled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Middleware.page_crawled" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called every time a page has been crawled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response</strong> (<em>object</em>) – The <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> object for the crawled page.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+<p>Should either return <code class="docutils literal notranslate"><span class="pre">None</span></code> or a <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> object.</p>
+<p>If it returns <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code> won’t continue
+processing any other middleware and <a class="reference internal" href="frontier-backends.html#new_frontera.core.components.Backend" title="new_frontera.core.components.Backend"><code class="xref py py-class docutils literal notranslate"><span class="pre">Backend</span></code></a> will never be
+notified.</p>
+<p>If it returns a <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> object, this will be passed to
+next middleware. This process will repeat for all active middlewares until result is finally passed to the
+<a class="reference internal" href="frontier-backends.html#new_frontera.core.components.Backend" title="new_frontera.core.components.Backend"><code class="xref py py-class docutils literal notranslate"><span class="pre">Backend</span></code></a>.</p>
+<p>If you want to filter a page, just return None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Middleware.request_error">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">request_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Middleware.request_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called each time an error occurs when crawling a page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>object</em>) – The crawled with error <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object.</p></li>
+<li><p><strong>error</strong> (<em>string</em>) – A string identifier for the error.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+<p>Should either return <code class="docutils literal notranslate"><span class="pre">None</span></code> or a <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object.</p>
+<p>If it returns <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code> won’t continue
+processing any other middleware and <a class="reference internal" href="frontier-backends.html#new_frontera.core.components.Backend" title="new_frontera.core.components.Backend"><code class="xref py py-class docutils literal notranslate"><span class="pre">Backend</span></code></a> will never be
+notified.</p>
+<p>If it returns a <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> object, this will be passed to
+next middleware. This process will repeat for all active middlewares until result is finally passed to the
+<a class="reference internal" href="frontier-backends.html#new_frontera.core.components.Backend" title="new_frontera.core.components.Backend"><code class="xref py py-class docutils literal notranslate"><span class="pre">Backend</span></code></a>.</p>
+<p>If you want to filter a page error, just return None.</p>
+</dd></dl>
+
+<p><strong>Class Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Middleware.from_manager">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Middleware.from_manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class method called from <code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code> passing the
+manager itself.</p>
+<p>Example of usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">from_manager</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">manager</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">manager</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="built-in-middleware-reference">
+<span id="frontier-built-in-middleware"></span><h2>Built-in middleware reference<a class="headerlink" href="#built-in-middleware-reference" title="Permalink to this heading">¶</a></h2>
+<p>This page describes all <a class="reference internal" href="#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a> components that come with new_frontera.
+For information on how to use them and how to write your own middleware, see the
+<a class="reference internal" href="#frontier-writing-middleware"><span class="std std-ref">middleware usage guide.</span></a>.</p>
+<p>For a list of the components enabled by default (and their orders) see the <a href="#id3"><span class="problematic" id="id4">:setting:`MIDDLEWARES`</span></a> setting.</p>
+<section id="domainmiddleware">
+<span id="frontier-domain-middleware"></span><h3>DomainMiddleware<a class="headerlink" href="#domainmiddleware" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.contrib.middlewares.domain.DomainMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.contrib.middlewares.domain.</span></span><span class="sig-name descname"><span class="pre">DomainMiddleware</span></span><a class="headerlink" href="#new_frontera.contrib.middlewares.domain.DomainMiddleware" title="Permalink to this definition">¶</a></dt>
+<dd><p>This <a class="reference internal" href="#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a> will add a <code class="docutils literal notranslate"><span class="pre">domain</span></code> info field for every
+<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request.meta" title="new_frontera.core.models.Request.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Request.meta</span></code></a> and
+<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response.meta" title="new_frontera.core.models.Response.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Response.meta</span></code></a> if is activated.</p>
+<p><code class="docutils literal notranslate"><span class="pre">domain</span></code> object will contain the following fields, with both keys and values as bytes:</p>
+<ul class="simple">
+<li><p><strong>netloc</strong>: URL netloc according to <a class="reference external" href="http://tools.ietf.org/html/rfc1808.html">RFC 1808</a> syntax specifications</p></li>
+<li><p><strong>name</strong>: Domain name</p></li>
+<li><p><strong>scheme</strong>: URL scheme</p></li>
+<li><p><strong>tld</strong>: Top level domain</p></li>
+<li><p><strong>sld</strong>: Second level domain</p></li>
+<li><p><strong>subdomain</strong>: URL subdomain(s)</p></li>
+</ul>
+<p>An example for a <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+<span class="go">&#39;http://www.scrapinghub.com:8080/this/is/an/url&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;domain&#39;</span><span class="p">]</span>
+<span class="go">{</span>
+<span class="go">    &quot;name&quot;: &quot;scrapinghub.com&quot;,</span>
+<span class="go">    &quot;netloc&quot;: &quot;www.scrapinghub.com&quot;,</span>
+<span class="go">    &quot;scheme&quot;: &quot;http&quot;,</span>
+<span class="go">    &quot;sld&quot;: &quot;scrapinghub&quot;,</span>
+<span class="go">    &quot;subdomain&quot;: &quot;www&quot;,</span>
+<span class="go">    &quot;tld&quot;: &quot;com&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>If <a href="#id5"><span class="problematic" id="id6">:setting:`TEST_MODE`</span></a> is active, It will accept testing URLs, parsing letter domains:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+<span class="go">&#39;A1&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;domain&#39;</span><span class="p">]</span>
+<span class="go">{</span>
+<span class="go">    &quot;name&quot;: &quot;A&quot;,</span>
+<span class="go">    &quot;netloc&quot;: &quot;A&quot;,</span>
+<span class="go">    &quot;scheme&quot;: &quot;-&quot;,</span>
+<span class="go">    &quot;sld&quot;: &quot;-&quot;,</span>
+<span class="go">    &quot;subdomain&quot;: &quot;-&quot;,</span>
+<span class="go">    &quot;tld&quot;: &quot;-&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="urlfingerprintmiddleware">
+<span id="frontier-url-fingerprint-middleware"></span><h3>UrlFingerprintMiddleware<a class="headerlink" href="#urlfingerprintmiddleware" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.contrib.middlewares.fingerprint.</span></span><span class="sig-name descname"><span class="pre">UrlFingerprintMiddleware</span></span><a class="headerlink" href="#new_frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware" title="Permalink to this definition">¶</a></dt>
+<dd><p>This <a class="reference internal" href="#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a> will add a <code class="docutils literal notranslate"><span class="pre">fingerprint</span></code> field for every
+<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request.meta" title="new_frontera.core.models.Request.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Request.meta</span></code></a> and
+<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response.meta" title="new_frontera.core.models.Response.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Response.meta</span></code></a> if is activated.</p>
+<p>Fingerprint will be calculated from object <code class="docutils literal notranslate"><span class="pre">URL</span></code>, using the function defined in
+<a href="#id7"><span class="problematic" id="id8">:setting:`URL_FINGERPRINT_FUNCTION`</span></a> setting.
+You can write your own fingerprint calculation function and use by changing this setting.
+The fingerprint must be bytes.</p>
+<p>An example for a <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+<span class="go">&#39;http//www.scrapinghub.com:8080&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">]</span>
+<span class="go">&#39;60d846bc2969e9706829d5f1690f11dafb70ed18&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="new_frontera.utils.fingerprint.hostname_local_fingerprint">
+<span class="sig-prename descclassname"><span class="pre">new_frontera.utils.fingerprint.</span></span><span class="sig-name descname"><span class="pre">hostname_local_fingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.utils.fingerprint.hostname_local_fingerprint" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is used for URL fingerprinting, which serves to uniquely identify the document in storage.
+<code class="docutils literal notranslate"><span class="pre">hostname_local_fingerprint</span></code> is constructing fingerprint getting first 4 bytes as Crc32 from host, and rest is MD5
+from rest of the URL. Default option is set to make use of HBase block cache. It is expected to fit all the documents
+of average website within one cache block, which can be efficiently read from disk once.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – str URL</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>str 20 bytes hex string</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="domainfingerprintmiddleware">
+<span id="frontier-domain-fingerprint-middleware"></span><h3>DomainFingerprintMiddleware<a class="headerlink" href="#domainfingerprintmiddleware" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.contrib.middlewares.fingerprint.</span></span><span class="sig-name descname"><span class="pre">DomainFingerprintMiddleware</span></span><a class="headerlink" href="#new_frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware" title="Permalink to this definition">¶</a></dt>
+<dd><p>This <a class="reference internal" href="#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a> will add a <code class="docutils literal notranslate"><span class="pre">fingerprint</span></code> field for every
+<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request.meta" title="new_frontera.core.models.Request.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Request.meta</span></code></a> and
+<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response.meta" title="new_frontera.core.models.Response.meta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Response.meta</span></code></a> <code class="docutils literal notranslate"><span class="pre">domain</span></code> fields if is activated.</p>
+<p>Fingerprint will be calculated from object <code class="docutils literal notranslate"><span class="pre">URL</span></code>, using the function defined in
+<a href="#id9"><span class="problematic" id="id10">:setting:`DOMAIN_FINGERPRINT_FUNCTION`</span></a> setting.
+You can write your own fingerprint calculation function and use by changing this setting.
+The fingerprint must be bytes</p>
+<p>An example for a <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+<span class="go">&#39;http//www.scrapinghub.com:8080&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;domain&#39;</span><span class="p">]</span>
+<span class="go">{</span>
+<span class="go">    &quot;fingerprint&quot;: &quot;5bab61eb53176449e25c2c82f172b82cb13ffb9d&quot;,</span>
+<span class="go">    &quot;name&quot;: &quot;scrapinghub.com&quot;,</span>
+<span class="go">    &quot;netloc&quot;: &quot;www.scrapinghub.com&quot;,</span>
+<span class="go">    &quot;scheme&quot;: &quot;http&quot;,</span>
+<span class="go">    &quot;sld&quot;: &quot;scrapinghub&quot;,</span>
+<span class="go">    &quot;subdomain&quot;: &quot;www&quot;,</span>
+<span class="go">    &quot;tld&quot;: &quot;com&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="frontier-objects.html" class="btn btn-neutral float-left" title="Frontier objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="frontier-canonicalsolvers.html" class="btn btn-neutral float-right" title="Canonical URL Solver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

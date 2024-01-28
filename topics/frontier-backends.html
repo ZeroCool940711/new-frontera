@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backends &mdash; new_frontera 0.9.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Message bus" href="message_bus.html" />
+    <link rel="prev" title="Canonical URL Solver" href="frontier-canonicalsolvers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            new_frontera
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">new_frontera at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-modes.html">Run modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-single.html">Quick start single process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start-distributed.html">Quick start distributed mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster-setup.html">Cluster setup guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Crawling strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-objects.html">Frontier objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-middlewares.html">Middlewares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-canonicalsolvers.html">Canonical URL Solver</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Backends</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#activating-a-backend">Activating a backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-your-own-backend">Writing your own backend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new_frontera.core.components.Backend"><code class="docutils literal notranslate"><span class="pre">Backend</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.frontier_start"><code class="docutils literal notranslate"><span class="pre">Backend.frontier_start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.frontier_stop"><code class="docutils literal notranslate"><span class="pre">Backend.frontier_stop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.finished"><code class="docutils literal notranslate"><span class="pre">Backend.finished()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.page_crawled"><code class="docutils literal notranslate"><span class="pre">Backend.page_crawled()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.request_error"><code class="docutils literal notranslate"><span class="pre">Backend.request_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.get_next_requests"><code class="docutils literal notranslate"><span class="pre">Backend.get_next_requests()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.from_manager"><code class="docutils literal notranslate"><span class="pre">Backend.from_manager()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.queue"><code class="docutils literal notranslate"><span class="pre">Backend.queue</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.states"><code class="docutils literal notranslate"><span class="pre">Backend.states</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Backend.metadata"><code class="docutils literal notranslate"><span class="pre">Backend.metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#new_frontera.core.components.DistributedBackend"><code class="docutils literal notranslate"><span class="pre">DistributedBackend</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.DistributedBackend.strategy_worker"><code class="docutils literal notranslate"><span class="pre">DistributedBackend.strategy_worker()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.DistributedBackend.db_worker"><code class="docutils literal notranslate"><span class="pre">DistributedBackend.db_worker()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#metadata">Metadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Metadata"><code class="docutils literal notranslate"><span class="pre">Metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#queue">Queue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.Queue"><code class="docutils literal notranslate"><span class="pre">Queue</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#states">States</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.States"><code class="docutils literal notranslate"><span class="pre">States</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#domainmetadata">DomainMetadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.core.components.DomainMetadata"><code class="docutils literal notranslate"><span class="pre">DomainMetadata</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-backend-reference">Built-in backend reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#memory-backend">Memory backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new_frontera.contrib.backends.memory.MemoryDistributedBackend"><code class="docutils literal notranslate"><span class="pre">MemoryDistributedBackend</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sqlalchemy-backends">SQLAlchemy backends</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hbase-backend">HBase backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#redis-backend">Redis backend</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="message_bus.html">Message bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_crawling_strategy.html">Writing custom crawling strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-integration.html">Using the Frontier with Scrapy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_frontera-settings.html">Settings</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-cf.html">What is a Crawl Frontier?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph-manager.html">Graph Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrapy-recorder.html">Recording a Scrapy crawl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fine-tuning.html">Fine tuning of new_frontera cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-service.html">DNS Service</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-api.html">new_frontera API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests-integration.html">Using the Frontier with Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frontier-tester.html">Testing a Frontier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">new_frontera</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Backends</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/frontier-backends.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="backends">
+<h1>Backends<a class="headerlink" href="#backends" title="Permalink to this heading">¶</a></h1>
+<p>A <a class="reference internal" href="#new_frontera.core.components.DistributedBackend" title="new_frontera.core.components.DistributedBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistributedBackend</span></code></a> is used to separate higher level code
+of <a class="reference internal" href="glossary.html#term-crawling-strategy"><span class="xref std std-term">crawling strategy</span></a> from low level storage API. <a class="reference internal" href="#new_frontera.core.components.Queue" title="new_frontera.core.components.Queue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a>,
+<a class="reference internal" href="#new_frontera.core.components.Metadata" title="new_frontera.core.components.Metadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metadata</span></code></a>, <a class="reference internal" href="#new_frontera.core.components.States" title="new_frontera.core.components.States"><code class="xref py py-class docutils literal notranslate"><span class="pre">States</span></code></a> and</p>
+<blockquote>
+<div><p><a class="reference internal" href="#new_frontera.core.components.DomainMetadata" title="new_frontera.core.components.DomainMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">DomainMetadata</span></code></a> are inner components of the DistributedBackend.</p>
+</div></blockquote>
+<p>The latter is meant to instantiate and hold the references to the objects of above mentioned classes. new_frontera is
+bundled with database and in-memory implementations of Queue, Metadata, States and DomainMetadata which can be combined
+in your custom backends or used standalone by directly instantiating specific variant of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code>.</p>
+<p>DistributedBackend methods are called by the FrontierManager after
+<a class="reference internal" href="frontier-middlewares.html#new_frontera.core.components.Middleware" title="new_frontera.core.components.Middleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">Middleware</span></code></a>, using hooks for
+<a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> and <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> processing
+according to <a class="reference internal" href="architecture.html#frontier-data-flow"><span class="std std-ref">frontier data flow</span></a>.</p>
+<p>Unlike Middleware, that can have many different instances activated, only one DistributedBackend can be used per
+frontier.</p>
+<section id="activating-a-backend">
+<span id="frontier-activating-backend"></span><h2>Activating a backend<a class="headerlink" href="#activating-a-backend" title="Permalink to this heading">¶</a></h2>
+<p>To activate the specific backend, set it through the <a href="#id1"><span class="problematic" id="id2">:setting:`BACKEND`</span></a> setting.</p>
+<p>Here’s an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BACKEND</span> <span class="o">=</span> <span class="s1">&#39;new_frontera.contrib.backends.memory.MemoryDistributedBackend&#39;</span>
+</pre></div>
+</div>
+<p>Keep in mind that some backends may need to be additionally configured through a particular setting. See
+<a class="reference internal" href="#frontier-built-in-backend"><span class="std std-ref">backends documentation</span></a> for more info.</p>
+</section>
+<section id="writing-your-own-backend">
+<span id="frontier-writing-backend"></span><h2>Writing your own backend<a class="headerlink" href="#writing-your-own-backend" title="Permalink to this heading">¶</a></h2>
+<p>Each backend component is a single Python class inherited from
+<a class="reference internal" href="#new_frontera.core.components.DistributedBackend" title="new_frontera.core.components.DistributedBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistributedBackend</span></code></a> and using one or all of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Metadata</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">States</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">DomainMetadata</span></code>.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code> will communicate with active backend through the methods described below.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.components.</span></span><span class="sig-name descname"><span class="pre">Backend</span></span><a class="headerlink" href="#new_frontera.core.components.Backend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface definition for frontier backend.</p>
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.frontier_start">
+<span class="sig-name descname"><span class="pre">frontier_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Backend.frontier_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the frontier starts, see <a class="reference internal" href="frontier-api.html#frontier-start-stop"><span class="std std-ref">starting/stopping the frontier</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.frontier_stop">
+<span class="sig-name descname"><span class="pre">frontier_stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Backend.frontier_stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the frontier stops, see <a class="reference internal" href="frontier-api.html#frontier-start-stop"><span class="std std-ref">starting/stopping the frontier</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.finished">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Backend.finished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quick check if crawling is finished. Called pretty often, please make sure calls are lightweight.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.page_crawled">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">page_crawled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Backend.page_crawled" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called every time a page has been crawled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response</strong> (<em>object</em>) – The <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> object for the crawled page.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.request_error">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">request_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Backend.request_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called each time an error occurs when crawling a page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>object</em>) – The crawled with error <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object.</p></li>
+<li><p><strong>error</strong> (<em>string</em>) – A string identifier for the error.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.get_next_requests">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_next_requests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_n_requests</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Backend.get_next_requests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of next requests to be crawled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_next_requests</strong> (<em>int</em>) – Maximum number of requests to be returned by this method.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – A parameters from downloader component.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Class Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.from_manager">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Backend.from_manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class method called from <code class="xref py py-class docutils literal notranslate"><span class="pre">FrontierManager</span></code> passing the
+manager itself.</p>
+<p>Example of usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">from_manager</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">manager</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">manager</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p><strong>Properties</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.queue">
+<span class="sig-name descname"><span class="pre">queue</span></span><a class="headerlink" href="#new_frontera.core.components.Backend.queue" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>associated <a class="reference internal" href="#new_frontera.core.components.Queue" title="new_frontera.core.components.Queue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a> object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.states">
+<span class="sig-name descname"><span class="pre">states</span></span><a class="headerlink" href="#new_frontera.core.components.Backend.states" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>associated <a class="reference internal" href="#new_frontera.core.components.States" title="new_frontera.core.components.States"><code class="xref py py-class docutils literal notranslate"><span class="pre">States</span></code></a> object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="new_frontera.core.components.Backend.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#new_frontera.core.components.Backend.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>associated <a class="reference internal" href="#new_frontera.core.components.Metadata" title="new_frontera.core.components.Metadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metadata</span></code></a> object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.components.DistributedBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.components.</span></span><span class="sig-name descname"><span class="pre">DistributedBackend</span></span><a class="headerlink" href="#new_frontera.core.components.DistributedBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface definition for distributed frontier backend. Implies using in strategy worker and DB worker.</p>
+</dd></dl>
+
+<p>Inherits all methods of Backend, and has two more class methods, which are called during strategy and db worker
+instantiation.</p>
+<blockquote>
+<div><dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.DistributedBackend.strategy_worker">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DistributedBackend.</span></span><span class="sig-name descname"><span class="pre">strategy_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.DistributedBackend.strategy_worker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.DistributedBackend.db_worker">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DistributedBackend.</span></span><span class="sig-name descname"><span class="pre">db_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.DistributedBackend.db_worker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div></blockquote>
+<p>Backend should communicate with low-level storage by means of these classes:</p>
+<section id="metadata">
+<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this heading">¶</a></h3>
+<p>Is used to store the contents of the crawl.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.components.Metadata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.components.</span></span><span class="sig-name descname"><span class="pre">Metadata</span></span><a class="headerlink" href="#new_frontera.core.components.Metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface definition for a frontier metadata class. This class is responsible for storing documents metadata,
+including content and optimized for write-only data flow.</p>
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Metadata.request_error">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">request_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Metadata.request_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called each time an error occurs when crawling a page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>object</em>) – The crawled with error <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object.</p></li>
+<li><p><strong>error</strong> (<em>string</em>) – A string identifier for the error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Metadata.page_crawled">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">page_crawled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Metadata.page_crawled" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called every time a page has been crawled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response</strong> (<em>object</em>) – The <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Response" title="new_frontera.core.models.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> object for the crawled page.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>Known implementations are: <code class="xref py py-class docutils literal notranslate"><span class="pre">MemoryMetadata</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.components.Metadata</span></code>.</p>
+</section>
+<section id="queue">
+<h3>Queue<a class="headerlink" href="#queue" title="Permalink to this heading">¶</a></h3>
+<p>Is a priority queue and used to persist requests scheduled for crawling.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.components.Queue">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.components.</span></span><span class="sig-name descname"><span class="pre">Queue</span></span><a class="headerlink" href="#new_frontera.core.components.Queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface definition for a frontier queue class. The queue has priorities and partitions.</p>
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Queue.get_next_requests">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_next_requests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_n_requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partition_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Queue.get_next_requests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of next requests to be crawled, and excludes them from internal storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_next_requests</strong> (<em>int</em>) – Maximum number of requests to be returned by this method.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – A parameters from downloader component.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Queue.schedule">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Queue.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedules a new documents for download from batch, and updates score in metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>batch</strong> – list of tuples(fingerprint, score, request, schedule), if <code class="docutils literal notranslate"><span class="pre">schedule</span></code> is True, then document
+needs to be scheduled for download, False - only update score in metadata.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.Queue.count">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.Queue.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns count of documents in the queue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>Known implementations are: <code class="xref py py-class docutils literal notranslate"><span class="pre">MemoryQueue</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.components.Queue</span></code>.</p>
+</section>
+<section id="states">
+<h3>States<a class="headerlink" href="#states" title="Permalink to this heading">¶</a></h3>
+<p>Is a storage used for checking and storing the link states. Where state is a short integer of one of states descibed in
+<a class="reference internal" href="#new_frontera.core.components.States" title="new_frontera.core.components.States"><code class="xref py py-class docutils literal notranslate"><span class="pre">new_frontera.core.components.States</span></code></a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.components.States">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.components.</span></span><span class="sig-name descname"><span class="pre">States</span></span><a class="headerlink" href="#new_frontera.core.components.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface definition for a link states management class. This class is responsible for providing actual
+link state, and persist the state changes in batch-oriented manner.</p>
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.States.update_cache">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.States.update_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads states from meta[‘state’] field of request in objs and stores states in internal cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>objs</strong> – list or tuple of <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.States.set_states">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.States.set_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets meta[‘state’] field from cache for every request in objs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>objs</strong> – list or tuple of <a class="reference internal" href="frontier-objects.html#new_frontera.core.models.Request" title="new_frontera.core.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.States.flush">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.States.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flushes internal cache to storage.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.States.fetch">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fingerprints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.States.fetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get states from the persistent storage to internal cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fingerprints</strong> – list document fingerprints, which state to read</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>Known implementations are: <code class="xref py py-class docutils literal notranslate"><span class="pre">MemoryStates</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.components.States</span></code>.</p>
+</section>
+<section id="domainmetadata">
+<h3>DomainMetadata<a class="headerlink" href="#domainmetadata" title="Permalink to this heading">¶</a></h3>
+<p>Is used to store per-domain flags, counters or even robots.txt contents to help <a class="reference internal" href="glossary.html#term-crawling-strategy"><span class="xref std std-term">crawling strategy</span></a> maintain
+features like per-domain number of crawled pages limit or automatic banning.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.core.components.DomainMetadata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.core.components.</span></span><span class="sig-name descname"><span class="pre">DomainMetadata</span></span><a class="headerlink" href="#new_frontera.core.components.DomainMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface definition for a domain metadata storage. It’s main purpose is to store the per-domain metadata using
+Python-friendly structures. Meant to be used by crawling strategy to store counters and flags in low level
+facilities provided by Backend.</p>
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.DomainMetadata.__setitem__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__setitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.DomainMetadata.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Puts key, value tuple in storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – str</p></li>
+<li><p><strong>value</strong> – Any</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.DomainMetadata.__getitem__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.DomainMetadata.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the value associated with the storage. Raises KeyError if key is absent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – str</p>
+</dd>
+<dt class="field-even">Return value<span class="colon">:</span></dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.DomainMetadata.__delitem__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__delitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.DomainMetadata.__delitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the tuple associated with key from storage. Raises KeyError if key is absent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="new_frontera.core.components.DomainMetadata.__contains__">
+<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.core.components.DomainMetadata.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if key is present in the storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – str</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>Known implementations are: native dict and <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.components.DomainMetadata</span></code>.</p>
+</section>
+</section>
+<section id="built-in-backend-reference">
+<span id="frontier-built-in-backend"></span><h2>Built-in backend reference<a class="headerlink" href="#built-in-backend-reference" title="Permalink to this heading">¶</a></h2>
+<p>This article describes all backend components that come bundled with new_frontera.</p>
+<section id="memory-backend">
+<span id="frontier-backends-memory"></span><h3>Memory backend<a class="headerlink" href="#memory-backend" title="Permalink to this heading">¶</a></h3>
+<p>This implementation is using <a class="reference external" href="https://docs.python.org/2/library/heapq.html">heapq</a> module to store the requests queue and native dicts for other purposes and is
+meant to be used for educational or testing purposes only.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="new_frontera.contrib.backends.memory.MemoryDistributedBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">new_frontera.contrib.backends.memory.</span></span><span class="sig-name descname"><span class="pre">MemoryDistributedBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#new_frontera.contrib.backends.memory.MemoryDistributedBackend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="sqlalchemy-backends">
+<span id="frontier-backends-sqlalchemy"></span><h3>SQLAlchemy backends<a class="headerlink" href="#sqlalchemy-backends" title="Permalink to this heading">¶</a></h3>
+<p>This implementations is using RDBMS storage with <a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a> library.</p>
+<p>By default it uses an in-memory SQLite database as a storage engine, but <a class="reference external" href="http://docs.sqlalchemy.org/en/latest/dialects/index.html">any databases supported by SQLAlchemy</a> can
+be used.</p>
+<p>If you need to use your own <a class="reference external" href="http://docs.sqlalchemy.org/en/latest/orm/extensions/declarative/index.html">declarative sqlalchemy models</a>, you can do it by using the
+<a href="#id3"><span class="problematic" id="id4">:setting:`SQLALCHEMYBACKEND_MODELS`</span></a> setting.</p>
+<p>For a complete list of all settings used for SQLAlchemy backends check the <a class="reference internal" href="new_frontera-settings.html"><span class="doc">settings</span></a> section.</p>
+</section>
+<section id="hbase-backend">
+<h3>HBase backend<a class="headerlink" href="#hbase-backend" title="Permalink to this heading">¶</a></h3>
+<p>Is more suitable for large scale web crawlers. Settings reference can be found here <a class="reference internal" href="new_frontera-settings.html#hbase-settings"><span class="std std-ref">HBase backend</span></a>. Consider
+tunning a block cache to fit states within one block for average size website. To achieve this it’s recommended to use
+<a class="reference internal" href="frontier-middlewares.html#new_frontera.utils.fingerprint.hostname_local_fingerprint" title="new_frontera.utils.fingerprint.hostname_local_fingerprint"><code class="xref py py-attr docutils literal notranslate"><span class="pre">hostname_local_fingerprint</span></code></a> to achieve documents
+closeness within the same host. This function can be selected with <a href="#id5"><span class="problematic" id="id6">:setting:`URL_FINGERPRINT_FUNCTION`</span></a> setting.</p>
+</section>
+<section id="redis-backend">
+<h3>Redis backend<a class="headerlink" href="#redis-backend" title="Permalink to this heading">¶</a></h3>
+<p>This is similar to the HBase backend. It is suitable for large scale crawlers that still has a limited scope. It is
+recommended to ensure Redis is allowed to use enough memory to store all data the crawler needs. In case of Redis
+running out of memory, the crawler will log this and continue. When the crawler is unable to write metadata or queue
+items to the database; that metadata or queue items are lost.</p>
+<p>In case of connection errors; the crawler will attempt to reconnect three times. If the third attempt at connecting
+to Redis fails, the worker will skip that Redis operation and continue operating.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="frontier-canonicalsolvers.html" class="btn btn-neutral float-left" title="Canonical URL Solver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="message_bus.html" class="btn btn-neutral float-right" title="Message bus" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2018, new_frontera authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
