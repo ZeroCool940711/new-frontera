@@ -43,11 +43,12 @@ $ pip install new-frontera
 
 ## Documentation
 
-- [Main documentation at RTD](http://frontera.readthedocs.org/)
+- [Main documentation at RTD](http://new-frontera.readthedocs.org/)
+- [Backup Documentation hosted in Github Pages](https://zerocool940711.github.io/new-frontera/)
+
 - [EuroPython 2015 slides](http://www.slideshare.net/sixtyone/fronteraopen-source-large-scale-web-crawling-framework)
 - [BigDataSpain 2015 slides](https://speakerdeck.com/scrapinghub/frontera-open-source-large-scale-web-crawling-framework)
 
 ## Community
 
-Join our Google group at https://groups.google.com/a/scrapinghub.com/forum/#!forum/frontera or check GitHub issues and 
-pull requests.
+If you have any question or want to contribute, feel free to open an issue/discusion on GitHub or make a Pull Requests.
