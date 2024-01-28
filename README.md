@@ -1,9 +1,9 @@
 # new_frontera
 
-[![pypi](https://img.shields.io/pypi/v/new_frontera)](https://pypi.org/project/new_frontera/)
-[![python versions](https://img.shields.io/pypi/pyversions/new_frontera.svg)](https://pypi.org/project/new_frontera/)
-[![Build Status](https://app.travis-ci.com/ZeroCool940711/new-new_frontera.svg?branch=master)](https://app.travis-ci.com/ZeroCool940711/new-new_frontera)
-[![codecov](https://codecov.io/gh/scrapinghub/new_frontera/branch/master/graph/badge.svg)](https://codecov.io/gh/scrapinghub/new_frontera)
+[![pypi](https://img.shields.io/pypi/v/new-frontera)](https://pypi.org/project/new-frontera/)
+[![python versions](https://img.shields.io/pypi/pyversions/new-frontera.svg)](https://pypi.org/project/new-frontera/)
+[![Build Status](https://app.travis-ci.com/ZeroCool940711/new-frontera.svg?branch=master)](https://app.travis-ci.com/ZeroCool940711/new-frontera)
+[![codecov](https://codecov.io/gh/scrapinghub/frontera/branch/master/graph/badge.svg)](https://codecov.io/gh/scrapinghub/frontera)
 
 ## Overview
 
@@ -32,7 +32,7 @@ the crawler to decide which pages to visit next, and capable of doing it in dist
 Development version:
 
 ```bash
-$ pip install git+https://github.com/ZeroCool940711/new_frontera.git
+$ pip install git+https://github.com/ZeroCool940711/new-frontera.git
 ```
 
 or from PyPi:
