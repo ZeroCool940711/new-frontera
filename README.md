@@ -28,7 +28,11 @@ the crawler to decide which pages to visit next, and capable of doing it in dist
 - Python 3 support.
 
 ## Installation
-
+Development version:
+```bash
+$ pip install git+https://github.com/ZeroCool940711/new-frontera.git
+```
+Old version from PyPi:
 ```bash
 $ pip install frontera
 ```
