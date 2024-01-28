@@ -2,7 +2,10 @@ from __future__ import absolute_import
 
 import logging
 from abc import ABCMeta, abstractmethod
-from collections import Iterable
+try:
+    from collections import Iterable
+except ImportError:
+    from collections.abc import Iterable
 
 import six
 
