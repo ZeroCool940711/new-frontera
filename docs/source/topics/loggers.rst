@@ -2,7 +2,7 @@
 Logging
 =======
 
-Frontera is using Python native logging system. This allows a user to manage logged messages by writing a logger
+new_frontera is using Python native logging system. This allows a user to manage logged messages by writing a logger
 configuration file (see :setting:`LOGGING_CONFIG`) or configuring logging system during runtime.
 
 Logger configuration syntax is here
@@ -31,5 +31,5 @@ Loggers used
 * memory.states
 * manager.components
 * manager
-* frontera.contrib.scrapy.schedulers.FronteraScheduler
+* new_frontera.contrib.scrapy.schedulers.new_fronteraScheduler
 

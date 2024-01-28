@@ -6,7 +6,7 @@ The idea is that you develop and debug crawling strategy in single process mode 
 deploying crawling strategy for crawling in production at scale. Single process is also good as a first step to get
 something running quickly.
 
-    Note, that this tutorial doesn't work for :class:`frontera.contrib.backends.memory.MemoryDistributedBackend`.
+    Note, that this tutorial doesn't work for :class:`new_frontera.contrib.backends.memory.MemoryDistributedBackend`.
 
 1. Create your Scrapy spider
 ============================
@@ -37,12 +37,12 @@ These are basically:
 - **tutorial/settings.py**: the project’s settings file.
 - **tutorial/spiders/**: a directory where you’ll later put your spiders.
 
-2. Install Frontera
+2. Install new_frontera
 ===================
 
 See :doc:`installation`.
 
-3. Integrate your spider with the Frontera
+3. Integrate your spider with the new_frontera
 ==========================================
 
 This article about :doc:`integration with Scrapy <scrapy-integration>` explains this step in detail.
@@ -53,7 +53,7 @@ This article about :doc:`integration with Scrapy <scrapy-integration>` explains 
 Here are the options you would need to redefine when running in single process mode the crawler configured for
 distributed mode::
 
-    # these two parameters are pointing Frontera that it will run locally
+    # these two parameters are pointing new_frontera that it will run locally
 
     SPIDER_FEED_PARTITIONS = 1
     SPIDER_LOG_PARTITIONS = 1
@@ -64,7 +64,7 @@ distributed mode::
 
 Configure frontier settings to use a built-in backend like::
 
-    BACKEND = 'frontera.contrib.backends.sqlalchemy.Distributed'
+    BACKEND = 'new_frontera.contrib.backends.sqlalchemy.Distributed'
 
 
 6. Inject the seed URLs
@@ -72,7 +72,7 @@ Configure frontier settings to use a built-in backend like::
 
 This step is required only if your crawling strategy requires seeds injection from external source.::
 
-    $ python -m frontera.utils.add_seeds --config [your_frontera_config] --seeds-file [path to your seeds file]
+    $ python -m new_frontera.utils.add_seeds --config [your_new_frontera_config] --seeds-file [path to your seeds file]
 
 After script is finished succesfully your seeds should be stored in backend's queue and scheduled for crawling.
 
@@ -83,13 +83,13 @@ Run your Scrapy spider as usual from the command line::
 
     scrapy crawl myspider
 
-And that's it! You got your crawler running integrated with Frontera.
+And that's it! You got your crawler running integrated with new_frontera.
 
 What else?
 ==========
 
-You’ve seen a simple example of how to use Frontera with Scrapy, but this is just the surface.
-Frontera provides many powerful features for making frontier management easy and efficient, such as:
+You’ve seen a simple example of how to use new_frontera with Scrapy, but this is just the surface.
+new_frontera provides many powerful features for making frontier management easy and efficient, such as:
 
 * Built-in support for :ref:`database storage <frontier-backends-sqlalchemy>` for crawled pages.
 

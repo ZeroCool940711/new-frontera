@@ -1,7 +1,7 @@
 """
 Frontier tester usage example
 """
-from frontera import FrontierManager, FrontierTester, Settings, graphs
+from new_frontera import FrontierManager, FrontierTester, Settings, graphs
 
 if __name__ == '__main__':
     # Graph

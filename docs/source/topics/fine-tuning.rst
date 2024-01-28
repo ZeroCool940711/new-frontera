@@ -1,5 +1,5 @@
 ===============================
-Fine tuning of Frontera cluster
+Fine tuning of new_frontera cluster
 ===============================
 
 
@@ -32,7 +32,7 @@ Flow control between various components
 =======================================
 
 The :setting:`MAX_NEXT_REQUESTS` is used for controlling the batch size. In spiders config it controls how much items
-will be consumed per one :attr:`get_next_requests <frontera.core.manager.FrontierManager.get_next_requests>` call. At
+will be consumed per one :attr:`get_next_requests <new_frontera.core.manager.FrontierManager.get_next_requests>` call. At
 the same time in DB worker config it sets count of items to generate per partition. When setting these parameters keep
 in mind:
 

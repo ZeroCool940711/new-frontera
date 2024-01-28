@@ -2,7 +2,7 @@
 Tests
 =====
 
-Frontera tests are implemented using the `pytest`_ tool.
+new_frontera tests are implemented using the `pytest`_ tool.
 
 You can install `pytest`_ and the additional required libraries used in the tests using pip::
 
@@ -27,7 +27,7 @@ so please include tests for your patches if you want them to get accepted sooner
 Backend testing
 ===============
 
-A base `pytest`_ class for :class:`Backend <frontera.core.components.Backend>` testing is provided:
+A base `pytest`_ class for :class:`Backend <new_frontera.core.components.Backend>` testing is provided:
 :class:`BackendTest <tests.backends.BackendTest>`
 
 .. autoclass:: tests.backends.BackendTest
@@ -44,7 +44,7 @@ test method call, you can define a test class like this::
 
     class TestMyBackend(backends.BackendTest):
 
-        backend_class = 'frontera.contrib.backend.abackend.MyBackend'
+        backend_class = 'new_frontera.contrib.backend.abackend.MyBackend'
 
         def test_one(self):
             frontier = self.get_frontier()
@@ -62,7 +62,7 @@ And let's say too that it uses a database file and you need to clean it before a
 
     class TestMyBackend(backends.BackendTest):
 
-        backend_class = 'frontera.contrib.backend.abackend.MyBackend'
+        backend_class = 'new_frontera.contrib.backend.abackend.MyBackend'
 
         def setup_backend(self, method):
             self._delete_test_db()
@@ -90,7 +90,7 @@ And let's say too that it uses a database file and you need to clean it before a
 Testing backend sequences
 =========================
 
-To test :class:`Backend <frontera.core.components.Backend>` crawling sequences you can use the
+To test :class:`Backend <new_frontera.core.components.Backend>` crawling sequences you can use the
 :class:`BackendSequenceTest <tests.backends.BackendSequenceTest>` class.
 
 .. autoclass:: tests.backends.BackendSequenceTest
@@ -108,7 +108,7 @@ You can define the following test::
 
     class TestAlphabeticSortBackend(backends.BackendSequenceTest):
 
-        backend_class = 'frontera.contrib.backend.abackend.AlphabeticSortBackend'
+        backend_class = 'new_frontera.contrib.backend.abackend.AlphabeticSortBackend'
 
         SITE_LIST = [
             [

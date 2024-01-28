@@ -1,13 +1,12 @@
 from __future__ import absolute_import
-from frontera.settings import Settings
+from new_frontera.settings import Settings
 from six.moves import range
 
 
 class FakeFrontierManager(object):
-
     def __init__(self, settings):
         self.settings = settings
-        self.auto_start = settings.get('AUTO_START')
+        self.auto_start = settings.get("AUTO_START")
         self.iteration = 0
         self.finished = False
         self._started = True
@@ -40,7 +39,7 @@ class FakeFrontierManager(object):
 
     def get_next_requests(self, max_next_requests=0, **kwargs):
         self.get_next_requests_kwargs.append(kwargs)
-        max_next_requests = max_next_requests or self.settings.get('MAX_NEXT_REQUESTS')
+        max_next_requests = max_next_requests or self.settings.get("MAX_NEXT_REQUESTS")
         lst = []
         for i in range(max_next_requests):
             if self.requests:
@@ -58,5 +57,3 @@ class FakeFrontierManager(object):
 
     def request_error(self, request, error):
         self.errors.append((request, error))
-
-

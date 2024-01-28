@@ -4,11 +4,10 @@ import pytest
 from twisted.test.proto_helpers import MemoryReactor
 from twisted.internet.protocol import Factory
 from twisted.internet.task import Clock
-from frontera.utils.twisted_helpers import CallLaterOnce, listen_tcp
+from new_frontera.utils.twisted_helpers import CallLaterOnce, listen_tcp
 
 
 class TestCallLaterOnce(object):
-
     called = 0
 
     def call_function(self):
@@ -52,8 +51,7 @@ class TestCallLaterOnce(object):
 
 
 class TestListenTCP(object):
-
-    host = '127.0.0.1'
+    host = "127.0.0.1"
     port = 6023
     portrange = [6023, 6073]
 
@@ -67,7 +65,7 @@ class TestListenTCP(object):
         reactor = MemoryReactor()
         with pytest.raises(Exception) as info:
             listen_tcp([1, 2, 3], self.host, Factory, reactor=reactor)
-        assert str(info.value) == 'invalid portrange: [1, 2, 3]'
+        assert str(info.value) == "invalid portrange: [1, 2, 3]"
 
     def test_listen_tcp_default(self):
         reactor = MemoryReactor()

@@ -2,19 +2,19 @@
 Writing custom crawling strategy
 ================================
 
-Crawling strategy is an essential part of Frontera-based crawler and it's guiding the crawler by instructing it which pages to crawl, when and with what priority.
+Crawling strategy is an essential part of new_frontera-based crawler and it's guiding the crawler by instructing it which pages to crawl, when and with what priority.
 
 
 Crawler workflow
 ================
 
-Frontera-based crawler consist of multiple processes, which are running indefinitely. The state in these processes are
+new_frontera-based crawler consist of multiple processes, which are running indefinitely. The state in these processes are
 persisted to a permanent storage. When processes are stopped the state is flushed and will be loaded next time when
 access to certain data item is needed. Therefore it's easy to pause the crawl by stopping the processes, do the
 maintenance or modify the code and start again without restarting the crawl from the beginning.
 
     IMPORTANT DETAIL
-    Spider log (see http://frontera.readthedocs.io/en/latest/topics/glossary.html) is using hostname-based partitioning.
+    Spider log (see http://new_frontera.readthedocs.io/en/latest/topics/glossary.html) is using hostname-based partitioning.
     The content generated from particular host will always land to the same partition (and therefore strategy worker
     instance). That guarantees the crawling strategy you design will be always dealing with same subset of hostnames
     on every SW instance. It also means the same domain cannot be operated from multiple strategy worker instances.
@@ -35,21 +35,21 @@ Crawling strategy class
 
 It has to be inherited from BaseCrawlingStrategy and implement it's API.
 
-.. autoclass:: frontera.strategy.BaseCrawlingStrategy
+.. autoclass:: new_frontera.strategy.BaseCrawlingStrategy
 
     **Methods**
 
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.from_worker
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.read_seeds
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.page_crawled
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.filter_extracted_links
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.links_extracted
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.request_error
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.finished
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.close
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.schedule
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.create_request
-    .. automethod:: frontera.strategy.BaseCrawlingStrategy.refresh_states
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.from_worker
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.read_seeds
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.page_crawled
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.filter_extracted_links
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.links_extracted
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.request_error
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.finished
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.close
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.schedule
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.create_request
+    .. automethod:: new_frontera.strategy.BaseCrawlingStrategy.refresh_states
 
 
 The class can be put in any module and passed to :term:`strategy worker` or local Scrapy process using command line
@@ -80,9 +80,9 @@ from command line. In particular --seeds-url is used with s3 or local file URL c
 1. read_seeds(stream from file, None if file isn't present)
 1. exit
 
-It's very convenient to run seeds addition using helper app in Frontera::
+It's very convenient to run seeds addition using helper app in new_frontera::
 
-    $ python -m frontera.utils.add_seeds --config ... --seeds-file ...
+    $ python -m new_frontera.utils.add_seeds --config ... --seeds-file ...
 
 
 Main
@@ -102,9 +102,9 @@ Scheduling and creating requests
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ultimate goal of crawling strategy is scheduling of requests. To schedule request there is a method
-schedule(request, score). The request is an instance of :class:`Request <frontera.core.models.Request>` class and is
+schedule(request, score). The request is an instance of :class:`Request <new_frontera.core.models.Request>` class and is
 often available from arguments of event handlers: _page_crawled_, _page_error_ and _links_extracted_, or can be created
-on-demand using :attr:`create_request <frontera.strategy.BaseCrawlingStrategy.create_request>` method.
+on-demand using :attr:`create_request <new_frontera.strategy.BaseCrawlingStrategy.create_request>` method.
 
     IMPORTANT NOTICE
 
@@ -122,7 +122,7 @@ State operations
 Every link has a state. The purpose of this states is to allow the developer to persist the state of the link in the
 system (allow restart of SW components without data loss) and use it for decision making. The states are cached in
 strategy worker, flushed to backend and will be loaded when needed. States are defined in
-:class:`frontera.core.components.States` and can have following values:
+:class:`new_frontera.core.components.States` and can have following values:
 
 * NOT_CRAWLED,
 * QUEUED,
@@ -145,7 +145,7 @@ DomainMetadata
 --------------
 
 It's often needed to persist per-host metadata in the permanent storage. To solve this there is a
-:class:`frontera.core.components.DomainMetadata` instance in backend. It's has an interface of Python mapping types
+:class:`new_frontera.core.components.DomainMetadata` instance in backend. It's has an interface of Python mapping types
 (https://docs.python.org/3/library/stdtypes.html?highlight=mapping#mapping-types-dict ). It's expected that one will
 be using domain names as keys and dicts as values. It's convenient to store there per-domin statistics, ban states,
 the count of links found, etc.
@@ -186,8 +186,8 @@ Meta fields
 #   name            description                                                                                                                                          presence
 ==  ==============  ===================================================================================================================================================  =========
 1   b"slot"         Queue partitioning key in bytes, highest priority. Use it if your app requires partitioning other than default 2-nd level domain-based partitioning  Optional
-2   b"domain"       Dict generated by Frontera DomainMiddleware, and containing parsed domain name                                                                       Always
-3   b"state"	    Integer representing the link state, set by strategy worker. Link states are defined in frontera.core.components.States                              Always
+2   b"domain"       Dict generated by new_frontera DomainMiddleware, and containing parsed domain name                                                                       Always
+3   b"state"	    Integer representing the link state, set by strategy worker. Link states are defined in new_frontera.core.components.States                              Always
 4   b"encoding"	    In response, for HTML, encoding detected by Scrapy                                                                                                   Optional
 5   b"scrapy_meta"	When scheduling can be used to set meta field for Scrapy                                                                                             Optional
 ==  ==============  ===================================================================================================================================================  =========

@@ -2,7 +2,7 @@
 Examples
 ========
 
-The project repo includes an ``examples`` folder with some scripts and projects using Frontera::
+The project repo includes an ``examples`` folder with some scripts and projects using new_frontera::
 
     examples/
         requests/

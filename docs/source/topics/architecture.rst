@@ -2,12 +2,12 @@
 Architecture overview
 =====================
 
-This document describes the Frontera Manager pipeline, distributed components and how they interact.
+This document describes the new_frontera Manager pipeline, distributed components and how they interact.
 
 Single process
 ==============
 
-The following diagram shows an architecture of the Frontera pipeline with its components (referenced by numbers)
+The following diagram shows an architecture of the new_frontera pipeline with its components (referenced by numbers)
 and an outline of the data flow that takes place inside the system. A brief description of the components is included
 below with links for more detailed information about them. The data flow is also described below.
 
@@ -27,13 +27,13 @@ what pages should be crawled next.
 Fetcher can be implemented using `Scrapy`_ or any other crawling framework/system as the framework offers a generic
 frontier functionality.
 
-In distributed run mode Fetcher is replaced with message bus producer from Frontera Manager side and consumer from
+In distributed run mode Fetcher is replaced with message bus producer from new_frontera Manager side and consumer from
 Fetcher side.
 
-Frontera API / Manager
+new_frontera API / Manager
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The main entry point to Frontera API (3) is the :class:`FrontierManager <frontera.core.manager.FrontierManager>` object.
+The main entry point to new_frontera API (3) is the :class:`FrontierManager <new_frontera.core.manager.FrontierManager>` object.
 Frontier users, in our case the Fetcher (2), will communicate with the frontier through it.
 
 For more information see :doc:`frontier-api`.
@@ -42,7 +42,7 @@ Middlewares
 ^^^^^^^^^^^
 
 Frontier middlewares (4) are specific hooks that sit between the Manager (3) and the Backend (5). These middlewares
-process :class:`Request <frontera.core.models.Request>` and :class:`Response <frontera.core.models.Response>`
+process :class:`Request <new_frontera.core.models.Request>` and :class:`Response <new_frontera.core.models.Response>`
 objects when they pass to and from the Frontier and the Backend. They provide a convenient mechanism for extending
 functionality by plugging custom code. Canonical URL solver is a specific case of middleware responsible for
 substituting non-canonical document URLs wiht canonical ones.
@@ -54,11 +54,11 @@ Backend
 
 The frontier Backend (5) is where the crawling logic/policies lies. It's responsible for receiving all the crawl info
 and selecting the next pages to be crawled. Backend is meant to be operating on higher level, and
-:class:`Queue <frontera.core.components.Queue>`, :class:`Metadata <frontera.core.components.Metadata>` and
-:class:`States <frontera.core.components.States>` objects are responsible for low-level storage communication code.
+:class:`Queue <new_frontera.core.components.Queue>`, :class:`Metadata <new_frontera.core.components.Metadata>` and
+:class:`States <new_frontera.core.components.States>` objects are responsible for low-level storage communication code.
 
 May require, depending on the logic implemented, a persistent storage (6) to manage
-:class:`Request <frontera.core.models.Request>` and :class:`Response <frontera.core.models.Response>`
+:class:`Request <new_frontera.core.models.Request>` and :class:`Response <new_frontera.core.models.Response>`
 objects info.
 
 For more information see :doc:`frontier-backends`.
@@ -68,7 +68,7 @@ For more information see :doc:`frontier-backends`.
 Data Flow
 ---------
 
-The data flow in Frontera is controlled by the Frontier Manager, all data passes through the
+The data flow in new_frontera is controlled by the Frontier Manager, all data passes through the
 manager-middlewares-backend scheme and goes like this:
 
 1. The frontier is initialized with a list of seed requests (seed URLs) as entry point for the crawl.
@@ -83,7 +83,7 @@ Each loop (steps 2-3) repetition is called a :ref:`frontier iteration <frontier-
 Distributed
 ===========
 
-The same Frontera Manager pipeline is used in all Frontera processes when running in distributed mode.
+The same new_frontera Manager pipeline is used in all new_frontera processes when running in distributed mode.
 
 Overall system forms a closed circle and all the components are working as daemons in infinite cycles.
 There is a :term:`message bus` responsible for transmitting messages between components, persistent storage and
@@ -105,10 +105,10 @@ Such design allows to operate online. Crawling strategy can be changed without h
 :doc:`crawling strategy <custom_crawling_strategy>` can be implemented as a separate module; containing logic
 for checking the crawling stopping condition, URL ordering, and scoring model.
 
-Frontera is polite to web hosts by design and each host is downloaded by no more than one spider process.
+new_frontera is polite to web hosts by design and each host is downloaded by no more than one spider process.
 This is achieved by stream partitioning.
 
-.. image:: _images/frontera-design.png
+.. image:: _images/new_frontera-design.png
 
 Data flow
 ---------
@@ -126,5 +126,5 @@ stored and scored. That way the flow repeats indefinitely.
 .. _`ZeroMQ`: http://zeromq.org/
 .. _`HBase`: http://hbase.apache.org/
 .. _`Scrapy`: http://scrapy.org/
-.. _`Frontera`: http://github.com/scrapinghub/frontera
+.. _`new_frontera`: http://github.com/scrapinghub/new_frontera
 

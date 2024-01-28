@@ -2,46 +2,46 @@
 Using the Frontier with Scrapy
 ==============================
 
-To use Frontera with Scrapy, you will need to add `Scrapy middlewares`_ and redefine the default Scrapy scheduler with
-custom Frontera scheduler. Both can be done by modifying `Scrapy settings`_.
+To use new_frontera with Scrapy, you will need to add `Scrapy middlewares`_ and redefine the default Scrapy scheduler with
+custom new_frontera scheduler. Both can be done by modifying `Scrapy settings`_.
 
 
 The purpose
 ===========
 
 Scrapy is expected to be used as a fetching, HTML parsing and links extracting component. Your spider code have
- to produce responses and requests from extracted links. That's all. Frontera's business is to keep the links, queue
+ to produce responses and requests from extracted links. That's all. new_frontera's business is to keep the links, queue
 and schedule links when needed.
 
 Please make sure all the middlewares affecting the crawling, like DepthMiddleware, OffsiteMiddleware or
 RobotsTxtMiddleware are disabled.
 
 All other use cases when Scrapy is busy items generation, scraping from HTML, scheduling links directly trying to bypass
-Frontera, are doomed to cause countless hours of maintenance. Please don't use Frontera integrated with Scrapy that way.
+new_frontera, are doomed to cause countless hours of maintenance. Please don't use new_frontera integrated with Scrapy that way.
 
 
 Activating the frontier
 =======================
 
-The Frontera uses 2 different middlewares: ``SchedulerSpiderMiddleware`` and ``SchedulerDownloaderMiddleware``, and it's
-own scheduler ``FronteraScheduler``.
+The new_frontera uses 2 different middlewares: ``SchedulerSpiderMiddleware`` and ``SchedulerDownloaderMiddleware``, and it's
+own scheduler ``new_fronteraScheduler``.
 
-To activate the Frontera in your Scrapy project, just add them to the `SPIDER_MIDDLEWARES`_,
+To activate the new_frontera in your Scrapy project, just add them to the `SPIDER_MIDDLEWARES`_,
 `DOWNLOADER_MIDDLEWARES`_ and `SCHEDULER`_ settings::
 
     SPIDER_MIDDLEWARES.update({
-        'frontera.contrib.scrapy.middlewares.schedulers.SchedulerSpiderMiddleware': 1000,
+        'new_frontera.contrib.scrapy.middlewares.schedulers.SchedulerSpiderMiddleware': 1000,
     })
 
     DOWNLOADER_MIDDLEWARES.update({
-        'frontera.contrib.scrapy.middlewares.schedulers.SchedulerDownloaderMiddleware': 1000,
+        'new_frontera.contrib.scrapy.middlewares.schedulers.SchedulerDownloaderMiddleware': 1000,
     })
 
-    SCHEDULER = 'frontera.contrib.scrapy.schedulers.frontier.FronteraScheduler'
+    SCHEDULER = 'new_frontera.contrib.scrapy.schedulers.frontier.new_fronteraScheduler'
 
-Create a Frontera ``settings.py`` file and add it to your Scrapy settings::
+Create a new_frontera ``settings.py`` file and add it to your Scrapy settings::
 
-    FRONTERA_SETTINGS = 'tutorial.frontera.settings'
+    new_frontera_SETTINGS = 'tutorial.new_frontera.settings'
 
 Another option is to put these settings right into Scrapy settings module.
 
@@ -53,7 +53,7 @@ When using frontier with a Scrapy project, we propose the following directory st
 
     my_scrapy_project/
         my_scrapy_project/
-            frontera/
+            new_frontera/
                 __init__.py
                 settings.py
             spiders/
@@ -64,7 +64,7 @@ When using frontier with a Scrapy project, we propose the following directory st
 
 These are basically:
 
-- ``my_scrapy_project/frontera/settings.py``: the Frontera settings file.
+- ``my_scrapy_project/new_frontera/settings.py``: the new_frontera settings file.
 - ``my_scrapy_project/spiders``: the Scrapy spiders folder
 - ``my_scrapy_project/settings.py``: the Scrapy settings file
 - ``scrapy.cfg``: the Scrapy config file
@@ -81,9 +81,9 @@ Frontier Scrapy settings
 ========================
 You can configure your frontier two ways:
 
-.. setting:: FRONTERA_SETTINGS
+.. setting:: new_frontera_SETTINGS
 
-- Using ``FRONTERA_SETTINGS`` parameter, which is a module path pointing to Frontera settings in Scrapy settings file.
+- Using ``new_frontera_SETTINGS`` parameter, which is a module path pointing to new_frontera settings in Scrapy settings file.
   Defaults to ``None``
 
 - Define frontier settings right into Scrapy settings file.
@@ -95,7 +95,7 @@ Defining frontier settings via Scrapy settings
 :ref:`Frontier settings <frontier-built-in-frontier-settings>` can also be defined via Scrapy settings.
 In this case, the order of precedence will be the following:
 
-1. Settings defined in the file pointed by :setting:`FRONTERA_SETTINGS` (higher precedence)
+1. Settings defined in the file pointed by :setting:`new_frontera_SETTINGS` (higher precedence)
 2. Settings defined in the Scrapy settings
 3. Default frontier settings
 
@@ -150,7 +150,7 @@ Please specify a correct user agent string to disclose yourself to webmasters::
     USER_AGENT = 'Some-Bot (+http://url/to-the-page-describing-the-purpose-of-crawling)'
 
 
-When using Frontera robots.txt obeying have to be implemented in :term:`crawling strategy`::
+When using new_frontera robots.txt obeying have to be implemented in :term:`crawling strategy`::
 
     ROBOTSTXT_OBEY = False
 
@@ -179,7 +179,7 @@ Various settings suitable for broad crawling::
     REDIRECT_ENABLED = True
     COOKIES_ENABLED = False
     DOWNLOAD_TIMEOUT = 120
-    RETRY_ENABLED = False   # Retries can be handled by Frontera itself, depending on crawling strategy
+    RETRY_ENABLED = False   # Retries can be handled by new_frontera itself, depending on crawling strategy
     DOWNLOAD_MAXSIZE = 10 * 1024 * 1024  # Maximum document size, causes OOM kills if not set
     LOGSTATS_INTERVAL = 10  # Print stats every 10 secs to console
 
@@ -201,6 +201,6 @@ Auto throttling and concurrency settings for polite and responsible crawling:::
 Check also `Scrapy broad crawling`_ recommendations.
 
 
-.. _`Quick start single process`: http://frontera.readthedocs.org/en/latest/topics/quick-start-single.html
+.. _`Quick start single process`: http://new_frontera.readthedocs.org/en/latest/topics/quick-start-single.html
 .. _`Scrapy broad crawling`: http://doc.scrapy.org/en/master/topics/broad-crawls.html
 .. _`Scrapy Middleware doc`: http://doc.scrapy.org/en/latest/topics/spider-middleware.html

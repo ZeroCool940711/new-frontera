@@ -20,7 +20,7 @@ Things to setup before you start
 
 Things to implement before you start
 ====================================
-* :doc:`Crawling strategy <custom_crawling_strategy>` or :doc:`pick one from Frontera package <strategies>`
+* :doc:`Crawling strategy <custom_crawling_strategy>` or :doc:`pick one from new_frontera package <strategies>`
 * Spider code
 
 Configuring Kafka
@@ -41,34 +41,34 @@ Configuring HBase
 * make sure Snappy compression is supported natively.
 
 
-Configuring Frontera
+Configuring new_frontera
 ====================
-Every Frontera component requires its own configuration module, but some options are shared, so we recommend to create
+Every new_frontera component requires its own configuration module, but some options are shared, so we recommend to create
 a common modules and import settings from it in component's modules.
 
 1. Create a common module and add there: ::
 
     from __future__ import absolute_import
-    from frontera.settings.default_settings import MIDDLEWARES
+    from new_frontera.settings.default_settings import MIDDLEWARES
     MAX_NEXT_REQUESTS = 512
     SPIDER_FEED_PARTITIONS = 2 # number of spider processes
     SPIDER_LOG_PARTITIONS = 2 # worker instances
     MIDDLEWARES.extend([
-        'frontera.contrib.middlewares.domain.DomainMiddleware',
-        'frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware'
+        'new_frontera.contrib.middlewares.domain.DomainMiddleware',
+        'new_frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware'
     ])
 
     QUEUE_HOSTNAME_PARTITIONING = True
     KAFKA_LOCATION = 'localhost:9092' # your Kafka broker host:port
     SCORING_TOPIC = 'frontier-scoring'
-    URL_FINGERPRINT_FUNCTION='frontera.utils.fingerprint.hostname_local_fingerprint'
+    URL_FINGERPRINT_FUNCTION='new_frontera.utils.fingerprint.hostname_local_fingerprint'
 
 2. Create workers shared module: ::
 
     from __future__ import absolute_import
     from .common import *
 
-    BACKEND = 'frontera.contrib.backends.hbase.HBaseBackend'
+    BACKEND = 'new_frontera.contrib.backends.hbase.HBaseBackend'
 
     MAX_NEXT_REQUESTS = 2048
     NEW_BATCH_DELAY = 3.0
@@ -99,24 +99,24 @@ The logging can be configured according to https://docs.python.org/2/library/log
     from __future__ import absolute_import
     from .common import *
 
-    BACKEND = 'frontera.contrib.backends.remote.messagebus.MessageBusBackend'
+    BACKEND = 'new_frontera.contrib.backends.remote.messagebus.MessageBusBackend'
     KAFKA_GET_TIMEOUT = 0.5
-    LOCAL_MODE = False  # by default Frontera is prepared for single process mode
+    LOCAL_MODE = False  # by default new_frontera is prepared for single process mode
 
 
 6. Configure Scrapy settings module. It's located in Scrapy project folder and referenced in scrapy.cfg. Let's add
 there::
 
-    FRONTERA_SETTINGS = ''  # module path to your Frontera spider config module
+    new_frontera_SETTINGS = ''  # module path to your new_frontera spider config module
 
-    SCHEDULER = 'frontera.contrib.scrapy.schedulers.frontier.FronteraScheduler'
+    SCHEDULER = 'new_frontera.contrib.scrapy.schedulers.frontier.new_fronteraScheduler'
 
     SPIDER_MIDDLEWARES = {
-        'frontera.contrib.scrapy.middlewares.schedulers.SchedulerSpiderMiddleware': 999,
-        'frontera.contrib.scrapy.middlewares.seeds.file.FileSeedLoader': 1,
+        'new_frontera.contrib.scrapy.middlewares.schedulers.SchedulerSpiderMiddleware': 999,
+        'new_frontera.contrib.scrapy.middlewares.seeds.file.FileSeedLoader': 1,
     }
     DOWNLOADER_MIDDLEWARES = {
-        'frontera.contrib.scrapy.middlewares.schedulers.SchedulerDownloaderMiddleware': 999,
+        'new_frontera.contrib.scrapy.middlewares.schedulers.SchedulerDownloaderMiddleware': 999,
     }
 
 
@@ -127,26 +127,26 @@ First, let's start storage worker: ::
 
     # start DB worker only for batch generation
     # use single instance for every 10 partitions
-    $ python -m frontera.worker.db --config [db worker config module] --no-incoming --partitions 0 1
+    $ python -m new_frontera.worker.db --config [db worker config module] --no-incoming --partitions 0 1
 
 
     # Optionally, start next one dedicated to spider log processing.
-    $ python -m frontera.worker.db --no-batches --config [db worker config module]
+    $ python -m new_frontera.worker.db --no-batches --config [db worker config module]
 
 
 Next, let's start strategy workers, one process per spider log partition: ::
 
-    $ python -m frontera.worker.strategy --config [strategy worker config] --partition-id 0
-    $ python -m frontera.worker.strategy --config [strategy worker config] --partition-id 1
+    $ python -m new_frontera.worker.strategy --config [strategy worker config] --partition-id 0
+    $ python -m new_frontera.worker.strategy --config [strategy worker config] --partition-id 1
     ...
-    $ python -m frontera.worker.strategy --config [strategy worker config] --partition-id N
+    $ python -m new_frontera.worker.strategy --config [strategy worker config] --partition-id N
 
 You should notice that all processes are writing messages to the log. It's ok if nothing is written in streams,
 because of absence of seed URLs in the system.
 
 Let's put our seeds in text file, one URL per line and run::
 
-    $ python -m frontera.utils.add_seeds --config [your_frontera_config] --seeds-file [path to your seeds file]
+    $ python -m new_frontera.utils.add_seeds --config [your_new_frontera_config] --seeds-file [path to your seeds file]
 
 Finally, a single spider per spider feed partition: ::
 

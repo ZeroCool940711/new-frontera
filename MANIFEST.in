@@ -1,2 +1,2 @@
 include versioneer.py
-include frontera/_version.py
+include new_frontera/_version.py

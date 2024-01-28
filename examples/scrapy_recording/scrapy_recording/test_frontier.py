@@ -1,10 +1,10 @@
 """
 Frontier tester using recording data
 """
-from frontera import FrontierManager, FrontierTester, Settings, graphs
+from new_frontera import FrontierManager, FrontierTester, Settings, graphs
 
 SETTINGS = Settings()
-SETTINGS.BACKEND = 'frontera.contrib.backends.memory_heapq.FIFO'
+SETTINGS.BACKEND = 'new_frontera.contrib.backends.memory_heapq.FIFO'
 SETTINGS.LOGGING_MANAGER_ENABLED = True
 SETTINGS.LOGGING_BACKEND_ENABLED = True
 SETTINGS.LOGGING_DEBUGGING_ENABLED = False

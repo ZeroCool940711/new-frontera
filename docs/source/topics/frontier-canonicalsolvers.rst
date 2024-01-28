@@ -16,7 +16,7 @@ with it. The causes of this are:
 Well designed system has it's own, stable algorithm of choosing the right URL for each document. Also see
 `Canonical link element`_.
 
-Canonical URL solver is instantiated during Frontera Manager initialization using class from :setting:`CANONICAL_SOLVER`
+Canonical URL solver is instantiated during new_frontera Manager initialization using class from :setting:`CANONICAL_SOLVER`
 setting.
 
 Built-in canonical URL solvers reference
@@ -26,7 +26,7 @@ Basic
 -----
 Used as default.
 
-.. autoclass:: frontera.contrib.canonicalsolvers.basic.BasicCanonicalSolver
+.. autoclass:: new_frontera.contrib.canonicalsolvers.basic.BasicCanonicalSolver
 
 
 .. _Canonical link element: https://en.wikipedia.org/wiki/Canonical_link_element#Purpose

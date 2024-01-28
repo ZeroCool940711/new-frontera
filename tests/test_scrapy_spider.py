@@ -5,8 +5,8 @@ from scrapy.crawler import Crawler
 from scrapy import signals
 from scrapy.settings import Settings as ScrapySettings
 from tests.scrapy_spider.spiders.example import MySpider
-from frontera.settings import Settings as FronteraSettings
-from frontera.utils import add_seeds
+from new_frontera.settings import Settings as new_fronteraSettings
+from new_frontera.utils import add_seeds
 import pytest
 from os import remove
 from os.path import exists
@@ -26,12 +26,14 @@ def db_file(request):
     def rm_file():
         if exists("test.db"):
             remove("test.db")
+
     rm_file()
     request.addfinalizer(rm_file)
 
+
 @pytest.mark.skip("throws ReactorNotRestartable and requires some planning")
 def test_scrapy_spider(seeds_file, db_file):
-    fs = FronteraSettings(module="tests.scrapy_spider.frontera.settings")
+    fs = new_fronteraSettings(module="tests.scrapy_spider.new_frontera.settings")
     add_seeds.run_add_seeds(fs, seeds_file)
     settings = ScrapySettings()
     settings.setmodule("tests.scrapy_spider.settings")
@@ -39,6 +41,6 @@ def test_scrapy_spider(seeds_file, db_file):
     crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
     crawler.crawl()
     reactor.run()
-    stats = crawler.stats.spider_stats['example']
-    assert stats['frontera/crawled_pages_count'] == 5
+    stats = crawler.stats.spider_stats["example"]
+    assert stats["new_frontera/crawled_pages_count"] == 5
     assert crawler.spider.callback_calls > 0

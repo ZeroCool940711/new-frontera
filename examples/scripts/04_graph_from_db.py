@@ -1,7 +1,7 @@
 """
 Graph manager reading data from database
 """
-from frontera import graphs
+from new_frontera import graphs
 
 if __name__ == '__main__':
     # Create graph with sqlite db

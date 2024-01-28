@@ -3,27 +3,26 @@ from setuptools import setup, find_packages
 import versioneer
 
 versioneer.style = "pep440"
-versioneer.versionfile_build = "frontera/_version.py"
+versioneer.versionfile_build = "new_frontera/_version.py"
 versioneer.tag_prefix = "v"  # tags are like v1.2.0
-versioneer.parentdir_prefix = "frontera-"
+versioneer.parentdir_prefix = "new_frontera-"
 
 
 setup(
-    name="frontera",
+    name="new_frontera",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     packages=find_packages(exclude=("tests", "tests.*", "examples", "examples.*")),
-    url="https://github.com/scrapinghub/frontera",
+    url="https://github.com/ZeroCool940711/new-frontera",
     description="A scalable frontier for web crawlers",
     long_description=open("README.md", "r").read(),
     long_description_content_type="text/markdown",
-    author="Frontera developers",
-    maintainer="Alexander Sibiryakov",
-    maintainer_email="sibiryakov@scrapinghub.com",
+    author="new_frontera developers",
+    maintainer="Alejandro Gil",
     license="BSD",
     include_package_data=True,
     zip_safe=False,
-    keywords=["crawler", "frontier", "scrapy", "web", "requests", "frontera"],
+    keywords=["crawler", "frontier", "scrapy", "web", "requests", "new_frontera"],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
@@ -38,6 +37,10 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
         "Topic :: Software Development :: Libraries :: Python Modules",

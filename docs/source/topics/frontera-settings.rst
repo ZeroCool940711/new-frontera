@@ -2,10 +2,10 @@
 Settings
 ========
 
-The Frontera settings allows you to customize the behaviour of all components, including the
-:class:`FrontierManager <frontera.core.manager.FrontierManager>`,
-:class:`Middleware <frontera.core.components.Middleware>` and
-:class:`Backend <frontera.core.components.Backend>` themselves.
+The new_frontera settings allows you to customize the behaviour of all components, including the
+:class:`FrontierManager <new_frontera.core.manager.FrontierManager>`,
+:class:`Middleware <new_frontera.core.components.Middleware>` and
+:class:`Backend <new_frontera.core.components.Backend>` themselves.
 
 The infrastructure of the settings provides a global namespace of key-value mappings that can be used to pull
 configuration values from. The settings can be populated through different mechanisms, which are described below.
@@ -15,8 +15,8 @@ For a list of available built-in settings see: :ref:`Built-in settings reference
 Designating the settings
 ========================
 
-When you use Frontera, you have to tell it which settings you’re using. As
-:class:`FrontierManager <frontera.core.manager.FrontierManager>` is the main entry point to Frontier usage,
+When you use new_frontera, you have to tell it which settings you’re using. As
+:class:`FrontierManager <new_frontera.core.manager.FrontierManager>` is the main entry point to Frontier usage,
 you can do this by using the method described in the :ref:`Loading from settings <frontier-loading-from-settings>`
 section.
 
@@ -39,10 +39,10 @@ These are basically:
 
 How to access settings
 ======================
-:class:`Settings <frontera.settings.Settings>` can be accessed through the
-:attr:`FrontierManager.settings <frontera.core.manager.FrontierManager.settings>` attribute, that is passed to
-:attr:`Middleware.from_manager <frontera.core.components.Middleware.from_manager>` and
-:attr:`Backend.from_manager <frontera.core.components.Backend.from_manager>` class methods::
+:class:`Settings <new_frontera.settings.Settings>` can be accessed through the
+:attr:`FrontierManager.settings <new_frontera.core.manager.FrontierManager.settings>` attribute, that is passed to
+:attr:`Middleware.from_manager <new_frontera.core.components.Middleware.from_manager>` and
+:attr:`Backend.from_manager <new_frontera.core.components.Backend.from_manager>` class methods::
 
     class MyMiddleware(Component):
 
@@ -53,19 +53,19 @@ How to access settings
                 print "test mode is enabled!"
 
 In other words, settings can be accessed as attributes of the
-:class:`Settings <frontera.settings.Settings>` object.
+:class:`Settings <new_frontera.settings.Settings>` object.
 
 Settings class
 ==============
 
-.. autoclass:: frontera.settings.Settings
+.. autoclass:: new_frontera.settings.Settings
 
 .. _frontier-built-in-frontier-settings:
 
 Built-in frontier settings
 ==========================
 
-Here’s a list of all available Frontera settings, in alphabetical order, along with their default values and the
+Here’s a list of all available new_frontera settings, in alphabetical order, along with their default values and the
 scope where they apply.
 
 .. setting:: AUTO_START
@@ -82,9 +82,9 @@ Whether to enable frontier automatic start. See :ref:`Starting/Stopping the fron
 BACKEND
 -------
 
-Default: ``'frontera.contrib.backends.memory.FIFO'``
+Default: ``'new_frontera.contrib.backends.memory.FIFO'``
 
-The :class:`Backend <frontera.core.components.Backend>` to be used by the frontier. For more info see
+The :class:`Backend <new_frontera.core.components.Backend>` to be used by the frontier. For more info see
 :ref:`Activating a backend <frontier-activating-backend>`.
 
 
@@ -123,9 +123,9 @@ specified count of maximum requests per host. This is a suggestion for broad cra
 CANONICAL_SOLVER
 ----------------
 
-Default: ``frontera.contrib.canonicalsolvers.Basic``
+Default: ``new_frontera.contrib.canonicalsolvers.Basic``
 
-The :class:`CanonicalSolver <frontera.core.components.CanonicalSolver>` to be used by the frontier for resolving
+The :class:`CanonicalSolver <new_frontera.core.components.CanonicalSolver>` to be used by the frontier for resolving
 canonical URLs. For more info see :ref:`Canonical URL Solver <canonical-url-solver>`.
 
 .. setting:: DELAY_ON_EMPTY
@@ -202,7 +202,7 @@ MAX_NEXT_REQUESTS
 Default: ``64``
 
 The maximum number of requests returned by
-:attr:`get_next_requests <frontera.core.manager.FrontierManager.get_next_requests>` API method. In distributed context
+:attr:`get_next_requests <new_frontera.core.manager.FrontierManager.get_next_requests>` API method. In distributed context
 it could be amount of requests produced per spider by :term:`db worker` or count of requests read from message bus per
 attempt to fill the spider queue. In single process it's the count of requests to get from backend per one call to
 ``get_next_requests`` method.
@@ -215,7 +215,7 @@ MAX_REQUESTS
 
 Default: ``0``
 
-Maximum number of returned requests after which Frontera is finished.
+Maximum number of returned requests after which new_frontera is finished.
 If value is 0 (default), the frontier will continue indefinitely. See :ref:`Finishing the frontier <frontier-finish>`.
 
 .. setting:: MESSAGE_BUS
@@ -223,18 +223,18 @@ If value is 0 (default), the frontier will continue indefinitely. See :ref:`Fini
 MESSAGE_BUS
 -----------
 
-Default: ``frontera.contrib.messagebus.zeromq.MessageBus``
+Default: ``new_frontera.contrib.messagebus.zeromq.MessageBus``
 
-Points Frontera to :term:`message bus` implementation. Defaults to ZeroMQ.
+Points new_frontera to :term:`message bus` implementation. Defaults to ZeroMQ.
 
 .. setting:: MESSAGE_BUS_CODEC
 
 MESSAGE_BUS_CODEC
 -----------------
 
-Default: ``frontera.contrib.backends.remote.codecs.msgpack``
+Default: ``new_frontera.contrib.backends.remote.codecs.msgpack``
 
-Points Frontera to :term:`message bus` codec implementation. Here is the :ref:`codec interface description <message_bus_protocol>`.
+Points new_frontera to :term:`message bus` codec implementation. Here is the :ref:`codec interface description <message_bus_protocol>`.
 Defaults to MsgPack.
 
 .. setting:: MIDDLEWARES
@@ -248,7 +248,7 @@ A list containing the middlewares enabled in the frontier. For more info see
 Default::
 
     [
-        'frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware',
+        'new_frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware',
     ]
 
 .. setting:: NEW_BATCH_DELAY
@@ -315,9 +315,9 @@ overused. This affects only Scrapy scheduler."
 REQUEST_MODEL
 -------------
 
-Default: ``'frontera.core.models.Request'``
+Default: ``'new_frontera.core.models.Request'``
 
-The :class:`Request <frontera.core.models.Request>` model to be used by the frontier.
+The :class:`Request <new_frontera.core.models.Request>` model to be used by the frontier.
 
 
 .. setting:: RESPONSE_MODEL
@@ -325,9 +325,9 @@ The :class:`Request <frontera.core.models.Request>` model to be used by the fron
 RESPONSE_MODEL
 --------------
 
-Default: ``'frontera.core.models.Response'``
+Default: ``'new_frontera.core.models.Response'``
 
-The :class:`Response <frontera.core.models.Response>` model to be used by the frontier.
+The :class:`Response <new_frontera.core.models.Response>` model to be used by the frontier.
 
 
 .. setting:: SPIDER_LOG_CONSUMER_BATCH_SIZE
@@ -416,7 +416,7 @@ Determines if content should be sent over the message bus and stored in the back
 STRATEGY
 --------
 
-Default: ``frontera.worker.strategies.basic.BasicCrawlingStrategy``
+Default: ``new_frontera.worker.strategies.basic.BasicCrawlingStrategy``
 
 The path to crawling strategy class.
 
@@ -454,7 +454,7 @@ Whether to enable frontier test mode. See :ref:`Frontier test mode <frontier-tes
 USER_AGENT
 ----------
 
-Default: ``FronteraDiscoveryBot``
+Default: ``new_fronteraDiscoveryBot``
 
 User agent string in use by Discovery crawling strategy.
 
@@ -474,7 +474,7 @@ Settings used by the :ref:`UrlFingerprintMiddleware <frontier-url-fingerprint-mi
 URL_FINGERPRINT_FUNCTION
 ------------------------
 
-Default: ``frontera.utils.fingerprint.sha1``
+Default: ``new_frontera.utils.fingerprint.sha1``
 
 The function used to calculate the ``url`` fingerprint.
 
@@ -484,7 +484,7 @@ The function used to calculate the ``url`` fingerprint.
 DOMAIN_FINGERPRINT_FUNCTION
 ---------------------------
 
-Default: ``frontera.utils.fingerprint.sha1``
+Default: ``new_frontera.utils.fingerprint.sha1``
 
 The function used to calculate the ``domain`` fingerprint.
 
@@ -565,9 +565,9 @@ SQLALCHEMYBACKEND_MODELS
 Default::
 
     {
-        'MetadataModel': 'frontera.contrib.backends.sqlalchemy.models.MetadataModel',
-        'StateModel': 'frontera.contrib.backends.sqlalchemy.models.StateModel',
-        'QueueModel': 'frontera.contrib.backends.sqlalchemy.models.QueueModel'
+        'MetadataModel': 'new_frontera.contrib.backends.sqlalchemy.models.MetadataModel',
+        'StateModel': 'new_frontera.contrib.backends.sqlalchemy.models.StateModel',
+        'QueueModel': 'new_frontera.contrib.backends.sqlalchemy.models.QueueModel'
     }
 
 This is mapping with SQLAlchemy models used by backends. It is mainly used for customization. This setting uses a
@@ -740,7 +740,7 @@ lowering response times. HBase have to be properly configured to support Snappy 
 ZeroMQ message bus settings
 ===========================
 
-The message bus class is ``distributed_frontera.messagebus.zeromq.MessageBus``
+The message bus class is ``distributed_new_frontera.messagebus.zeromq.MessageBus``
 
 .. setting:: ZMQ_ADDRESS
 
@@ -768,7 +768,7 @@ interval [base:base+5] is available.
 Kafka message bus settings
 ==========================
 
-The message bus class is ``frontera.contrib.messagebus.kafkabus.MessageBus``
+The message bus class is ``new_frontera.contrib.messagebus.kafkabus.MessageBus``
 
 .. setting:: KAFKA_LOCATION
 

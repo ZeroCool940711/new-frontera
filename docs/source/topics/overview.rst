@@ -1,9 +1,9 @@
 ====================
-Frontera at a glance
+new_frontera at a glance
 ====================
 
-Frontera is an implementation of crawl frontier, a web crawler component used for accumulating URLs/links before
-downloading them from the web. Main features of Frontera are:
+new_frontera is an implementation of crawl frontier, a web crawler component used for accumulating URLs/links before
+downloading them from the web. Main features of new_frontera are:
 
 * Online processing oriented,
 * distributed spiders and backends architecture,
@@ -35,7 +35,7 @@ Here are few cases, external crawl frontier can be suitable for:
 One-time crawl, few websites
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For such use case probably single process mode would be the most appropriate. Frontera can offer these prioritization
+For such use case probably single process mode would be the most appropriate. new_frontera can offer these prioritization
 models out of the box:
 
 * FIFO,
@@ -44,7 +44,7 @@ models out of the box:
 * Depth-first (DFS),
 * based on provided score, mapped from 0.0 to 1.0.
 
-If website is big, and it's expensive to crawl the whole website, Frontera can be suitable for pointing the crawler to
+If website is big, and it's expensive to crawl the whole website, new_frontera can be suitable for pointing the crawler to
 the most important documents.
 
 
@@ -54,7 +54,7 @@ Broad crawling of many websites
 This use case requires full distribution: spiders and backend. In addition to spiders process one should be running
 :term:`strategy worker` (s) and :term:`db worker` (s), depending on chosen partitioning scheme.
 
-Frontera can be used for broad set of tasks related to large scale web crawling:
+new_frontera can be used for broad set of tasks related to large scale web crawling:
 
 * Broad web crawling, arbitrary number of websites and pages (we tested it on 45M documents volume and 100K websites),
 * Host-focused crawls: when you have more than 100 websites,
@@ -69,7 +69,7 @@ Here are some of the real world problems:
 * All kinds of research work on web graph: gathering links, statistics, structure of graph, tracking domain count, etc.
 * More general focused crawling tasks: e.g. you search for pages that are big hubs, and frequently changing in time.
 
-.. _`Frontera`: http://github.com/scrapinghub/frontera
+.. _`new_frontera`: http://github.com/scrapinghub/new_frontera
 .. _`Crawlera`: http://crawlera.com/
 .. _`Kafka`: http://kafka.apache.org/
 .. _`ZeroMQ`: http://zeromq.org/

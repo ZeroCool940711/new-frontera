@@ -1,15 +1,19 @@
 from __future__ import absolute_import
-from frontera.core.components import Backend, Middleware, CanonicalSolver, \
-    DistributedBackend, Queue
-from frontera.contrib.backends.memory import MemoryStates
+from new_frontera.core.components import (
+    Backend,
+    Middleware,
+    CanonicalSolver,
+    DistributedBackend,
+    Queue,
+)
+from new_frontera.contrib.backends.memory import MemoryStates
 from six.moves import range
-from frontera.core.models import Request
-from frontera.strategy import BaseCrawlingStrategy
-from frontera.core.components import States
+from new_frontera.core.models import Request
+from new_frontera.strategy import BaseCrawlingStrategy
+from new_frontera.core.components import States
 
 
 class FakeMiddleware(Middleware):
-
     def __init__(self):
         self.requests = []
         self.responses = []
@@ -18,7 +22,7 @@ class FakeMiddleware(Middleware):
         self.lists = [self.requests, self.responses, self.links, self.errors]
         self._started = False
         self._stopped = False
-        self.test_value = 'test'
+        self.test_value = "test"
 
     @classmethod
     def from_manager(cls, manager):
@@ -49,7 +53,6 @@ class FakeMiddleware(Middleware):
 
 
 class FakeQueue(Queue):
-
     def __init__(self):
         self.requests = []
 
@@ -74,7 +77,6 @@ class FakeQueue(Queue):
 
 
 class FakeBackend(FakeMiddleware, Backend):
-
     def __init__(self):
         self._finished = False
         self._queue = FakeQueue()
@@ -100,7 +102,6 @@ class FakeBackend(FakeMiddleware, Backend):
 
 
 class FakeDistributedBackend(FakeBackend, DistributedBackend):
-
     def __init__(self):
         FakeBackend.__init__(self)
         self._queue = FakeQueue()
@@ -125,7 +126,6 @@ class FakeDistributedBackend(FakeBackend, DistributedBackend):
 
 
 class FakeMiddlewareBlocking(FakeMiddleware):
-
     def add_seeds(self, seeds):
         for seed in seeds:
             self.seeds.append(seed)
@@ -145,19 +145,17 @@ class FakeMiddlewareBlocking(FakeMiddleware):
 
 
 class FakeMiddlewareModifySeeds(FakeMiddleware):
-
     def add_seeds(self, seeds):
         for seed in seeds:
             self.seeds.append(seed)
-            seed.meta[b'test_seeds'] = self.test_value
+            seed.meta[b"test_seeds"] = self.test_value
         return seeds
 
 
 class FakeMiddlewareModifyResponse(FakeMiddleware):
-
     def page_crawled(self, response):
         self.responses.append(response)
-        response.meta[b'test_response'] = self.test_value
+        response.meta[b"test_response"] = self.test_value
         return response
 
     def links_extracted(self, request, links):
@@ -167,7 +165,6 @@ class FakeMiddlewareModifyResponse(FakeMiddleware):
 
 
 class FakeMiddlewareModifyLinks(FakeMiddleware):
-
     def page_crawled(self, response):
         self.responses.append(response)
         return response
@@ -175,15 +172,15 @@ class FakeMiddlewareModifyLinks(FakeMiddleware):
     def links_extracted(self, request, links):
         for link in links:
             self.links.append(link)
-            link.meta[b'test_links'] = self.test_value
+            link.meta[b"test_links"] = self.test_value
         return request
 
-class FakeCanonicalSolver(CanonicalSolver, FakeMiddleware):
 
+class FakeCanonicalSolver(CanonicalSolver, FakeMiddleware):
     def add_seeds(self, seeds):
         for seed in seeds:
             self.seeds.append(seed)
-            seed.meta[b'test_seeds_canonical_solver'] = self.test_value
+            seed.meta[b"test_seeds_canonical_solver"] = self.test_value
         return seeds
 
     def page_crawled(self, response):
@@ -193,7 +190,7 @@ class FakeCanonicalSolver(CanonicalSolver, FakeMiddleware):
     def links_extracted(self, request, links):
         for link in links:
             self.links.append(link)
-            link.meta[b'test_links_canonical_solver'] = self.test_value
+            link.meta[b"test_links_canonical_solver"] = self.test_value
         return request
 
 
@@ -203,21 +200,21 @@ class CrawlingStrategy(BaseCrawlingStrategy):
             url = url.strip()
             req = self.create_request(url)
             self.refresh_states(req)
-            if req.meta[b'state'] == States.NOT_CRAWLED:
-                req.meta[b'state'] = States.QUEUED
+            if req.meta[b"state"] == States.NOT_CRAWLED:
+                req.meta[b"state"] = States.QUEUED
                 self.schedule(req)
 
     def page_crawled(self, response):
-        response.meta[b'state'] = States.CRAWLED
+        response.meta[b"state"] = States.CRAWLED
 
     def filter_extracted_links(self, request, links):
         return links
 
     def links_extracted(self, request, links):
         for link in links:
-            if link.meta[b'state'] == States.NOT_CRAWLED:
-                link.meta[b'state'] = States.QUEUED
+            if link.meta[b"state"] == States.NOT_CRAWLED:
+                link.meta[b"state"] = States.QUEUED
                 self.schedule(link, 0.5)
 
     def request_error(self, request, error):
-        request.meta[b'state'] = States.ERROR
+        request.meta[b"state"] = States.ERROR

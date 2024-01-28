@@ -1,25 +1,26 @@
 """
 Frontier from parameters example
 """
-from frontera import FrontierManager, graphs, Request, Response
+from new_frontera import FrontierManager, graphs, Request, Response
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Create graph
-    graph = graphs.Manager('sqlite:///data/graph.db')
+    graph = graphs.Manager("sqlite:///data/graph.db")
 
     # Create frontier
     frontier = FrontierManager(
-        request_model='frontera.core.models.Request',
-        response_model='frontera.core.models.Response',
-        backend='frontera.contrib.backends.memory.FIFO',
-        logger='frontera.logger.FrontierLogger',
-        event_log_manager='frontera.logger.events.EventLogManager',
+        request_model="new_frontera.core.models.Request",
+        response_model="new_frontera.core.models.Response",
+        backend="new_frontera.contrib.backends.memory.FIFO",
+        logger="new_frontera.logger.FrontierLogger",
+        event_log_manager="new_frontera.logger.events.EventLogManager",
         middlewares=[
-            'frontera.contrib.middlewares.domain.DomainMiddleware',
-            'frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware',
-            'frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware',
+            "new_frontera.contrib.middlewares.domain.DomainMiddleware",
+            "new_frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware",
+            "new_frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware",
         ],
-        test_mode=True)
+        test_mode=True,
+    )
 
     # Add seeds
     frontier.add_seeds([Request(seed.url) for seed in graph.seeds])
@@ -29,14 +30,13 @@ if __name__ == '__main__':
 
     # Crawl pages
     for request in next_requests:
-
         # Fake page crawling
         crawled_page = graph.get_page(request.url)
 
         # Create response
-        response = Response(url=request.url,
-                            status_code=crawled_page.status,
-                            request=request)
+        response = Response(
+            url=request.url, status_code=crawled_page.status, request=request
+        )
         # Create page links
         page_links = [Request(link.url) for link in crawled_page.links]
 

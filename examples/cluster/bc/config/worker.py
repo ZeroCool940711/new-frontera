@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 from .common import *
 
-BACKEND = 'frontera.contrib.backends.hbase.HBaseBackend'
+BACKEND = "new_frontera.contrib.backends.hbase.HBaseBackend"
 HBASE_DROP_ALL_TABLES = True
 
 MAX_NEXT_REQUESTS = 2048

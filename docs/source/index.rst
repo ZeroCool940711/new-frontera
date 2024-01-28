@@ -1,23 +1,23 @@
 .. _topics-index:
 
 ================================
-Frontera |version| documentation
+new_frontera |version| documentation
 ================================
 
-`Frontera`_ is a web crawling tool box, allowing to build crawlers of any scale and purpose. It includes:
+`new_frontera`_ is a web crawling tool box, allowing to build crawlers of any scale and purpose. It includes:
 
 * :ref:`crawl frontier <crawl-frontier>` framework managing *when* and *what* to crawl and checking for crawling goal* accomplishment,
 
 * workers, Scrapy wrappers, and data bus components to scale and distribute the crawler.
 
-Frontera contain components to allow creation of fully-operational web crawler with `Scrapy`_. Even though it was
+new_frontera contain components to allow creation of fully-operational web crawler with `Scrapy`_. Even though it was
 originally designed for Scrapy, it can also be used with any other crawling framework/system.
 
 
 Introduction
 ============
 
-The purpose of this chapter is to introduce you to the concepts behind Frontera so that you can get an idea of
+The purpose of this chapter is to introduce you to the concepts behind new_frontera so that you can get an idea of
 how it works and decide if it is suited to your needs.
 
 .. toctree::
@@ -30,21 +30,21 @@ how it works and decide if it is suited to your needs.
    topics/cluster-setup
 
 :doc:`topics/overview`
-    Understand what Frontera is and how it can help you.
+    Understand what new_frontera is and how it can help you.
 
 :doc:`topics/run-modes`
-    High level architecture and Frontera run modes.
+    High level architecture and new_frontera run modes.
 
 :doc:`topics/quick-start-single`
-    using Scrapy as a container for running Frontera.
+    using Scrapy as a container for running new_frontera.
 
 :doc:`topics/quick-start-distributed`
     with SQLite and ZeroMQ.
 
 :doc:`topics/cluster-setup`
-    Setting up clustered version of Frontera on multiple machines with HBase and Kafka.
+    Setting up clustered version of new_frontera on multiple machines with HBase and Kafka.
 
-Using Frontera
+Using new_frontera
 ==============
 
 .. toctree::
@@ -59,7 +59,7 @@ Using Frontera
    topics/message_bus
    topics/custom_crawling_strategy
    topics/scrapy-integration
-   topics/frontera-settings
+   topics/new_frontera-settings
 
 :doc:`topics/installation`
     HOWTO and Dependencies options.
@@ -86,9 +86,9 @@ Using Frontera
     Implementing your own crawling strategy.
 
 :doc:`topics/scrapy-integration`
-    Learn how to use Frontera with Scrapy.
+    Learn how to use new_frontera with Scrapy.
 
-:doc:`topics/frontera-settings`
+:doc:`topics/new_frontera-settings`
     Settings reference.
 
 
@@ -137,19 +137,19 @@ Developer documentation
 
 
 :doc:`topics/architecture`
-    See how Frontera works and its different components.
+    See how new_frontera works and its different components.
 
 :doc:`topics/frontier-api`
     Learn how to use the frontier.
 
 :doc:`topics/requests-integration`
-    Learn how to use Frontera with Requests.
+    Learn how to use new_frontera with Requests.
 
 :doc:`topics/examples`
-    Some example projects and scripts using Frontera.
+    Some example projects and scripts using new_frontera.
 
 :doc:`topics/tests`
-    How to run and write Frontera tests.
+    How to run and write new_frontera tests.
 
 :doc:`topics/loggers`
     A list of loggers for use with python native logging system.
@@ -167,4 +167,4 @@ Developer documentation
 
 .. _Crawling System: http://en.wikipedia.org/wiki/Web_crawler
 .. _Scrapy: http://scrapy.org/
-.. _`Frontera`: http://github.com/scrapinghub/frontera
+.. _`new_frontera`: http://github.com/scrapinghub/new_frontera

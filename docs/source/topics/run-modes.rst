@@ -18,7 +18,7 @@ Distributed           spiders, :term:`strategy worker` (s) and db worker(s).
 Single process
 ==============
 
-Frontera is instantiated in the same process as fetcher (for example in Scrapy). Read more on how to use that mode
+new_frontera is instantiated in the same process as fetcher (for example in Scrapy). Read more on how to use that mode
 :doc:`here <quick-start-single>`.
 
 This mode is suitable for developing the crawling strategy locally and applications where its critical to fetch
@@ -32,8 +32,8 @@ Spiders and backend are distributed. Backend is divided on two parts: :term:`str
 Strategy worker instances are assigned to their own part of :term:`spider log`.
 
 1. Use :setting:`BACKEND` in spider processes set to
-   :class:`MessageBusBackend <frontera.contrib.backends.remote.messgebus.MessageBusBackend>`
-2. In DB and SW workers :setting:`BACKEND` should point to :class:`DistributedBackend <frontera.core.components.DistributedBackend>` subclasses.
+   :class:`MessageBusBackend <new_frontera.contrib.backends.remote.messgebus.MessageBusBackend>`
+2. In DB and SW workers :setting:`BACKEND` should point to :class:`DistributedBackend <new_frontera.core.components.DistributedBackend>` subclasses.
    And selected backend have to be configured.
 3. Every spider process should have it's own :setting:`SPIDER_PARTITION_ID`, starting from 0 to
    :setting:`SPIDER_FEED_PARTITIONS`. Last must be accessible also to all DB worker instances.

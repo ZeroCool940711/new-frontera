@@ -1,7 +1,7 @@
 """
 Test different frontier backends
 """
-from frontera import FrontierManager, Settings, FrontierTester, graphs
+from new_frontera import FrontierManager, Settings, FrontierTester, graphs
 
 
 def test_logic(backend):
@@ -29,8 +29,8 @@ def test_logic(backend):
         print page.url
 
 if __name__ == '__main__':
-    test_logic('frontera.contrib.backends.memory.FIFO')
-    test_logic('frontera.contrib.backends.memory.LIFO')
-    test_logic('frontera.contrib.backends.memory.BFS')
-    test_logic('frontera.contrib.backends.memory.DFS')
-    test_logic('frontera.contrib.backends.memory.RANDOM')
+    test_logic('new_frontera.contrib.backends.memory.FIFO')
+    test_logic('new_frontera.contrib.backends.memory.LIFO')
+    test_logic('new_frontera.contrib.backends.memory.BFS')
+    test_logic('new_frontera.contrib.backends.memory.DFS')
+    test_logic('new_frontera.contrib.backends.memory.RANDOM')

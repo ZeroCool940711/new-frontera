@@ -1,15 +1,15 @@
-# Frontera
+# new_frontera
 
-[![pypi](https://img.shields.io/pypi/v/frontera)](https://pypi.org/project/frontera/)
-[![python versions](https://img.shields.io/pypi/pyversions/frontera.svg)](https://pypi.org/project/frontera/)
-[![Build Status](https://app.travis-ci.com/ZeroCool940711/new-frontera.svg?branch=master)](https://app.travis-ci.com/ZeroCool940711/new-frontera)
-[![codecov](https://codecov.io/gh/scrapinghub/frontera/branch/master/graph/badge.svg)](https://codecov.io/gh/scrapinghub/frontera)
+[![pypi](https://img.shields.io/pypi/v/new_frontera)](https://pypi.org/project/new_frontera/)
+[![python versions](https://img.shields.io/pypi/pyversions/new_frontera.svg)](https://pypi.org/project/new_frontera/)
+[![Build Status](https://app.travis-ci.com/ZeroCool940711/new-new_frontera.svg?branch=master)](https://app.travis-ci.com/ZeroCool940711/new-new_frontera)
+[![codecov](https://codecov.io/gh/scrapinghub/new_frontera/branch/master/graph/badge.svg)](https://codecov.io/gh/scrapinghub/new_frontera)
 
 ## Overview
 
-Frontera is a web crawling framework consisting of [crawl frontier](http://nlp.stanford.edu/IR-book/html/htmledition/the-url-frontier-1.html), and distribution/scaling primitives, allowing to build a large scale online web crawler. 
+new_frontera is a web crawling framework consisting of [crawl frontier](http://nlp.stanford.edu/IR-book/html/htmledition/the-url-frontier-1.html), and distribution/scaling primitives, allowing to build a large scale online web crawler. 
 
-Frontera takes care of the logic and policies to follow during the crawl. It stores and prioritises links extracted by 
+new_frontera takes care of the logic and policies to follow during the crawl. It stores and prioritizes links extracted by 
 the crawler to decide which pages to visit next, and capable of doing it in distributed manner.
 
 ## Main features
@@ -28,13 +28,17 @@ the crawler to decide which pages to visit next, and capable of doing it in dist
 - Python 3 support.
 
 ## Installation
+
 Development version:
+
 ```bash
-$ pip install git+https://github.com/ZeroCool940711/new-frontera.git
+$ pip install git+https://github.com/ZeroCool940711/new-new_frontera.git
 ```
-Old version from PyPi:
+
+or from PyPi:
+
 ```bash
-$ pip install frontera
+$ pip install new_frontera
 ```
 
 ## Documentation

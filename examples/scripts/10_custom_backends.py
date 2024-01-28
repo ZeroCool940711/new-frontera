@@ -3,8 +3,8 @@ Custom backend example
 """
 import random
 
-from frontera import FrontierManager, Settings, FrontierTester, graphs
-from frontera.contrib.backends.memory import MemoryBaseBackend
+from new_frontera import FrontierManager, Settings, FrontierTester, graphs
+from new_frontera.contrib.backends.memory import MemoryBaseBackend
 
 
 SITE_LIST = [

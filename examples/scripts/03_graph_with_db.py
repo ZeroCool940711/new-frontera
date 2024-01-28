@@ -1,7 +1,7 @@
 """
 Graph manager with database
 """
-from frontera import graphs
+from new_frontera import graphs
 
 SITE_LIST = [
     [

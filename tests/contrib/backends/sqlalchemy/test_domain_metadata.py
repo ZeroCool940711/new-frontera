@@ -1,4 +1,7 @@
-from frontera.contrib.backends.sqlalchemy.components import DomainMetadata, DomainMetadataKV
+from new_frontera.contrib.backends.sqlalchemy.components import (
+    DomainMetadata,
+    DomainMetadataKV,
+)
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from unittest import TestCase
@@ -7,7 +10,9 @@ import string
 
 
 def random_string(N):
-    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N))
+    return "".join(
+        random.choice(string.ascii_uppercase + string.digits) for _ in range(N)
+    )
 
 
 class TestSqlAlchemyDomainMetadata(TestCase):
@@ -39,4 +44,3 @@ class TestSqlAlchemyDomainMetadata(TestCase):
             assert "key%d" % i in dm
             assert len(dm["key%d" % i]) == 10
             del dm["key%d" % i]
-

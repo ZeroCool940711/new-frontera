@@ -17,11 +17,11 @@ To activate the recording in your Scrapy project, just add them to the `SPIDER_M
 `DOWNLOADER_MIDDLEWARES`_ settings::
 
     SPIDER_MIDDLEWARES.update({
-        'frontera.contrib.scrapy.middlewares.recording.CrawlRecorderSpiderMiddleware': 1000,
+        'new_frontera.contrib.scrapy.middlewares.recording.CrawlRecorderSpiderMiddleware': 1000,
     })
 
     DOWNLOADER_MIDDLEWARES.update({
-        'frontera.contrib.scrapy.middlewares.recording.CrawlRecorderDownloaderMiddleware': 1000,
+        'new_frontera.contrib.scrapy.middlewares.recording.CrawlRecorderDownloaderMiddleware': 1000,
     })
 
 

@@ -4,11 +4,11 @@
 Middlewares
 ===========
 
-Frontier :class:`Middleware <frontera.core.components.Middleware>` sits between
-:class:`FrontierManager <frontera.core.manager.FrontierManager>` and
-:class:`Backend <frontera.core.components.Backend>` objects, using hooks for
-:class:`Request <frontera.core.models.Request>`
-and :class:`Response <frontera.core.models.Response>` processing according to
+Frontier :class:`Middleware <new_frontera.core.components.Middleware>` sits between
+:class:`FrontierManager <new_frontera.core.manager.FrontierManager>` and
+:class:`Backend <new_frontera.core.components.Backend>` objects, using hooks for
+:class:`Request <new_frontera.core.models.Request>`
+and :class:`Response <new_frontera.core.models.Response>` processing according to
 :ref:`frontier data flow <frontier-data-flow>`.
 
 It’s a light, low-level system for filtering and altering Frontier’s requests and responses.
@@ -18,14 +18,14 @@ It’s a light, low-level system for filtering and altering Frontier’s request
 Activating a middleware
 =======================
 
-To activate a :class:`Middleware <frontera.core.components.Middleware>` component, add it to the
+To activate a :class:`Middleware <new_frontera.core.components.Middleware>` component, add it to the
 :setting:`MIDDLEWARES` setting, which is a list whose values can be class paths or instances of
-:class:`Middleware <frontera.core.components.Middleware>` objects.
+:class:`Middleware <new_frontera.core.components.Middleware>` objects.
 
 Here’s an example::
 
     MIDDLEWARES = [
-        'frontera.contrib.middlewares.domain.DomainMiddleware',
+        'new_frontera.contrib.middlewares.domain.DomainMiddleware',
     ]
 
 Middlewares are called in the same order they've been defined in the list, to decide which order to assign to your
@@ -41,71 +41,71 @@ Writing your own middleware
 ===========================
 
 
-Writing your own frontier middleware is easy. Each :class:`Middleware <frontera.core.components.Middleware>`
-component is a single Python class inherited from :class:`Component <frontera.core.components.Component>`.
+Writing your own frontier middleware is easy. Each :class:`Middleware <new_frontera.core.components.Middleware>`
+component is a single Python class inherited from :class:`Component <new_frontera.core.components.Component>`.
 
 
-:class:`FrontierManager <frontera.core.manager.FrontierManager>` will communicate with all active middlewares
+:class:`FrontierManager <new_frontera.core.manager.FrontierManager>` will communicate with all active middlewares
 through the methods described below.
 
-.. autoclass:: frontera.core.components.Middleware
+.. autoclass:: new_frontera.core.components.Middleware
 
     **Methods**
 
-    .. automethod:: frontera.core.components.Middleware.frontier_start
-    .. automethod:: frontera.core.components.Middleware.frontier_stop
-    .. automethod:: frontera.core.components.Middleware.add_seeds
+    .. automethod:: new_frontera.core.components.Middleware.frontier_start
+    .. automethod:: new_frontera.core.components.Middleware.frontier_stop
+    .. automethod:: new_frontera.core.components.Middleware.add_seeds
 
-        :return: :class:`Request <frontera.core.models.Request>` object list or ``None``
+        :return: :class:`Request <new_frontera.core.models.Request>` object list or ``None``
 
-        Should either return ``None`` or a list of :class:`Request <frontera.core.models.Request>` objects.
+        Should either return ``None`` or a list of :class:`Request <new_frontera.core.models.Request>` objects.
 
-        If it returns ``None``, :class:`FrontierManager <frontera.core.manager.FrontierManager>` won't continue
+        If it returns ``None``, :class:`FrontierManager <new_frontera.core.manager.FrontierManager>` won't continue
         processing any other middleware and seed will never reach the
-        :class:`Backend <frontera.core.components.Backend>`.
+        :class:`Backend <new_frontera.core.components.Backend>`.
 
-        If it returns a list of :class:`Request <frontera.core.models.Request>` objects, this will be passed to
+        If it returns a list of :class:`Request <new_frontera.core.models.Request>` objects, this will be passed to
         next middleware. This process will repeat for all active middlewares until result is finally passed to the
-        :class:`Backend <frontera.core.components.Backend>`.
+        :class:`Backend <new_frontera.core.components.Backend>`.
 
         If you want to filter any seed, just don't include it in the returned object list.
 
-    .. automethod:: frontera.core.components.Middleware.page_crawled
+    .. automethod:: new_frontera.core.components.Middleware.page_crawled
 
-        :return: :class:`Response <frontera.core.models.Response>` or ``None``
+        :return: :class:`Response <new_frontera.core.models.Response>` or ``None``
 
-        Should either return ``None`` or a :class:`Response <frontera.core.models.Response>` object.
+        Should either return ``None`` or a :class:`Response <new_frontera.core.models.Response>` object.
 
-        If it returns ``None``, :class:`FrontierManager <frontera.core.manager.FrontierManager>` won't continue
-        processing any other middleware and :class:`Backend <frontera.core.components.Backend>` will never be
+        If it returns ``None``, :class:`FrontierManager <new_frontera.core.manager.FrontierManager>` won't continue
+        processing any other middleware and :class:`Backend <new_frontera.core.components.Backend>` will never be
         notified.
 
-        If it returns a :class:`Response <frontera.core.models.Response>` object, this will be passed to
+        If it returns a :class:`Response <new_frontera.core.models.Response>` object, this will be passed to
         next middleware. This process will repeat for all active middlewares until result is finally passed to the
-        :class:`Backend <frontera.core.components.Backend>`.
+        :class:`Backend <new_frontera.core.components.Backend>`.
 
         If you want to filter a page, just return None.
 
-    .. automethod:: frontera.core.components.Middleware.request_error
+    .. automethod:: new_frontera.core.components.Middleware.request_error
 
 
-        :return: :class:`Request <frontera.core.models.Request>` or ``None``
+        :return: :class:`Request <new_frontera.core.models.Request>` or ``None``
 
-        Should either return ``None`` or a :class:`Request <frontera.core.models.Request>` object.
+        Should either return ``None`` or a :class:`Request <new_frontera.core.models.Request>` object.
 
-        If it returns ``None``, :class:`FrontierManager <frontera.core.manager.FrontierManager>` won't continue
-        processing any other middleware and :class:`Backend <frontera.core.components.Backend>` will never be
+        If it returns ``None``, :class:`FrontierManager <new_frontera.core.manager.FrontierManager>` won't continue
+        processing any other middleware and :class:`Backend <new_frontera.core.components.Backend>` will never be
         notified.
 
-        If it returns a :class:`Response <frontera.core.models.Request>` object, this will be passed to
+        If it returns a :class:`Response <new_frontera.core.models.Request>` object, this will be passed to
         next middleware. This process will repeat for all active middlewares until result is finally passed to the
-        :class:`Backend <frontera.core.components.Backend>`.
+        :class:`Backend <new_frontera.core.components.Backend>`.
 
         If you want to filter a page error, just return None.
 
     **Class Methods**
 
-    .. automethod:: frontera.core.components.Middleware.from_manager
+    .. automethod:: new_frontera.core.components.Middleware.from_manager
 
 
 
@@ -114,7 +114,7 @@ through the methods described below.
 Built-in middleware reference
 =============================
 
-This page describes all :class:`Middleware <frontera.core.components.Middleware>` components that come with Frontera.
+This page describes all :class:`Middleware <new_frontera.core.components.Middleware>` components that come with new_frontera.
 For information on how to use them and how to write your own middleware, see the
 :ref:`middleware usage guide. <frontier-writing-middleware>`.
 
@@ -126,7 +126,7 @@ For a list of the components enabled by default (and their orders) see the :sett
 DomainMiddleware
 ----------------
 
-.. autoclass:: frontera.contrib.middlewares.domain.DomainMiddleware()
+.. autoclass:: new_frontera.contrib.middlewares.domain.DomainMiddleware()
 
 
 .. _frontier-url-fingerprint-middleware:
@@ -134,8 +134,8 @@ DomainMiddleware
 UrlFingerprintMiddleware
 ------------------------
 
-.. autoclass:: frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware()
-.. autofunction:: frontera.utils.fingerprint.hostname_local_fingerprint
+.. autoclass:: new_frontera.contrib.middlewares.fingerprint.UrlFingerprintMiddleware()
+.. autofunction:: new_frontera.utils.fingerprint.hostname_local_fingerprint
 
 
 
@@ -144,4 +144,4 @@ UrlFingerprintMiddleware
 DomainFingerprintMiddleware
 ---------------------------
 
-.. autoclass:: frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware()
+.. autoclass:: new_frontera.contrib.middlewares.fingerprint.DomainFingerprintMiddleware()
