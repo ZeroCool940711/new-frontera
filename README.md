@@ -32,13 +32,13 @@ the crawler to decide which pages to visit next, and capable of doing it in dist
 Development version:
 
 ```bash
-$ pip install git+https://github.com/ZeroCool940711/new-new_frontera.git
+$ pip install git+https://github.com/ZeroCool940711/new_frontera.git
 ```
 
 or from PyPi:
 
 ```bash
-$ pip install new_frontera
+$ pip install new-frontera
 ```
 
 ## Documentation
