@@ -15,6 +15,8 @@ setup(
     packages=find_packages(exclude=("tests", "tests.*", "examples", "examples.*")),
     url="https://github.com/scrapinghub/frontera",
     description="A scalable frontier for web crawlers",
+    long_description=open("README.md", "r").read(),
+    long_description_content_type="text/markdown",
     author="Frontera developers",
     maintainer="Alexander Sibiryakov",
     maintainer_email="sibiryakov@scrapinghub.com",
