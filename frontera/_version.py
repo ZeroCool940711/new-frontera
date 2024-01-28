@@ -50,7 +50,7 @@ def get_config() -> VersioneerConfig:
     # _version.py
     cfg = VersioneerConfig()
     cfg.VCS = "git"
-    cfg.style = "pep440"
+    cfg.style = "pep440-pre"
     cfg.tag_prefix = "v"
     cfg.parentdir_prefix = "frontera-"
     cfg.versionfile_source = "frontera/_version.py"
