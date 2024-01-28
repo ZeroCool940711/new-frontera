@@ -1,9 +1,13 @@
 from __future__ import absolute_import
-from .core.models import Request, Response
+
+from ._version import get_versions
 from .core.components import Backend, DistributedBackend, Middleware
+from .core.models import Request, Response
 from .settings import Settings
 from .utils.tester import FrontierTester
 
-from ._version import get_versions
-__version__ = get_versions()['version']
+__version__ = get_versions()["version"]
 del get_versions
+
+from . import _version
+__version__ = _version.get_versions()['version']
